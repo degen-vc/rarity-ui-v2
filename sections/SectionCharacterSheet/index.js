@@ -16,9 +16,75 @@ import	Balloon				from	'sections/SectionCharacterSheet/Balloon';
 import	Skills				from	'sections/SectionCharacterSheet/Skills';	
 import	Inventory			from	'sections/SectionCharacterSheet/Inventory';
 import	{classMappingImg}	from	'utils/constants';
+import  {ethers} from	'ethers';
+import	{Provider, Contract}				from	'ethcall';
+import	useWeb3								from	'contexts/useWeb3';
+
+import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
+import 	USDC_ABI from 'utils/abi/USDC.abi';
+
+
+
+
+
+async function newEthCallProvider(provider, devMode) {
+
+	const	ethcallProvider = new Provider();
+	if (devMode) {
+		await	ethcallProvider.init(new ethers.providers.JsonRpcProvider('http://localhost:8545'));
+		ethcallProvider.multicallAddress = process.env.MULTICALL_ADDRESS;
+		ethcallProvider.multicall2Address = process.env.MULTICALL2_ADDRESS;
+		return ethcallProvider;
+	}
+	await	ethcallProvider.init(provider);
+	return	ethcallProvider;
+}
+
+async function newEthWriteProvider(provider, devMode) {
+
+	const	ethcallProvider = new Provider();
+	if (devMode) {
+		await	ethcallProvider.init(new ethers.providers.JsonRpcProvider('http://localhost:8545'));
+		ethcallProvider.multicallAddress = process.env.MULTICALL_ADDRESS;
+		ethcallProvider.multicall2Address = process.env.MULTICALL2_ADDRESS;
+		return ethcallProvider;
+	}
+	await	ethcallProvider.init(provider);
+	return	ethcallProvider;
+}
+
+async function	fetchAdventurer(calls) {
+	const	{active, address, chainID, provider} = useWeb3();
+
+	const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
+	const	callResult = await ethcallProvider.all(calls);
+	return (callResult);
+}
+
+async function namesGet(active, address, chainID, provider) {
+
+
+	const usdc = new Contract(process.env.USDC_ADDR, USDC_ABI);
+
+	const [allowance] = await fetchAdventurer([usdc.allowance(address, process.env.RARITY_NAMES_ADDR)]);
+	console.log(`${allowance}`);
+}
+
+async function claimName(name, id, active, address, chainID, provider) {
+
+
+	const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
+
+	const rarityName = await fetchAdventurer([rarityNames.claim(name, id)]);
+	console.log(`${rarityName}`);
+}
+
 
 function	AdventurerTab({adventurer, updateRarity, provider}) {
+
 	const	[selectedTab, set_selectedTab] = useState(0);
+	
+
 
 	return (
 		<Box className={'flex flex-col w-full mt-2'}>
@@ -42,10 +108,44 @@ function	AdventurerTab({adventurer, updateRarity, provider}) {
 }
 
 function	Info({adventurer, updateRarity, provider}) {
+	// const	{provider2, chainID} = useWeb3();
+	const	{active, address, chainID, provider2} = useWeb3();
+
+
+	const [input, setInput] = useState('');
+
+	async function checkName() {
+
+		const	name = new ethers.Contract(process.env.RARITY_NAMES_ADDR, NAMES_ABI, provider);
+	
+	
+		// const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
+		// const	callResult = await ethcallProvider.all([name.summoner_name(adventurer?.id)]);
+		// console.log(callResult);
+
+		// name.summoner_name(adventurer?.id).then((res, req) => {
+		// 	console.log(res);
+		// });
+
+		// return callResult;
+	}
+
+
+	// checkName();
+
+	let handleChange = (event) => {
+		setInput(event.target.value);
+	};
+
+	let handleSubmit = (event)=> {
+		event.preventDefault();
+		claimName(input, adventurer.tokenID, active, address, chainID, provider2);
+	};
+	
 	const	canLevelUp = adventurer.xp >= (xpRequired(adventurer.level));
 	return (
 		<Box className={'nes-container pt-6 px-4 with-title w-full md:w-2/3'}>
-			<p className={'title bg-white dark:bg-dark-600 z-50 relative'} style={{paddingTop: 2}}>{adventurer.tokenID}</p>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative'} style={{paddingTop: 2}}>{adventurer.name || adventurer.tokenID}</p>
 			<div className={'flex flex-row items-center w-full py-2'}>
 				<div className={'opacity-80 text-xs md:text-sm w-48'}>{'ID:'}</div>
 				<div className={'w-full text-right md:text-left pr-4 md:pr-0'}>
@@ -65,9 +165,12 @@ function	Info({adventurer, updateRarity, provider}) {
 				</div>
 			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
-				<div className={'opacity-80 text-xs md:text-sm w-48'}>{'GOLD:'}</div>
-				<div className={'w-full text-right md:text-left pr-4 md:pr-0'}>
-					<p>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p>
+				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.name ? 'GOLD:' : 'GET NAME:'}</div>
+				<form className={adventurer.name ? 'd-none' : ''} onSubmit={handleSubmit}><input className={`border border-dark`} onChange={handleChange}></input></form>
+				<div className={adventurer.name ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
+					<p>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p> 
+					
+					
 				</div>
 			</div>
 			<div className={'flex flex-row items-center w-full py-2 relative'}>

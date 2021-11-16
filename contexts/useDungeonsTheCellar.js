@@ -16,7 +16,7 @@ const	DungeonContext = createContext();
 
 async function newEthCallProvider(provider) {
 	const	ethcallProvider = new Provider();
-	console.log('provider', provider)
+	console.log('provider', provider);
 	await	ethcallProvider.init(provider);
 	return	ethcallProvider;
 }

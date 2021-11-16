@@ -7,20 +7,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import	React, {useState, useEffect}	from	'react';
-import	{ethers}						from	'ethers';
-import	Box								from	'components/Box';
-import	ListBox							from	'components/ListBox';
-import	Chevron							from	'components/Chevron';
-import	BoxAlternate					from	'components/BoxAlternate';
-import	Button							from	'components/Button';
-import	ButtonCounter					from	'components/ButtonCounter';
-import	Image							from	'next/image';
-import	useRarity						from	'contexts/useRarity';
-import	useWeb3							from	'contexts/useWeb3';
-import	MANIFEST_GOODS					from	'utils/codex/items_manifest_goods.json';
-import	MANIFEST_ARMORS					from	'utils/codex/items_manifest_armors.json';
-import	MANIFEST_WEAPONS				from	'utils/codex/items_manifest_weapons.json';
-import	{craft}							from	'utils/actions';
+import	{ethers}											from	'ethers';
+import	Box														from	'components/Box';
+import	ListBox												from	'components/ListBox';
+import	Chevron												from	'components/Chevron';
+import	BoxAlternate									from	'components/BoxAlternate';
+import	Button												from	'components/Button';
+import	ButtonCounter									from	'components/ButtonCounter';
+import	Image													from	'next/image';
+import	useRarity											from	'contexts/useRarity';
+import	useWeb3												from	'contexts/useWeb3';
+import	MANIFEST_GOODS								from	'utils/codex/items_manifest_goods.json';
+import	MANIFEST_ARMORS								from	'utils/codex/items_manifest_armors.json';
+import	MANIFEST_WEAPONS							from	'utils/codex/items_manifest_weapons.json';
+import	{craft}												from	'utils/actions';
 import {craftSkillCheck, getGoodsDifficulty, getArmorDifficulty, getWeaponDifficulty}	from	'utils/libs/rarityCrafting';
 
 const	proficiencyOptions = [

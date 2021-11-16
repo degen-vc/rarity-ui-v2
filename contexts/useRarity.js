@@ -17,6 +17,7 @@ import	ITEMS													from	'utils/codex/items';
 import	RARITY_ABI												from	'utils/abi/rarity.abi';
 import	RARITY_ATTR_ABI											from	'utils/abi/rarityAttr.abi';
 import	RARITY_GOLD_ABI											from	'utils/abi/rarityGold.abi';
+import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 import	RARITY_SKILLS_ABI										from	'utils/abi/raritySkills.abi';
 import	RARITY_LIBRARY_ABI										from	'utils/abi/rarityLibrary.abi';
 import	RARITY_CRAFTING_HELPER_ABI								from	'utils/abi/rarityCraftingHelper.abi';
@@ -74,6 +75,7 @@ export const RarityContextApp = ({children}) => {
 			set_loaded(false);
 			fetchRarity();
 		}
+		
 	}, [active, address, chainID, provider]);
 
 	async function	sharedCalls() {
@@ -119,6 +121,8 @@ export const RarityContextApp = ({children}) => {
 
 	}
 
+
+
 	/**************************************************************************
 	**	Prepare the multicall to get most of the data
 	**************************************************************************/
@@ -132,7 +136,14 @@ export const RarityContextApp = ({children}) => {
 		const	rarityDungeonForest = new Contract(process.env.DUNGEON_THE_FOREST_ADDR, THE_FOREST_ABI);
 		// const	rarityCraftingHelper = new Contract(process.env.RARITY_CRAFTING_HELPER_ADDR, RARITY_CRAFTING_HELPER_ABI);
 		// RARITY_CRAFTING_HELPER_ADDR
+		const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
 
+		namesGet(tokenID);
+
+
+
+		// console.log(`hello `, rarityName);
+		
 		return [
 			rarity.ownerOf(tokenID),
 			rarity.summoner(tokenID),
@@ -140,6 +151,7 @@ export const RarityContextApp = ({children}) => {
 			rarityAttr.ability_scores(tokenID),
 			rarityGold.balanceOf(tokenID),
 			raritySkills.get_skills(tokenID),
+			rarityNames.summoner_name(tokenID),
 			isDungeonAvailable(dungeonTypes.CELLAR) && rarityDungeonCellar.adventurers_log(tokenID),
 			isDungeonAvailable(dungeonTypes.FOREST) && rarityDungeonForest.getResearchBySummoner(tokenID),
 		].filter(x => Boolean(x));
@@ -151,6 +163,13 @@ export const RarityContextApp = ({children}) => {
 		const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
 		const	callResult = await ethcallProvider.all(calls);
 		return (callResult);
+	}
+
+	async function namesGet(id) {
+		const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
+
+		const rarityName = await fetchAdventurer([rarityNames.summoner_name(id)]);
+		console.log(`${rarityName}`);
 	}
 
 	/**************************************************************************
@@ -185,6 +204,7 @@ export const RarityContextApp = ({children}) => {
 		return [
 			rarityGold.claimable(tokenID)
 		];
+		
 	}
 	/**************************************************************************
 	**	Fetch the data from the prepared extra call
@@ -192,17 +212,20 @@ export const RarityContextApp = ({children}) => {
 	async function	fetchAdventurerExtra(calls) {
 		const	results = await Promise.all(calls.map(p => p.catch(() => ethers.BigNumber.from(0))));
 		return	results.map(result => (result instanceof Error) ? undefined : result);
+		
 	}
 
 	/**************************************************************************
 	**	Actually update the state based on the data fetched
 	**************************************************************************/
 	function		setRarity(tokenID, multicallResult, callResult, inventoryCallResult) {
-		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills] = multicallResult.slice(0, 6);
+		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name] = multicallResult.slice(0, 7);
+		console.log(`name - `, name);
+		console.log(`multicallResult - `, multicallResult);
 		const	[claimableGold] = callResult;
 
 		// Sets up dungeons based on available ones (the order that dungeons are checked here is important!)
-		const dungeonResults = multicallResult.slice(6);
+		const dungeonResults = multicallResult.slice(7);
 		const dungeons = {};
 		if (isDungeonAvailable(dungeonTypes.CELLAR)) {
 			const cellarLog = dungeonResults.shift();
@@ -214,7 +237,7 @@ export const RarityContextApp = ({children}) => {
 				initBlockTs: forestResearch.initBlockTs,
 				endBlockTs: forestResearch.endBlockTs,
 				canAdventure: forestResearch?.discovered === true || Number(forestResearch?.timeInDays) === 0
-			}
+			};
 		}
 
 		if (toAddress(owner) !== toAddress(address)) {
@@ -228,6 +251,7 @@ export const RarityContextApp = ({children}) => {
 				class: Number(adventurer['_class']),
 				level: Number(adventurer['_level']),
 				log: Number(adventurer['_log']),
+				name: name,
 				gold: {
 					balance: ethers.utils.formatEther(balanceOfGold),
 					claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
@@ -243,6 +267,7 @@ export const RarityContextApp = ({children}) => {
 					charisma: initialAttributes ? abilityScores['charisma'] : 8,
 				},
 				skills: skills,
+				name: name,
 				dungeons,
 				inventory: inventoryCallResult
 			} : p);
@@ -254,6 +279,7 @@ export const RarityContextApp = ({children}) => {
 			class: Number(adventurer['_class']),
 			level: Number(adventurer['_level']),
 			log: Number(adventurer['_log']),
+			name: name,
 			gold: {
 				balance: ethers.utils.formatEther(balanceOfGold),
 				claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
@@ -311,7 +337,7 @@ export const RarityContextApp = ({children}) => {
 		}
 
 		const	callResults = await fetchAdventurer(preparedCalls);
-		const	chunkedCallResult = chunk(callResults, 6 + numberOfDungeonsAvailable);
+		const	chunkedCallResult = chunk(callResults, 7 + numberOfDungeonsAvailable);
 		const	extraCallResults = await fetchAdventurerExtra(preparedExtraCalls);
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
 		const	inventoryCallResult = await fetchAdventurerInventory(preparedInventoryCalls);
@@ -320,6 +346,8 @@ export const RarityContextApp = ({children}) => {
 			setRarity(tokenID, chunkedCallResult[i], chunkedExtraCallResult[i], chunkedinventoryCallResult[i]);
 		});
 		sharedCalls().then(result => prepareSharedInventory(result[0]));
+
+		console.log(`chunkedCallResult - `, chunkedCallResult);
 
 
 		set_loaded(true);
@@ -331,7 +359,8 @@ export const RarityContextApp = ({children}) => {
 	**************************************************************************/
 	async function	updateRarity(tokenID) {
 		const	callResults = await fetchAdventurer(prepareAdventurer(tokenID));
-		const	chunkedCallResult = chunk(callResults, 6 + numberOfDungeonsAvailable);
+		
+		const	chunkedCallResult = chunk(callResults, 7 + numberOfDungeonsAvailable);
 		const	extraCallResults = await fetchAdventurerExtra(prepareAdventurerExtra(tokenID));
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
 		const	inventoryCallResult = await fetchAdventurerInventory(prepareAdventurerInventory(tokenID));

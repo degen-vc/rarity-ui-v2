@@ -9,6 +9,10 @@
 	scroll-behavior: smooth;
 }
 
+.d-none {
+	display: none;
+}
+
 html.dark {
 	background: rgb(19,38,75);
 }
