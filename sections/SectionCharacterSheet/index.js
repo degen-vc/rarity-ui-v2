@@ -40,19 +40,6 @@ async function newEthCallProvider(provider, devMode) {
 	return	ethcallProvider;
 }
 
-async function newEthWriteProvider(provider, devMode) {
-
-	const	ethcallProvider = new Provider();
-	if (devMode) {
-		await	ethcallProvider.init(new ethers.providers.JsonRpcProvider('http://localhost:8545'));
-		ethcallProvider.multicallAddress = process.env.MULTICALL_ADDRESS;
-		ethcallProvider.multicall2Address = process.env.MULTICALL2_ADDRESS;
-		return ethcallProvider;
-	}
-	await	ethcallProvider.init(provider);
-	return	ethcallProvider;
-}
-
 async function	fetchAdventurer(calls) {
 	const	{active, address, chainID, provider} = useWeb3();
 
@@ -71,11 +58,16 @@ async function namesGet(active, address, chainID, provider) {
 }
 
 async function claimName(name, id, active, address, chainID, provider) {
+	const signer = provider.getSigner();
 
+	const claimName = new ethers.Contract(
+		process.env.RARITY_NAMES_ADDR, 
+		['function claim (string memory name, uint256 summoner) external returns (uint256 name_id)'],
+		signer
+	);
 
-	const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
+	const rarityName = await claimName.claim(name, id);
 
-	const rarityName = await fetchAdventurer([rarityNames.claim(name, id)]);
 	console.log(`${rarityName}`);
 }
 
@@ -139,7 +131,7 @@ function	Info({adventurer, updateRarity, provider}) {
 
 	let handleSubmit = (event)=> {
 		event.preventDefault();
-		claimName(input, adventurer.tokenID, active, address, chainID, provider2);
+		claimName(input, adventurer.tokenID, active, address, chainID, provider).then(() => updateRarity(adventurer.tokenID));
 	};
 	
 	const	canLevelUp = adventurer.xp >= (xpRequired(adventurer.level));
