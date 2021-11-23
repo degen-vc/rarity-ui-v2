@@ -27,6 +27,8 @@ import	THE_FOREST_ABI											from	'utils/abi/dungeonTheForest.abi';
 import	MANIFEST_GOODS											from	'utils/codex/items_manifest_goods.json';
 import	MANIFEST_ARMORS											from	'utils/codex/items_manifest_armors.json';
 import	MANIFEST_WEAPONS										from	'utils/codex/items_manifest_weapons.json';
+import 	USDC_ABI from 'utils/abi/USDC.abi';
+
 
 import { dungeonTypes, isDungeonAvailable, numberOfDungeonsAvailable } from 'utils/scarcity-functions';
 
@@ -137,6 +139,8 @@ export const RarityContextApp = ({children}) => {
 		// const	rarityCraftingHelper = new Contract(process.env.RARITY_CRAFTING_HELPER_ADDR, RARITY_CRAFTING_HELPER_ABI);
 		// RARITY_CRAFTING_HELPER_ADDR
 		const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
+		const usdcAllowance = new Contract(process.env.USDC_ADDR, USDC_ABI);
+
 
 		namesGet(tokenID);
 
@@ -152,6 +156,7 @@ export const RarityContextApp = ({children}) => {
 			rarityGold.balanceOf(tokenID),
 			raritySkills.get_skills(tokenID),
 			rarityNames.summoner_name(tokenID),
+			usdcAllowance.allowance(address, process.env.RARITY_NAMES_ADDR),
 			isDungeonAvailable(dungeonTypes.CELLAR) && rarityDungeonCellar.adventurers_log(tokenID),
 			isDungeonAvailable(dungeonTypes.FOREST) && rarityDungeonForest.getResearchBySummoner(tokenID),
 		].filter(x => Boolean(x));
@@ -219,13 +224,13 @@ export const RarityContextApp = ({children}) => {
 	**	Actually update the state based on the data fetched
 	**************************************************************************/
 	function		setRarity(tokenID, multicallResult, callResult, inventoryCallResult) {
-		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name] = multicallResult.slice(0, 7);
+		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name, usdcAllw] = multicallResult.slice(0, 8);
 		console.log(`name - `, name);
 		console.log(`multicallResult - `, multicallResult);
 		const	[claimableGold] = callResult;
 
 		// Sets up dungeons based on available ones (the order that dungeons are checked here is important!)
-		const dungeonResults = multicallResult.slice(7);
+		const dungeonResults = multicallResult.slice(8);
 		const dungeons = {};
 		if (isDungeonAvailable(dungeonTypes.CELLAR)) {
 			const cellarLog = dungeonResults.shift();
@@ -252,6 +257,7 @@ export const RarityContextApp = ({children}) => {
 				level: Number(adventurer['_level']),
 				log: Number(adventurer['_log']),
 				name: name,
+				usdcAllw: usdcAllw,
 				gold: {
 					balance: ethers.utils.formatEther(balanceOfGold),
 					claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
@@ -267,7 +273,6 @@ export const RarityContextApp = ({children}) => {
 					charisma: initialAttributes ? abilityScores['charisma'] : 8,
 				},
 				skills: skills,
-				name: name,
 				dungeons,
 				inventory: inventoryCallResult
 			} : p);
@@ -280,6 +285,7 @@ export const RarityContextApp = ({children}) => {
 			level: Number(adventurer['_level']),
 			log: Number(adventurer['_log']),
 			name: name,
+			usdcAllw: usdcAllw,
 			gold: {
 				balance: ethers.utils.formatEther(balanceOfGold),
 				claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
@@ -337,7 +343,7 @@ export const RarityContextApp = ({children}) => {
 		}
 
 		const	callResults = await fetchAdventurer(preparedCalls);
-		const	chunkedCallResult = chunk(callResults, 7 + numberOfDungeonsAvailable);
+		const	chunkedCallResult = chunk(callResults, 8 + numberOfDungeonsAvailable);
 		const	extraCallResults = await fetchAdventurerExtra(preparedExtraCalls);
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
 		const	inventoryCallResult = await fetchAdventurerInventory(preparedInventoryCalls);
@@ -360,7 +366,7 @@ export const RarityContextApp = ({children}) => {
 	async function	updateRarity(tokenID) {
 		const	callResults = await fetchAdventurer(prepareAdventurer(tokenID));
 		
-		const	chunkedCallResult = chunk(callResults, 7 + numberOfDungeonsAvailable);
+		const	chunkedCallResult = chunk(callResults, 8 + numberOfDungeonsAvailable);
 		const	extraCallResults = await fetchAdventurerExtra(prepareAdventurerExtra(tokenID));
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
 		const	inventoryCallResult = await fetchAdventurerInventory(prepareAdventurerInventory(tokenID));
