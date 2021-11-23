@@ -6,6 +6,8 @@
 ******************************************************************************/
 
 import	React, {useState, useEffect}	from	'react';
+import	toast				from	'react-hot-toast';
+
 import	Image				from	'next/image';
 import	CLASSES				from	'utils/codex/classes';
 import	{levelUp}			from	'utils/actions';
@@ -58,7 +60,9 @@ async function checkUSDCallowance(address) {
 	// return allowance;
 }
 
-async function claimName(name, id, active, address, chainID, provider) {
+async function claimName(name, id, active, address, chainID, provider, callback) {
+	const	_toast = toast.loading(`Claiming name ${name}...`);
+
 	const signer = provider.getSigner();
 
 	const claimName = new ethers.Contract(
@@ -67,12 +71,43 @@ async function claimName(name, id, active, address, chainID, provider) {
 		signer
 	);
 
-	const rarityName = await claimName.claim(name, id);
+	try {
+		await claimName.callStatic.claim(name, id);
+	} catch (error) {
+		toast.dismiss(_toast);
+		toast.error('Impossible to submit transaction');
+		callback({error, data: undefined});
+		return;
+	}
 
-	console.log(`${rarityName}`);
+	try {
+		const	transaction = await claimName.claim(name, id);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status == 1) {
+			callback({error: false, data: id});
+			toast.dismiss(_toast);
+			toast.success('Transaction successful');
+		} else {
+			console.log(transactionResult.status);
+			toast.dismiss(_toast);
+			toast.error('Transaction reverted');
+			callback({error: true, data: undefined});
+		}
+	} catch (error) {
+		console.error(error);
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+		callback({error, data: name});
+	}
+
+	// const rarityName = await claimName.claim(name, id);
+
+	// console.log(`${rarityName}`);
 }
 
-async function getUSDCallowance(provider) {
+async function getUSDCallowance(provider, callback) {
+	const	_toast = toast.loading('Approving USDC use');
+
 	const signer = provider.getSigner();
 
 	const claimName = new ethers.Contract(
@@ -81,10 +116,39 @@ async function getUSDCallowance(provider) {
 		signer
 	);
 
-	const allowance = await claimName.approve(process.env.RARITY_NAMES_ADDR, 10000);
+	try {
+		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, 10000);
+	} catch (error) {
+		toast.dismiss(_toast);
+		toast.error('Impossible to submit transaction');
+		callback({error, data: undefined});
+		return;
+	}
 
-	console.log(`${allowance}`,);
-	return allowance;
+	try {
+		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, 10000);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status == 1) {
+			callback({error: false, data: 'id'});
+			toast.dismiss(_toast);
+			toast.success('Transaction successful');
+		} else {
+			console.log(transactionResult.status);
+			toast.dismiss(_toast);
+			toast.error('Transaction reverted');
+			callback({error: true, data: undefined});
+		}
+	} catch (error) {
+		console.error(error);
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+		callback({error, data: 'id'});
+	}
+
+	// const allowance = await claimName.approve(process.env.RARITY_NAMES_ADDR, 10000);
+
+	// console.log(`${allowance}`,);
+	// return allowance;
 }
 
 
@@ -154,12 +218,23 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 
 	let handleSubmit = (event)=> {
 		event.preventDefault();
-		claimName(input, adventurer.tokenID, active, address, chainID, provider).then(() => updateRarity(adventurer.tokenID));
+		claimName(input, adventurer.tokenID, active, address, chainID, provider, ({error, data}) => {
+			if (error) {
+				return console.error(error);
+			}
+			updateRarity(adventurer.tokenID);
+		}); 
 	};
+
 
 	let handleSubmitAllowance = (event)=> {
 		event.preventDefault();
-		getUSDCallowance(provider).then(() => updateRarity(adventurer.tokenID));
+		getUSDCallowance(provider,({error, data}) => {
+			if (error) {
+				return console.error(error);
+			}
+			updateRarity(adventurer.tokenID);
+		});
 	};
 	
 	const	canLevelUp = adventurer.xp >= (xpRequired(adventurer.level));
