@@ -1,6 +1,4 @@
 node_modules
-contracts/artifacts
-artifacts
 cache
 secrets.json
 mergedSources
