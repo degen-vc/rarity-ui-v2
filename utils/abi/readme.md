@@ -1,4 +1,4 @@
-# Rarity Extended
+# Scarcity Gameverse
 
 ## Description
 The ABI folder contains the JS version of the rarity ABI which will be used by the RE UI.  

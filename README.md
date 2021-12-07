@@ -1,4 +1,4 @@
-# Rarity Extended
+# Scarcity Gameverse
 
 An On-Chain Adventure.  
 Our goal is to make the user experience very straightforward and easy while giving a nostalgic old feeling from the good old days of RPGs.

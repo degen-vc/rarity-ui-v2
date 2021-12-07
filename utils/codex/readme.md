@@ -1,7 +1,7 @@
-# Rarity Extended
+# Scarcity Gameverse
 
 ## Description
-The Codex folder contains a number of files that are used to generate the Rarity Extended "database".  
+The Codex folder contains a number of files that are used to generate the Scarcity Gameverse "database".  
 It contains the references for each element that will need some personalization on the UI side.  
 This could be for the Items, the Skills, the adventurer, the news, etc.
 

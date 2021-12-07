@@ -193,8 +193,8 @@ function FlyoutMenu() {
 												</div>
 												<div className={'ml-4'}>
 													<span className={'text-xs cursor-pointer uppercase'}>
-														<span className={'hidden md:inline cursor-pointer'}>{'BANK'}</span>
-														<span className={'inline md:hidden cursor-pointer'}>{'BANK'}</span>
+														<span className={'hidden md:inline cursor-pointer'}>{'LAUNCH'}</span>
+														<span className={'inline md:hidden cursor-pointer'}>{'LAUNCH'}</span>
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>

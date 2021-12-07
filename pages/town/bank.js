@@ -17,7 +17,7 @@ import	{fetcher}						from	'utils';
 import	{apeInVault, apeOutVault, depositInVault, withdrawFromVault}					from	'utils/actions';
 
 
-const bankImplemented = process.env.NETWORK === 'ftm';	// Remove this flag once implemented in Polygon!
+const bankImplemented = true;	// Remove this flag once implemented in Polygon!
 
 function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError, isDeposit}) {
 	const	[nonce, set_nonce] = useState(0);
@@ -37,7 +37,7 @@ function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError,
 						{'THE'}
 					</Typer>&nbsp;
 					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-						{'BANK'}
+						{'LAUNCH'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
 						{' IS NOT YET OPEN, BUT YOU CAN COME AND HAVE A DRINK IN MY TAVERN IN THE MEAN TIME!'}
@@ -183,46 +183,46 @@ function	Index({router}) {
 	const	[hasDepositError, set_hasDepositError] = useState(false);
 
 
-	useEffect(() => {
-		if (provider && address && bankImplemented) {
-			provider.getBalance(address).then(b => set_ftmBalance(ethers.utils.formatEther(b)));
-			const	DAI_CONTRACT = new ethers.Contract(
-				process.env.DAI_TOKEN_ADDR, [
-					'function balanceOf(address) view returns (uint256)',
-				],
-				provider
-			);
-			const	THE_FANTOM_VAULT_CONTRACT = new ethers.Contract(
-				process.env.FTM_VAULT_ADDR, [
-					'function balanceOf(address) view returns (uint256)',
-					'function pricePerShare() view returns (uint256)',
-				],
-				provider
-			);
-			const	DAI_HARD_VAULT_CONTRACT = new ethers.Contract(
-				process.env.DAI_VAULT_ADDR, [
-					'function balanceOf(address) view returns (uint256)',
-					'function pricePerShare() view returns (uint256)',
-				],
-				provider
-			);
-			DAI_CONTRACT.balanceOf(address).then(b => set_daiBalance(ethers.utils.formatEther(b)));
-			Promise.all([
-				DAI_HARD_VAULT_CONTRACT.balanceOf(address),
-				DAI_HARD_VAULT_CONTRACT.pricePerShare()
-			]).then(([_balance, _share]) => {
-				set_daiShareRaw(_balance);
-				set_daiShare((ethers.utils.formatEther(_balance) * ethers.utils.formatEther(_share)).toString());
-			});
-			Promise.all([
-				THE_FANTOM_VAULT_CONTRACT.balanceOf(address),
-				THE_FANTOM_VAULT_CONTRACT.pricePerShare()
-			]).then(([_balance, _share]) => {
-				set_ftmShareRaw(_balance);
-				set_ftmShare((ethers.utils.formatEther(_balance) * ethers.utils.formatEther(_share)).toString());
-			});
-		}
-	}, [address, provider, nonce]);
+	// useEffect(() => {
+	// 	if (provider && address && bankImplemented) {
+	// 		provider.getBalance(address).then(b => set_ftmBalance(ethers.utils.formatEther(b)));
+	// 		const	DAI_CONTRACT = new ethers.Contract(
+	// 			process.env.DAI_TOKEN_ADDR, [
+	// 				'function balanceOf(address) view returns (uint256)',
+	// 			],
+	// 			provider
+	// 		);
+	// 		const	THE_FANTOM_VAULT_CONTRACT = new ethers.Contract(
+	// 			process.env.FTM_VAULT_ADDR, [
+	// 				'function balanceOf(address) view returns (uint256)',
+	// 				'function pricePerShare() view returns (uint256)',
+	// 			],
+	// 			provider
+	// 		);
+	// 		const	DAI_HARD_VAULT_CONTRACT = new ethers.Contract(
+	// 			process.env.DAI_VAULT_ADDR, [
+	// 				'function balanceOf(address) view returns (uint256)',
+	// 				'function pricePerShare() view returns (uint256)',
+	// 			],
+	// 			provider
+	// 		);
+	// 		DAI_CONTRACT.balanceOf(address).then(b => set_daiBalance(ethers.utils.formatEther(b)));
+	// 		Promise.all([
+	// 			DAI_HARD_VAULT_CONTRACT.balanceOf(address),
+	// 			DAI_HARD_VAULT_CONTRACT.pricePerShare()
+	// 		]).then(([_balance, _share]) => {
+	// 			set_daiShareRaw(_balance);
+	// 			set_daiShare((ethers.utils.formatEther(_balance) * ethers.utils.formatEther(_share)).toString());
+	// 		});
+	// 		Promise.all([
+	// 			THE_FANTOM_VAULT_CONTRACT.balanceOf(address),
+	// 			THE_FANTOM_VAULT_CONTRACT.pricePerShare()
+	// 		]).then(([_balance, _share]) => {
+	// 			set_ftmShareRaw(_balance);
+	// 			set_ftmShare((ethers.utils.formatEther(_balance) * ethers.utils.formatEther(_share)).toString());
+	// 		});
+	// 	}
+	// }, [address, provider, nonce]);
 
 	useEffect(() => {
 		set_isTxPending(false);
