@@ -19,9 +19,14 @@ import	Navbar							from	'components/Navbar';
 import	Footer							from	'components/Footer';
 import	SectionNoWallet					from	'sections/SectionNoWallet';
 import	useWindowInFocus				from	'hook/useWindowInFocus';
+import {ChainId, DAppProvider} from '@usedapp/core';
+import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+
+
 
 import	'tailwindcss/tailwind.css';
 import	'style/Default.css';
+
 
 function	GameWrapper({Component, pageProps, element, router}) {
 	const	{switchChain, active, chainID} = useWeb3();
@@ -134,6 +139,21 @@ const getLibrary = (provider) => {
 	return new ethers.providers.Web3Provider(provider, 'any');
 };
 
+const client = new ApolloClient({
+  uri: '', //https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity
+  cache: new InMemoryCache()
+})
+
+const config = {
+	readOnlyChain : [ChainId.Fantom],
+	readOnluUrls:{
+		[ChainId.Fantom]: 'https://api.polygonscan.com/api'
+	},
+	multicallAddresses: {
+		1337: '0x557fD25F9169247000F9D866704b4Bc12680CE5f'
+	}
+};
+
 function	MyApp(props) {
 	const	{Component, pageProps} = props;
 
@@ -142,11 +162,15 @@ function	MyApp(props) {
 			<Web3ReactProvider getLibrary={getLibrary}>
 				<Web3ContextApp>
 					<RarityContextApp>
-						<AppWrapper
-							Component={Component}
-							pageProps={pageProps}
-							element={props.element}
-							router={props.router} />
+						<ApolloProvider client={client}>
+							<DAppProvider config={config}>
+								<AppWrapper
+									Component={Component}
+									pageProps={pageProps}
+									element={props.element}
+									router={props.router} />
+							</DAppProvider>
+						</ApolloProvider>
 					</RarityContextApp>
 				</Web3ContextApp>
 			</Web3ReactProvider>

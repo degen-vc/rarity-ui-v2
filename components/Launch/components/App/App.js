@@ -1,7 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { Button, Container, Navbar, Row, Col } from 'react-bootstrap'
 import { Connected } from '../Connected'
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 
 export default function Mead(){
@@ -11,15 +11,15 @@ export default function Mead(){
         <div className="App" style={{color : "#ffffff", backgroundColor: "#000000"}}>
             <Navbar bg="dark">
                 <Navbar.Brand style={{color : "#ffffff"}}>
-                <Link to='/'>
+                {/* <Link to='/'>
                     &nbsp;&nbsp;Rarity Summoner's Rare Skins&nbsp;&nbsp;
 
-                </Link>
+                </Link> */}
                 </Navbar.Brand>
                 <Navbar.Brand style={{color : "#ffffff"}}>
-                    <Link to='/mead'>
+                    {/* <Link to='/mead'>
                         MEAD
-                    </Link>
+                    </Link> */}
                 </Navbar.Brand>
             </Navbar>
             <Container style={{color : "#ffffff", backgroundColor: "#000000"}}>

@@ -9,7 +9,7 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
-import Mead from './components/Mead.js'
+import Mead from './components/Mead.js';
 
 const client = new ApolloClient({
   uri: '', //https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity

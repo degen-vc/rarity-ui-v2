@@ -17,7 +17,7 @@ function	Footer() {
 				{`Switch to ${theme === 'light' || theme === 'light-initial' ? 'dark' : 'light'} mode`}
 			</div>
 			<div>
-				{'Made with 💙 by the 🕹 community'}
+				{'Github | Twitter | Discord | Original Code | Docs | OpenSea'}
 			</div>
 		</div>
 	);

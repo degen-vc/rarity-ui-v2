@@ -55,7 +55,7 @@ export function Connected({account}){
             <Stack direction="horizontal">
                 <div>I want&nbsp;</div>
                 <div>
-                    <Form.Control size="sm" type="number" value={amount} min={0} onChange={e => setAmount(e.target.value)}/>
+                    <Form.Control size="sm" type="number" value={amount} min={0} onChange={e => setAmount(e.target.value)} style={{backgroundColor: 'black'}}/>
                 </div>
                 <div>&nbsp;new skins&nbsp;</div>
                 <div>

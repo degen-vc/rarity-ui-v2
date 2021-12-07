@@ -16,9 +16,9 @@ export default function Assigner({managerAddress}){
     return(<>
         Assign any NFT as skin<br/>
         <div style={{display: "inline-block"}}>
-            <Form.Control size="sm" type="number" placeholder="summoner id" value={summonerId !== 0 ? summonerId : undefined} onChange={e => setSummonerId(e.target.value)}/>
-            <Form.Control size="sm" placeholder="NFT contract address" value={address !== '' ? address : undefined} onChange={e => setAddress(e.target.value)}/>
-            <Form.Control size="sm" type="number" placeholder="NFT token id" value={tokenId !== 0 ? tokenId : undefined} onChange={e => setTokenId(e.target.value)}/>
+            <Form.Control style={{backgroundColor: 'black'}} size="sm" type="number" placeholder="summoner id" value={summonerId !== 0 ? summonerId : undefined} onChange={e => setSummonerId(e.target.value)}/>
+            <Form.Control style={{backgroundColor: 'black'}} size="sm" placeholder="NFT contract address" value={address !== '' ? address : undefined} onChange={e => setAddress(e.target.value)}/>
+            <Form.Control style={{backgroundColor: 'black'}} size="sm" type="number" placeholder="NFT token id" value={tokenId !== 0 ? tokenId : undefined} onChange={e => setTokenId(e.target.value)}/>
             <Button onClick={()=>{
                 assign.send(address,tokenId,summonerId)
             }}>Assign</Button>

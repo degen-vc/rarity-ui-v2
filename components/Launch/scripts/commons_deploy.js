@@ -52,5 +52,5 @@ async function sendContrFunc(stuffToDo, from, value){
 
 async function deployContract(json, from, web3, args){
     let contract = await new web3.eth.Contract(json.abi)
-    return await sendContrFunc(contract.deploy({data:json.bytecode, arguments: args}), from)
+    return await sendContrFunc(contract.deploy({data:json.bytecode, arguments: args}), from);
 }

@@ -1,4 +1,4 @@
-import { useContractCall, useContractFunction } from "@usedapp/core"
+import {useContractCall, useContractFunction} from '@usedapp/core';
 import { ethers } from "ethers"
 import * as addresses from "../addresses.json"
 import * as summonerSkinsJson from "../artifacts/contracts/SummonerSkins.sol/SummonerSkins.json"
@@ -8,7 +8,8 @@ import { Card, Button, Stack, Form } from "react-bootstrap"
 import { useState } from "react"
 
 export default function Skin({account, index, managerAddress, type}){
-    const skinAddress = type === "common" ? addresses.commonSkins : addresses.summonerSkins
+    const skinAddress = type === "common" ? addresses.commonSkins : addresses.summonerSkins;
+    console.log('skinAddress - ', skinAddress);
     const skinsABI = JSON.stringify(summonerSkinsJson.abi)
     const skinsInterface = new ethers.utils.Interface(skinsABI)
     const skinId = useContractCall({abi : skinsInterface, address: skinAddress, method: "tokenOfOwnerByIndex", args: [account,index.toString()]})
@@ -58,7 +59,7 @@ function _Skin({id,managerAddress, type}){
                         </Card.Text>}
                         {!skinClass && <Loading/>}
                         <Stack direction="horizontal">
-                            <Form.Control size="sm" type="number" placeholder="summoner id" value=
+                            <Form.Control style={{backgroundColor: 'black'}} size="sm" type="number" placeholder="summoner id" value=
                             {summonerId === 0 ? undefined : summonerId} 
                                 onChange={e => setSummonerId(e.target.value)}/>
                             <Button size="sm" onClick={()=>{

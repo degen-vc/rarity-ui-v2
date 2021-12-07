@@ -51,7 +51,7 @@ function	SectionNoWallet() {
 				<div className={'flex flex-col md:flex-row items-center md:items-center mb-8 md:mb-8'}>
 					<div className={'w-auto md:w-64 mr-0 md:mr-16'} style={{minWidth: 256}}>
 						<Image
-							src={theme === 'light' ? '/avatar/facu.gif' : '/avatar/facu.png'}
+							src={theme === 'light' ? '/avatar/facu.png' : '/avatar/facu.png'}
 							loading={'eager'}
 							quality={100}
 							width={256}

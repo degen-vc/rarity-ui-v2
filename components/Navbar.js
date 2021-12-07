@@ -48,7 +48,7 @@ function	Navbar({router}) {
 			<div className={'items-center justify-start flex flex-row whitespace-normal md:whitespace-nowrap text-lg'}>
 				<div className={'w-full'}>
 					<Link href={'/'}>
-						<p className={'block md:hidden'}>{'RE'}</p>
+						<p className={'block md:hidden'}>{'SG'}</p>
 					</Link>
 					<Link href={'/'}>
 						<p className={'hidden md:block'}>{'Scarcity Gameverse'}</p>
