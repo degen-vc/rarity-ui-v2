@@ -21,7 +21,7 @@ import App from 'components/Launch/components/App/App';
 
 
 
-const bankImplemented = true;	// Remove this flag once implemented in Polygon!
+const bankImplemented = false;	// Remove this flag once implemented in Polygon!
 
 function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError, isDeposit}) {
 	const	[nonce, set_nonce] = useState(0);
@@ -44,7 +44,7 @@ function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError,
 						{'LAUNCH'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
-						{' IS NOT YET OPEN, BUT YOU CAN COME AND HAVE A DRINK IN MY TAVERN IN THE MEAN TIME!'}
+						{' IS NOT YET OPEN, Bazifra, will soon host the launch party in our tavern. In the meantime feel free to explore the Cellar for crafting materials.'}
 					</Typer>
 				</>
 			);

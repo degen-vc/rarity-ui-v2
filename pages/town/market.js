@@ -19,14 +19,8 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{'THE'}
+					{'Welcome to Scarcity. I´m Vigo the Innkeeper. Bazifra my daughter will soon host the launch party in our tavern. In the meantime feel free to explore the Cellar for crafting materials.'}
 				</Typer>&nbsp;
-				<span className={'text-tag-info'}><Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 1}>
-					{'MARKET'}
-				</Typer></span>
-				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 2}>
-					{' IS NOT YET OPEN, BUT YOU CAN COME AND HAVE A DRINK IN MY TAVERN IN THE MEAN TIME!'}
-				</Typer>
 			</>
 		);
 	};

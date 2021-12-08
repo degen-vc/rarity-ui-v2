@@ -67,7 +67,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 						{'WELCOME, ADVENTURER! I AM'}
 					</Typer>&nbsp;
 					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-						{'FACU THE TAVERN KEEPER'}
+						{'VIGO THE TAVERN KEEPER'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
 						{'!'}
@@ -97,7 +97,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 						{'WELCOME, ADVENTURER! I AM'}
 					</Typer>&nbsp;
 					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-						{'FACU THE TAVERN KEEPER'}
+						{'VIGO THE TAVERN KEEPER'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
 						{'!'}
@@ -135,7 +135,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 							{'WELCOME, ADVENTURER! I AM'}
 						</Typer>&nbsp;
 						<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-							{'FACU THE TAVERN KEEPER'}
+							{'VIGO THE TAVERN KEEPER'}
 						</Typer></span>
 						<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
 							{'!'}
