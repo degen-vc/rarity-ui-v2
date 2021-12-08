@@ -48,10 +48,10 @@ function	DialogChoices({router, adventurersCount}) {
 							label: (
 								<>
 									{'FIGHT THE RAT WITH '}
-									<span className={'text-tag-info'}>{`${currentAdventurer.tokenID}, ${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer.level}`}</span>
+									<span className={'text-tag-info'}>{`${currentAdventurer?.tokenID}, ${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer?.level}`}</span>
 								</>
 							),
-							onClick: () => router.push(`/dungeons/the-cellar?adventurer=${currentAdventurer.tokenID}`)
+							onClick: () => router.push(`/dungeons/the-cellar?adventurer=${currentAdventurer?.tokenID}`)
 						},
 						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
 						{label: 'CANCEL', onClick: () => router.push('/town/quest')},
@@ -68,26 +68,26 @@ function	DialogChoices({router, adventurersCount}) {
 					options={[
 						{
 							label: (
-								currentAdventurer.level < 2 ?
+								currentAdventurer?.level < 2 ?
 									<>
 										{'YOU CANNOT EXPLORE THE FOREST WITH '}
-										<span className={'text-tag-info'}>{`${currentAdventurer.tokenID}, ${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer.level}`}</span>
+										<span className={'text-tag-info'}>{`${currentAdventurer?.tokenID}, ${CLASSES[currentAdventurer?.class]?.name} LVL ${currentAdventurer?.level}`}</span>
 									</>
 									:
-									currentAdventurer.level >= 2 && currentAdventurer?.dungeons?.forest?.canAdventure ?
+									currentAdventurer?.level >= 2 && currentAdventurer?.dungeons?.forest?.canAdventure ?
 										<>
 											{'EXPLORE THE FOREST WITH '}
-											<span className={'text-tag-info'}>{`${currentAdventurer.tokenID}, ${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer.level}`}</span>
+											<span className={'text-tag-info'}>{`${currentAdventurer?.tokenID}, ${CLASSES[currentAdventurer?.class]?.name} LVL ${currentAdventurer?.level}`}</span>
 										</>
 										:
 										<>
 											{'YOU ARE ALREADY IN THE FOREST WITH '}
-											<span className={'text-tag-info'}>{`${currentAdventurer.tokenID}, ${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer.level}`}</span>
+											<span className={'text-tag-info'}>{`${currentAdventurer?.tokenID}, ${CLASSES[currentAdventurer?.class]?.name} LVL ${currentAdventurer?.level}`}</span>
 										</>
 							),
 							onClick: () => {
-								if (currentAdventurer.level >= 2 && currentAdventurer?.dungeons?.forest?.canAdventure)
-									router.push(`/dungeons/the-forest?adventurer=${currentAdventurer.tokenID}`);
+								if (currentAdventurer?.level >= 2 && currentAdventurer?.dungeons?.forest?.canAdventure)
+									router.push(`/dungeons/the-forest?adventurer=${currentAdventurer?.tokenID}`);
 								else
 									openCurrentAventurerModal();
 							}
