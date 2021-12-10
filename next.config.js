@@ -87,13 +87,21 @@ const networkVars = {
 };
 
 module.exports = ({
+	// images: {
+	// 	domains: ["localhost"],
+	// 	// next line is not required
+	// 	path: 'http://localhost:3000/images'
+	// },
+	eslint: {
+		ignoreDuringBuilds: true,
+	},
 	plugins: [
 		new Dotenv()
 	],
 	env: {
-		...networkVars[process.env.NETWORK],
+		...networkVars['polygon'],
 
-		NETWORK: process.env.NETWORK,
+		NETWORK: 'polygon',
 		WEBSITE_URI: process.env.WEBSITE_URI || 'https://adventure.major.tax/',
 		
 		RARITY_CRAFTING_ID: '1758709',
