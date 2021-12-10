@@ -50,6 +50,16 @@ async function	fetchAdventurer(calls) {
 	return (callResult);
 }
 
+async function checkNamePrice() {
+
+
+	const namesContract = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
+
+	const [buyTokenPrice] = await fetchAdventurer([namesContract.buyTokenPrice()]);
+	console.log(` USDC allowance - ${buyTokenPrice}`);
+	// return `${buyTokenPrice}`;
+}
+
 async function checkUSDCallowance(address) {
 
 
@@ -117,7 +127,7 @@ async function getUSDCallowance(provider, callback) {
 	);
 
 	try {
-		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, 10000);
+		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, 30000000);
 	} catch (error) {
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
@@ -126,7 +136,7 @@ async function getUSDCallowance(provider, callback) {
 	}
 
 	try {
-		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, 10000);
+		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, 30000000);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status == 1) {
 			callback({error: false, data: 'id'});
@@ -185,7 +195,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 	// const	{provider2, chainID} = useWeb3();
 	const	{active, address, chainID, provider2} = useWeb3();
 
-	checkUSDCallowance(address).then(data => setAllawance(data));;
+	checkUSDCallowance(address).then(data => setAllawance(data));
 	
 
 	const [input, setInput] = useState('');
@@ -261,8 +271,8 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
 				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.name ? 'GOLD:' : 'GET NAME:'}</div>
-				<form className={adventurer.name ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= 10000 ? handleSubmit : handleSubmitAllowance}>
-					{adventurer.usdcAllw >= 10000 ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button style={{textDecoration: 'underline'}}>Allow USDC use</button>)}
+				<form className={adventurer.name ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= 30000000 ? handleSubmit : handleSubmitAllowance}>
+					{adventurer.usdcAllw >= 30000000 ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button style={{textDecoration: 'underline'}}>Allow USDC use</button>)}
 					
 				</form>
 				<div className={adventurer.name ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
