@@ -22,7 +22,7 @@ function	Footer() {
 				<a href="https://discord.gg/fhnPcvcVfS/" target="_blank" rel="noopener noreferrer">{'Discord'} </a> { ' | '}
 				<a href="https://rarityextended.com/" target="_blank" rel="noopener noreferrer">{'Original Code'} </a> { ' | '}
 				<a href="https://app.gitbook.com/o/-MVGjemxCzrp7IdJWoKZ/s/-MkB1FSHs8bnQOsrf_a4/" target="_blank" rel="noopener noreferrer">{'Docs'} </a> { ' | '}
-				<a href="https://opensea.io/collection/wrapped-scarcity-manifested" target="_blank" rel="noopener noreferrer">{'OpenSea'} </a> 
+				<a href="https://opensea.io/collection/scarcity-adventurers" target="_blank" rel="noopener noreferrer">{'OpenSea'} </a> 
 			</div>
 		</div>
 	);
