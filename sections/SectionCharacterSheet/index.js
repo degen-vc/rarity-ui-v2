@@ -56,8 +56,8 @@ async function checkNamePrice() {
 	const namesContract = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
 
 	const [buyTokenPrice] = await fetchAdventurer([namesContract.buyTokenPrice()]);
-	console.log(` USDC allowance - ${buyTokenPrice}`);
-	// return `${buyTokenPrice}`;
+	console.log(`buyTokenPrice - ${buyTokenPrice}`);
+	return +`${buyTokenPrice}`;
 }
 
 async function checkUSDCallowance(address) {
@@ -67,7 +67,7 @@ async function checkUSDCallowance(address) {
 
 	const [allowance] = await fetchAdventurer([usdc.allowance(address, process.env.RARITY_NAMES_ADDR)]);
 	console.log(` USDC allowance - ${allowance}`);
-	// return allowance;
+	return +`${allowance}`;
 }
 
 async function claimName(name, id, active, address, chainID, provider, callback) {
@@ -115,7 +115,7 @@ async function claimName(name, id, active, address, chainID, provider, callback)
 	// console.log(`${rarityName}`);
 }
 
-async function getUSDCallowance(provider, callback) {
+async function getUSDCallowance(provider, amount, callback) {
 	const	_toast = toast.loading('Approving USDC use');
 
 	const signer = provider.getSigner();
@@ -127,7 +127,7 @@ async function getUSDCallowance(provider, callback) {
 	);
 
 	try {
-		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, 30000000);
+		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, amount);
 	} catch (error) {
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
@@ -136,7 +136,7 @@ async function getUSDCallowance(provider, callback) {
 	}
 
 	try {
-		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, 30000000);
+		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, amount);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status == 1) {
 			callback({error: false, data: 'id'});
@@ -196,10 +196,14 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 	const	{active, address, chainID, provider2} = useWeb3();
 
 	checkUSDCallowance(address).then(data => setAllawance(data));
+	checkNamePrice().then(data => setNamePrice(data));
+	const [namePrice, setNamePrice] = useState(0);
 	
 
 	const [input, setInput] = useState('');
 	const [allowance, setAllawance] = useState(0);
+
+	console.log(allowance, namePrice);
 
 	// checkUSDCallowance(active, address, chainID, provider).then(data => {
 	// 	setAllawance(data);
@@ -239,7 +243,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 
 	let handleSubmitAllowance = (event)=> {
 		event.preventDefault();
-		getUSDCallowance(provider,({error, data}) => {
+		getUSDCallowance(provider, namePrice,({error, data}) => {
 			if (error) {
 				return console.error(error);
 			}
@@ -271,8 +275,8 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
 				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.name ? 'GOLD:' : 'GET NAME:'}</div>
-				<form className={adventurer.name ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= 30000000 ? handleSubmit : handleSubmitAllowance}>
-					{adventurer.usdcAllw >= 30000000 ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button style={{textDecoration: 'underline'}}>Allow USDC use</button>)}
+				<form className={adventurer.name ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= namePrice ? handleSubmit : handleSubmitAllowance}>
+					{adventurer.usdcAllw >= namePrice ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button style={{textDecoration: 'underline'}}>Allow USDC use</button>)}
 					
 				</form>
 				<div className={adventurer.name ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
