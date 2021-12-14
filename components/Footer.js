@@ -20,8 +20,8 @@ function	Footer() {
 				<a href="https://github.com/degen-vc/scarcity" target="_blank" rel="noopener noreferrer">{'Github'} </a> { ' | '}
 				<a href="https://twitter.com/scarcitygold/" target="_blank" rel="noopener noreferrer">{'Twitter'} </a> { ' | '}
 				<a href="https://discord.gg/fhnPcvcVfS/" target="_blank" rel="noopener noreferrer">{'Discord'} </a> { ' | '}
-				<a href="https://rarityextended.com/" target="_blank" rel="noopener noreferrer">{'Original Code'} </a> { ' | '}
-				<a href="https://app.gitbook.com/o/-MVGjemxCzrp7IdJWoKZ/s/-MkB1FSHs8bnQOsrf_a4/" target="_blank" rel="noopener noreferrer">{'Docs'} </a> { ' | '}
+				<a href="https://github.com/Rarity-Extended/RarityExtended" target="_blank" rel="noopener noreferrer">{'Original Code'} </a> { ' | '}
+				<a href="https://degen-vc.gitbook.io/scarcity/" target="_blank" rel="noopener noreferrer">{'Docs'} </a> { ' | '}
 				<a href="https://opensea.io/collection/scarcity-adventurers" target="_blank" rel="noopener noreferrer">{'OpenSea'} </a> 
 			</div>
 		</div>
