@@ -353,7 +353,7 @@ export const RarityContextApp = ({children}) => {
 		});
 		sharedCalls().then(result => prepareSharedInventory(result[0]));
 
-		console.log(`chunkedCallResult - `, chunkedCallResult);
+		console.log(`chunkedinventoryCallResult - `, chunkedinventoryCallResult);
 
 
 		set_loaded(true);
