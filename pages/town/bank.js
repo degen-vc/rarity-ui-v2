@@ -21,7 +21,7 @@ import App from 'components/Launch/components/App/App';
 
 
 
-const bankImplemented = false;	// Remove this flag once implemented in Polygon!
+const bankImplemented = true;	// Remove this flag once implemented in Polygon!
 
 function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError, isDeposit}) {
 	const	[nonce, set_nonce] = useState(0);
