@@ -127,7 +127,7 @@ async function getUSDCallowance(provider, amount, callback) {
 	);
 
 	try {
-		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, amount);
+		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, amount * 100);
 	} catch (error) {
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
@@ -136,7 +136,7 @@ async function getUSDCallowance(provider, amount, callback) {
 	}
 
 	try {
-		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, amount);
+		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, amount * 100);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status == 1) {
 			callback({error: false, data: 'id'});
