@@ -8,7 +8,7 @@
     "open-browser": "open http://localhost:3000",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
-    "start": "next start",
+    "start": "next build && next start",
     "export": "next export",
     "lint": "eslint . --ext .js",
     "lintfix": "eslint . --ext .js --fix"
