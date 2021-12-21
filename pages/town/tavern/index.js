@@ -64,17 +64,17 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			return (
 				<>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-						{'WELCOME, ADVENTURER! I AM'}
+						{'WELCOME, ADVENTURER! I AM '}
 					</Typer>&nbsp;
 					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-						{'VIGO THE TAVERN KEEPER'}
+						{'VIGO'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
-						{'!'}
+						{', THE INN KEEPER.'}
 					</Typer>&nbsp;
 					<div />
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
-						{'PERHAPS YOU SHOULD CONSIDER CONNECTING YOUR WALLET?'}
+						{'CONNECT YOUR WALLET TO ENTER THE SCARCITY GAMEVERSE.'}
 					</Typer>
 				</>
 			);

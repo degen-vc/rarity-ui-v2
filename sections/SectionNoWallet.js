@@ -19,17 +19,17 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{'WELCOME, ADVENTURER! I AM'}
+					{'WELCOME, ADVENTURER! I AM '}
 				</Typer>&nbsp;
 				<span className={'text-tag-info'}><Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 1}>
 					{'VIGO'}
 				</Typer></span>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 2}>
-					{', THE TAVERN KEEPER.'}
+					{', THE INN KEEPER.'}
 				</Typer>&nbsp;
 				<div />
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 3}>
-					{'PERHAPS YOU SHOULD CONSIDER CONNECTING YOUR WALLET ?'}
+					{'CONNECT YOUR WALLET TO ENTER THE SCARCITY GAMEVERSE.'}
 				</Typer>
 			</>
 		);
