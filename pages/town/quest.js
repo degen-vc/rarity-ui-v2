@@ -187,35 +187,35 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 			if (hadTheCellarMessage) {
 				return (
 					<>
-						{'YES. THE BIG UGLY RAT. '}
-						<span className={'text-tag-info'}>{'VIGO'}</span>
-						{' THE TAVERN KEEPER NEED SOME HELP WITH THIS. REPULSIVE STUFF. IF YOU CAN '}
-						<span className={'text-tag-info'}>{'DODGE AND HIT HARD'}</span>
-						{', YOU SHOULD GO.'}&nbsp;
+						{'UNIMAGINABLE QUESTS AND ADVENTURES ARE COMING. '}
+						{/* <span className={'text-tag-info'}>{'VIGO'}</span> */}
+						{' BUT YOU NEED TO PREPARE! '}
+						{/* <span className={'text-tag-info'}>{'DODGE AND HIT HARD'}</span> */}
+						{' DEFEAT THE GIANT RAT TO GET THE RESOURCES HE PROTECTS!'}&nbsp;
 					</>	
 				);
 			}
 			return (
 				<>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-						{'YES. THE BIG UGLY RAT. '}
+						{'UNIMAGINABLE QUESTS AND ADVENTURES ARE COMING. '}
 					</Typer>
-					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
+					{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 						{'VIGO'}
-					</Typer></span>
+					</Typer></span> */}
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
-						{' THE TAVERN KEEPER NEED SOME HELP WITH THIS. REPULSIVE STUFF. IF YOU CAN '}
+						{' BUT YOU NEED TO PREPARE! '}
 					</Typer>
-					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
+					{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
 						{'DODGE AND HIT HARD'}
-					</Typer></span>
+					</Typer></span> */}
 					<Typer
 						shouldStart={npcTextIndex === 4}
 						onDone={() => {
 							set_npcTextIndex(i => i + 1);
 							set_hadTheCellarMessage(true);
 						}}>
-						{', YOU SHOULD GO.'}
+						{' DEFEAT THE GIANT RAT TO GET THE RESOURCES HE PROTECTS!'}
 					</Typer>&nbsp;
 				</>
 			);
@@ -260,11 +260,11 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 		if (hadInitialMessage) {
 			return (
 				<>
-					{'HELLO, I AM '}
-					<span className={'text-tag-info'}>{'LARA'}</span>
-					{' FROM THE '}
-					<span className={'text-tag-info'}>{'QUEST OFFICE'}</span>
-					{'. WE HAVE A LOT OF WORK TO DO. SELECT YOUR TASK AND GO !'}
+					{'MY INN AND TAVERN ARE A REFUGE AND MAELSTROM FOR ADVENTURERS. '}
+					{/* <span className={'text-tag-info'}>{'LARA'}</span> */}
+					{' BUT QUESTS AWAIT. '}
+					{/* <span className={'text-tag-info'}>{'QUEST OFFICE'}</span> */}
+					{' DO WHAT YOU WERE BORN TO DO! GO! '}
 					&nbsp;
 				</>	
 			);
@@ -272,24 +272,24 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 		return (
 			<>
 				<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-					{'HELLO, I AM '}
+					{'MY INN AND TAVERN ARE A REFUGE AND MAELSTROM FOR ADVENTURERS. '}
 				</Typer>
-				<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
+				{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 					{'LARA'}
-				</Typer></span>
+				</Typer></span> */}
 				<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
-					{' FROM THE '}
+					{' BUT QUESTS AWAIT. '}
 				</Typer>
-				<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
+				{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
 					{'QUEST OFFICE'}
-				</Typer></span>
+				</Typer></span> */}
 				<Typer
 					shouldStart={npcTextIndex === 4}
 					onDone={() => {
 						set_npcTextIndex(i => i + 1);
 						set_hadInitialMessage(true);
 					}}>
-					{'. WE HAVE A LOT OF WORK TO DO. SELECT YOUR TASK AND GO !'}
+					{' DO WHAT YOU WERE BORN TO DO! GO!'}
 				</Typer>&nbsp;
 			</>
 		);
@@ -312,7 +312,7 @@ function	Index({rarities, router}) {
 				<div className={'flex flex-col md:flex-row items-center mb-8 md:mb-8'}>
 					<div className={'w-auto md:w-64 mr-0 md:mr-0'} style={{minWidth: 256}}>
 						<Image
-							src={theme === 'light' ? '/avatar/lara.gif' : '/avatar/lara.png'}
+							src={'/avatar/facu.png'}
 							loading={'eager'}
 							quality={100}
 							width={256}

@@ -141,7 +141,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 			nonce={dialogNonce}
 			options={[
 				{label: 'WELCOME', onClick: () => router.push('/town/blacksmith')},
-				{label: 'Access the Workshop', onClick: () => router.push('/town/blacksmith?tab=workshop')},
+				{label: 'Start crafting', onClick: () => router.push('/town/blacksmith?tab=workshop')},
 				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Upgrade an Artifact', onClick: () => router.push('/town/blacksmith?tab=upgrade')},
 				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Restore an Artifact', onClick: () => router.push('/town/blacksmith?tab=restore')},
 			].filter(o => Boolean(o))} />
@@ -472,27 +472,27 @@ function	NCPHeadline({router, approveStatus, adventurerCanCraft, adventurerHasXp
 		if (hadInitialMessage) {
 			return (
 				<>
-					{'WELCOME! I AM '}
-					<span className={'text-tag-info'}>{'CEAZOR THE BLACKSMITH'}</span>
-					{'. MY WORKSHOP IS OPEN FOR BUSINESS. YOU CAN NOW '}
+					{'CRAFT GOODS, ARMOR AND WEAPONS! '}
+					{/* <span className={'text-tag-info'}>{'CEAZOR THE BLACKSMITH'}</span> */}
+					{' YOU CAN ONLY CRAFT THESE ITEMS IF YOU HAVE THE SKILLS AND MATERIALS NEEDED. '}
 					<span className={'text-tag-info'}>{'CRAFT AN ITEM'}</span>
-					{` IF YOU HAVE THE SKILL AND MATERIALS TO PULL IT OFF. DON\'T WORRY I WILL HELP YOU OUT.${forestMessage}`}
+					{`GOOD LUCK!${forestMessage}`}
 				</>		
 			);
 		}
 		return (
 			<>
 				<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-					{'WELCOME! I AM '}
+					{'CRAFT GOODS, ARMOR AND WEAPONS! '}
 				</Typer>
-				<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
+				{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 					{'CEAZOR THE BLACKSMITH'}
-				</Typer></span>
-				<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
-					{'. MY WORKSHOP IS OPEN FOR BUSINESS. YOU CAN NOW '}
+				</Typer></span> */}
+				<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
+					{' YOU CAN ONLY CRAFT THESE ITEMS IF YOU HAVE THE SKILLS AND MATERIALS NEEDED. '}
 				</Typer>
-				<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
-					{'CRAFT AN ITEM'}
+				<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
+					{'GOOD LUCK!'}
 				</Typer></span>
 				<Typer
 					onDone={() => {
@@ -579,7 +579,7 @@ function	Index({rarities, router}) {
 				<div className={'flex flex-col md:flex-row items-center mb-8 md:mb-8'}>
 					<div className={'w-auto md:w-64 mr-0 md:mr-8'} style={{minWidth: 256}}>
 						<Image
-							src={'/avatar/ceazor.gif'}
+							src={'/avatar/facu.png'}
 							loading={'eager'}
 							quality={100}
 							width={256}

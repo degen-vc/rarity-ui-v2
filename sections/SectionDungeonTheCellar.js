@@ -23,7 +23,7 @@ function	SectionDungeonTheCellar({shouldDisplay, adventurers, router, adventurer
 		<div className={'flex flex-col w-full'}>
 			<div className={'pb-10'}>
 				<i className={'text-sx md:text-xs text-black dark:text-white text-opacity-60 leading-6'}>
-					{'Vigo, the Tavern’s owner, has heard some scurrying about down in his cellar. He went down to check it and found swarms of hungry rats. In his earlier days, Vigo the Committer would have squashed those pests, but these days he’s weak and frail. Do you want to help him out? Anything you find you get to keep.'}
+					{''}
 				</i>
 				{adventurersCount !== 0 ? <div className={'mt-6'}>
 					<p className={'text-xs'}>
