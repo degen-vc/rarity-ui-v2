@@ -62,8 +62,8 @@ function FlyoutMenu() {
 									</div>
 								</div>
 								<span className={'text-sm cursor-pointer uppercase'}>
-									<span className={'text-xs hidden md:inline cursor-pointer'}>{'TOWN'}</span>
-									<span className={'text-xs inline md:hidden cursor-pointer'}>{'TOWN'}</span>
+									<span className={'text-xs hidden md:inline cursor-pointer'}>{'WORLD'}</span>
+									<span className={'text-xs inline md:hidden cursor-pointer'}>{'WORLD'}</span>
 								</span>
 							</div>
 							<Popover.Button ref={buttonRef} />
@@ -76,8 +76,8 @@ function FlyoutMenu() {
 									</div>
 								</div>
 								<span className={'text-sm cursor-pointer uppercase'}>
-									<span className={'text-xs hidden md:inline cursor-pointer'}>{'TOWN'}</span>
-									<span className={'text-xs inline md:hidden cursor-pointer'}>{'TOWN'}</span>
+									<span className={'text-xs hidden md:inline cursor-pointer'}>{'WORLD'}</span>
+									<span className={'text-xs inline md:hidden cursor-pointer'}>{'WORLD'}</span>
 								</span>
 							</div>
 							<Popover.Button ref={buttonRef} />
@@ -110,7 +110,7 @@ function FlyoutMenu() {
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Best place to get some news!'}
+															{'Recruit Adventurers. Hear the latest gossip.'}
 														</p>
 													</div>
 												</div>
@@ -127,12 +127,12 @@ function FlyoutMenu() {
 												</div>
 												<div className={'ml-4'}>
 													<span className={'text-xs cursor-pointer uppercase'}>
-														<span className={'hidden md:inline cursor-pointer'}>{'BLACKSMITH'}</span>
-														<span className={'inline md:hidden cursor-pointer'}>{'BLACKSMITH'}</span>
+														<span className={'hidden md:inline cursor-pointer'}>{'CRAFTING'}</span>
+														<span className={'inline md:hidden cursor-pointer'}>{'CRAFTING'}</span>
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Come and craft mighty armors!'}
+															{'Craft the goods, armor and weapons you will need.'}
 														</p>
 													</div>
 												</div>
@@ -149,12 +149,12 @@ function FlyoutMenu() {
 												</div>
 												<div className={'ml-4'}>
 													<span className={'text-xs cursor-pointer uppercase'}>
-														<span className={'hidden md:inline cursor-pointer'}>{'QUEST OFFICE'}</span>
-														<span className={'inline md:hidden cursor-pointer'}>{'QUEST OFFICE'}</span>
+														<span className={'hidden md:inline cursor-pointer'}>{'QUEST'}</span>
+														<span className={'inline md:hidden cursor-pointer'}>{'QUEST'}</span>
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Loot is not guaranteed.'}
+															{' If you are looking for adventure start here.'}
 														</p>
 													</div>
 												</div>
@@ -176,7 +176,7 @@ function FlyoutMenu() {
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Spend all your gold!'}
+															{'Use gold to buy items.'}
 														</p>
 													</div>
 												</div>
@@ -193,12 +193,12 @@ function FlyoutMenu() {
 												</div>
 												<div className={'ml-4'}>
 													<span className={'text-xs cursor-pointer uppercase'}>
-														<span className={'hidden md:inline cursor-pointer'}>{'LAUNCH'}</span>
-														<span className={'inline md:hidden cursor-pointer'}>{'LAUNCH'}</span>
+														<span className={'hidden md:inline cursor-pointer'}>{'LAUNCH PARTY'}</span>
+														<span className={'inline md:hidden cursor-pointer'}>{'LAUNCH PARTY'}</span>
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Trust us with your gold!'}
+															{'The Inn\'s first party.'}
 														</p>
 													</div>
 												</div>
@@ -215,12 +215,12 @@ function FlyoutMenu() {
 												</div>
 												<div className={'ml-4'}>
 													<span className={'text-xs cursor-pointer uppercase'}>
-														<span className={'hidden md:inline cursor-pointer'}>{'GUILD HOUSE'}</span>
-														<span className={'inline md:hidden cursor-pointer'}>{'GUILD HOUSE'}</span>
+														<span className={'hidden md:inline cursor-pointer'}>{'UPKEEP'}</span>
+														<span className={'inline md:hidden cursor-pointer'}>{'UPKEEP'}</span>
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Hustle and bustle!'}
+															{'Keep your Adventurers moving. Abundance awaits!'}
 														</p>
 													</div>
 												</div>

@@ -274,9 +274,9 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 				</div>
 			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
-				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.name ? 'GOLD:' : 'GET NAME:'}</div>
+				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.name ? 'GOLD:' : 'NAME:'}</div>
 				<form className={adventurer.name ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= namePrice ? handleSubmit : handleSubmitAllowance}>
-					{adventurer.usdcAllw >= namePrice ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button style={{textDecoration: 'underline'}}>Allow USDC use</button>)}
+					{adventurer.usdcAllw >= namePrice ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button style={{textDecoration: 'underline'}}>Only named Adventurers can claim gold. Names cost 30 USDC. You must first set attributes and allow USDC</button>)}
 					
 				</form>
 				<div className={adventurer.name ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>

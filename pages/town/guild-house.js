@@ -24,13 +24,13 @@ function	NCPHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_NPCTextIndex(i => i + 1)} shouldStart={NPCTextIndex === 0}>
-					{'HELLO THERE. I AM '}
+					{'REMEMBER TO UPKEEP YOUR ADVENTURES. '}
 				</Typer>
-				<span className={'text-tag-info'}><Typer onDone={() => set_NPCTextIndex(i => i + 1)} shouldStart={NPCTextIndex === 1}>
-					{'JANET'}
-				</Typer></span>
+				<Typer onDone={() => set_NPCTextIndex(i => i + 1)} shouldStart={NPCTextIndex === 1}>
+					{' GREAT CHALLENGES AND QUESTS LAY AHEAD. '}
+				</Typer>
 				<Typer onDone={() => set_NPCTextIndex(i => i + 1)} shouldStart={NPCTextIndex === 2}>
-					{', I\'LL HELP YOU COORDINATE YOUR PARTY OF HEROES. FREE OF CHARGE! THE TOWN PAYS ME. WHAT ARE YOUR COMMANDS.'}
+					{' YOU NEED TO BE READY'}
 				</Typer>
 			</>
 		);
@@ -88,7 +88,7 @@ function	Index({rarities, updateRarity}) {
 				<div className={'flex flex-col md:flex-row items-center mb-8 md:mb-8'}>
 					<div className={'w-auto md:w-64 mr-0 md:mr-8'} style={{minWidth: 256}}>
 						<Image
-							src={'/avatar/janet.gif'}
+							src={'/avatar/facu.png'}
 							loading={'eager'}
 							quality={100}
 							width={256}

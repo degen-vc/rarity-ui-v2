@@ -14,7 +14,7 @@ export default function Assigner({managerAddress}){
     const [address, setAddress] = useState('')
 
     return(<>
-        Assign any NFT as skin<br/>
+        Dress your adventurer for the party<br/>
         <div style={{display: "inline-block"}}>
             <Form.Control style={{backgroundColor: 'black'}} size="sm" type="number" placeholder="summoner id" value={summonerId !== 0 ? summonerId : undefined} onChange={e => setSummonerId(e.target.value)}/>
             <Form.Control style={{backgroundColor: 'black'}} size="sm" placeholder="NFT contract address" value={address !== '' ? address : undefined} onChange={e => setAddress(e.target.value)}/>

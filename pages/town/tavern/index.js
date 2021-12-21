@@ -31,10 +31,10 @@ function	NewsTab({shouldDisplay}) {
 		<div className={'flex flex-col w-full'}>
 			<div className={'pb-10'}>
 				<i className={'text-black dark:text-white text-opacity-60 text-sx md:text-xs leading-4 md:leading-4'}>
-					{'OYE OYE ! FIND THE LATEST NEWS IN OUR AMAZING WORLD IN THE DAILY EXTENDED ! GET READY FOR A BIG ADVENTURE, FROM OUR HUMBLE TOWN TO THE DARK FOREST OF SMUGLEWIND ! NEWS, ANNOUNCES, AND PUBLIC WORKS, EVERYTHING IS IN THE DAILY EXTENDED !'}
+					{'LATEST GOSSIP FROM THE TAVERN'}
 				</i>
 				<div className={'divide-y-2 divide-black dark:divide-white dark:divide-opacity-60'}>
-					{[...TAVERN_NEWS].reverse().map((news, i) => (
+					{[...TAVERN_NEWS].map((news, i) => (
 						<div className={'mt-10 pt-10'} key={i}>
 							<p className={'text-xs md:text-base mb-2 md:mb-0 leading-4 md:leading-6'}>{`> ${news.headline}`}</p>
 							<p className={'text-megaxs md:text-xs leading-4 md:leading-6 text-gray-darker dark:text-white dark:text-opacity-60'}>{news.text}</p>
@@ -83,24 +83,24 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			if (hadInitialMessage) {
 				return (
 					<>
-						{'WELCOME, ADVENTURER! I AM '}
-						<span className={'text-tag-info'}>{'FACU THE TAVERN KEEPER'}</span>
-						{'!'}
+						{'WELCOME! I AM FACU THE INNKEEPER!'}
+						{' THE FINEST ADVENTURES IN THE GAMEVERSE STAY IN MY INN. '}
+						{' RECRUIT ONE TODAY!'}
 						<div />
-						{'WHAT DO YOU WANT TO DO ? I CAN FIND THE LAST NEWS JUST BELLOW!'}
+						{'VISIT THE TAVERN AND GET ALL THE LATEST GOSSIP TOO'}
 					</>		
 				);
 			}
 			return (
 				<>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-						{'WELCOME, ADVENTURER! I AM'}
+						{'WELCOME! I AM FACU THE INNKEEPER!'}
 					</Typer>&nbsp;
-					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-						{'VIGO THE TAVERN KEEPER'}
-					</Typer></span>
+					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
+						{'THE FINEST ADVENTURES IN THE GAMEVERSE STAY IN MY INN. '}
+					</Typer>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
-						{'!'}
+						{'RECRUIT ONE TODAY!'}
 					</Typer>&nbsp;
 					<div />
 					<Typer
@@ -109,7 +109,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 							set_hadInitialMessage(true);
 						}}
 						shouldStart={npcTextIndex === 3}>
-						{'WHAT DO YOU WANT TO DO ? I CAN FIND THE LAST NEWS JUST BELLOW!'}
+						{'VISIT THE TAVERN AND GET ALL THE LATEST GOSSIP TOO'}
 					</Typer>
 				</>
 			);
@@ -119,30 +119,30 @@ function	NPCHeadline({router, active, adventurersCount}) {
 				if (hadRecruitMessage) {
 					return (
 						<>
-							{'WELCOME, ADVENTURER! I AM '}
-							<span className={'text-tag-info'}>{'FACU THE TAVERN KEEPER'}</span>
-							{'!'}
+							{'WELCOME TO SCARCITY GAMEVERSE. I AM '}
+							<span className={'text-tag-info'}>{'VIGO'}</span>
+							{', THE INNKEEPER'}
 							<div />
-							{'YOU ARE ABOUT TO START A JOURNEY BEYOND IMAGINATION. YOU WILL MEET NEW FRIENDS AND FIGHT GREAT DANGERS!'}
+							{'THE JOURNEY YOU ARE ABOUT TO TAKE REQUIRE GOLD, GOODS, WEAPONS AND ARMOR. '}
 							<div className={'my-2'}/>
-							{'WHAT KIND OF ADVENTURER ARE YOU ?'}
+							{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURER ARE YOU ?'}
 						</>		
 					);
 				}
 				return (
 					<>
 						<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-							{'WELCOME, ADVENTURER! I AM'}
+							{'WELCOME TO SCARCITY GAMEVERSE. I AM'}
 						</Typer>&nbsp;
 						<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-							{'VIGO THE TAVERN KEEPER'}
+							{'VIGO'}
 						</Typer></span>
 						<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 2}>
-							{'!'}
+							{', THE INNKEEPER'}
 						</Typer>&nbsp;
 						<div />
 						<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
-							{'YOU ARE ABOUT TO START A JOURNEY BEYOND IMAGINATION. YOU WILL MEET NEW FRIENDS AND FIGHT GREAT DANGERS!'}
+							{'THE JOURNEY YOU ARE ABOUT TO TAKE REQUIRE GOLD, GOODS, WEAPONS AND ARMOR. '}
 						</Typer>&nbsp;
 						<div className={'my-2'}/>
 						<Typer
@@ -151,7 +151,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 								set_hadRecruitMessage(true);
 							}}
 							shouldStart={npcTextIndex === 4}>
-							{'WHAT KIND OF ADVENTURER ARE YOU ?'}
+							{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURER ARE YOU ?'}
 						</Typer>
 					</>
 				);
@@ -159,9 +159,9 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			if (hadRecruitMessage) {
 				return (
 					<>
-						{'OH, THERE IS A '}
+						{'WHAT A PACKED TAVERN OF ADVENTURES TONIGHT !'}
 						<span className={'text-tag-info'}>{'HERO'}</span>
-						{' OVER THERE LOOKING FOR SOME ADVENTURE ! MAYBE YOU SHOULD TALK TO HIM ? OR HER, I CAN\'T SEE FROM HERE.'}
+						{' RECRUITING IS EASY; JUST WALK ON OVER AND ASK HIM OR HER TO JOIN YOU ON YOUR QUEST.'}
 					</>		
 				);
 			}
@@ -188,13 +188,13 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			if (hadTheCellarMessage) {
 				return (
 					<>
-						{'THOSE RATS BE HUNGRY. THOSE RATS BE MANY. BEST IF YE CONSTITUTION BE PLENTY !'}
+						{'I\'VE OPENED MY CELLAR. THERE IS A GIANT RAT IN THERE. ADVENTURES BRAVE ENOUGH AND ABLE TO KILL IT WILL GET SOME PRECIOUS CRAFTING MATERIALS.'}
 					</>		
 				);
 			}
 			return (
 				<Typer onDone={() => set_hadTheCellarMessage(true)}>
-					{'Those rats be hungry. Those rats be many. Best if ye Constitution be plenty !'}
+					{'I\'VE OPENED MY CELLAR. THERE IS A GIANT RAT IN THERE. ADVENTURES BRAVE ENOUGH AND ABLE TO KILL IT WILL GET SOME PRECIOUS CRAFTING MATERIALS.'}
 				</Typer>
 			);
 		}
