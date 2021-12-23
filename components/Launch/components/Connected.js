@@ -45,7 +45,7 @@ export function Connected({account}){
     }`);
 	const {chainId} = useEthers();
 
-    console.log(`44444 - ${+myRoguesYieldPerDay[0]}`)
+    console.log(`44444 - ${myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0}`)
 
 	const boldStyle = {fontWeight: 'bold', display: 'inline-block'};
     
@@ -95,13 +95,13 @@ export function Connected({account}){
 					<br/>
 			
 					{'Yield Per Day'}<div style={{...boldStyle, color:'lightgreen'}}>
-                &nbsp;{Math.round(parseInt((yieldPerDay[0] / 1e16).toString()))/100}&nbsp;
+                &nbsp;{Math.round(parseInt(((yieldPerDay? yieldPerDay[0]: 0) / 1e16).toString()))/100}&nbsp;
 						{'$SXGV'}&nbsp;&nbsp;
 					</div>
 					<br/>
 			
 					{'Rouges Yield Per Day'}<div style={{...boldStyle, color:'lightgreen'}}>
-                &nbsp;{Math.round(parseInt((myRoguesYieldPerDay[0] / 1e16).toString()))/100}&nbsp;
+                &nbsp;{Math.round(parseInt(((myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0) / 1e16).toString()))/100}&nbsp;
 						{'$SXGV'}&nbsp;&nbsp;
 					</div>
 					<br/>
