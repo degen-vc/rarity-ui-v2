@@ -127,7 +127,7 @@ async function getUSDCallowance(provider, amount, callback) {
 	);
 
 	try {
-		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, amount * 100);
+		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, amount * 1000);
 	} catch (error) {
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
