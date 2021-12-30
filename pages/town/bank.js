@@ -405,7 +405,7 @@ function	Index({router}) {
 			
 			<Box className={'py-6 px-8 mt-0 text-sm mb-8'}>
 				<App accoutn={address}></App>
-				<div className={'hidden md:flex flex-row items-center text-megaxs text-black dark:text-white text-opacity-60 mb-4'}>
+				{/* <div className={'hidden md:flex flex-row items-center text-megaxs text-black dark:text-white text-opacity-60 mb-4'}>
 					<div className={'w-4/12'}><p>{'Vault:'}</p></div>
 					<div className={'w-2/12'}><p>{'Token:'}</p></div>
 					<div className={'w-2/12'}><p>{'APY:'}</p></div>
@@ -482,7 +482,7 @@ function	Index({router}) {
 						<p className={'mr-auto text-megaxs text-black dark:text-white text-opacity-60 inline md:hidden'}>{'In Vault:'}</p>
 						<p>{Number(daiShare || 0)?.toFixed(2)}</p>
 					</div>
-				</div>
+				</div> */}
 			</Box>
 		);
 	}

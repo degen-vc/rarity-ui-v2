@@ -28,7 +28,7 @@ export default function Mead(){
                         <Row>
                             <Col>
                                 <br/>
-                                <h1>You need a costume to go to the  launch party!</h1>
+                                
                                 {!account && <><br/>&nbsp;&nbsp;<Button onClick={() => activateBrowserWallet()}>Connect Wallet</Button></>}
 
                                 {/* ugly cheap fix to background-color nor filling the whole screen */}

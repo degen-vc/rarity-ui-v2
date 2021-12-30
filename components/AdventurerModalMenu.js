@@ -14,6 +14,7 @@ import	CLASSES							from	'utils/codex/classes';
 function AdventurerModalMenu() {
 	const	{currentAdventurer, openCurrentAventurerModal} = useRarity();
 	const	{address} = useWeb3();
+	const	skin = CLASSES[currentAdventurer?.class]?.img;
 
 	function openModal() {
 		openCurrentAventurerModal();
@@ -25,13 +26,13 @@ function AdventurerModalMenu() {
 				<div onClick={openModal} className={'group items-center justify-end flex-row mr-6 cursor-pointer outline-none focus:outline-none hidden md:flex'}>
 					{currentAdventurer ? <div className={'flex items-center justify-center'}>
 						<Image
-							src={CLASSES[currentAdventurer?.class]?.img}
+							src={skin}
 							quality={100}
 							width={60}
 							height={60} />
 						<div className={'text-sm cursor-pointer uppercase ml-2'}>
 							<div className={'text-sx cursor-pointer mb-1 group-hover:underline'}>
-								{currentAdventurer?.tokenID}
+								{currentAdventurer?.name ? currentAdventurer?.name : currentAdventurer?.tokenID}
 							</div>
 							<div className={'text-megaxs cursor-pointer group-hover:underline'}>
 								{currentAdventurer ? `${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer.level}` : null}
@@ -39,7 +40,7 @@ function AdventurerModalMenu() {
 						</div>
 					</div> : <div className={'flex items-center justify-center'}>
 						<Image
-							src={'/front/placeholder.svg'}
+							src={'/classes/front/placeholder.svg'}
 							quality={100}
 							width={60}
 							height={60} />
@@ -59,14 +60,14 @@ function AdventurerModalMenu() {
 					{currentAdventurer ? <div className={'flex items-center justify-center'}>
 						<div className={'cursor-pointer uppercase mr-2 mt-2 text-right'}>
 							<div className={'text-sm cursor-pointer group-hover:underline -mb-2'}>
-								{currentAdventurer?.tokenID}
+								{currentAdventurer?.name ? currentAdventurer?.name : currentAdventurer?.tokenID}
 							</div>
 							<div className={'text-megaxs cursor-pointer group-hover:underline'}>
 								{currentAdventurer ? `${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer.level}` : null}
 							</div>
 						</div>
 						<Image
-							src={CLASSES[currentAdventurer?.class]?.img}
+							src={skin}
 							quality={100}
 							width={60}
 							height={60} />
@@ -80,7 +81,7 @@ function AdventurerModalMenu() {
 							</div>
 						</div>
 						<Image
-							src={'/front/placeholder.svg'}
+							src={'/classes/front/placeholder.svg'}
 							quality={100}
 							width={60}
 							height={60} />

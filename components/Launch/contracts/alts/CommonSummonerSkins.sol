@@ -22,7 +22,7 @@ contract CommonSummonerSkins is ReentrancyGuard, Ownable, ERC721Enumerable {
 
 	Rarity constant rarity = Rarity(0x2a8ac1b2fCB475C7646f93b6E69930d1eB67c053);
 	CommonSkinURIs public skinURIs;
-	RaritySkinManagerFix public constant raritySkinManager = RaritySkinManagerFix(0xFa4F13F6B7fc730d28cBd0a1a42cCD614F9B1337);
+	RaritySkinManagerFix public constant raritySkinManager = RaritySkinManagerFix(0xfB48543dFFC6566638709a3D0a8e66eBed73732A);
 	
 	// config
 	uint public price = 1 ether / 10;
