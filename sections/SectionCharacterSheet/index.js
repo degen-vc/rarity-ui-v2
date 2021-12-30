@@ -7,6 +7,7 @@
 
 import	React, {useState, useEffect}	from	'react';
 import	toast				from	'react-hot-toast';
+import	AutowidthInput		from	'react-autowidth-input';
 
 import	Image				from	'next/image';
 import	CLASSES				from	'utils/codex/classes';
@@ -198,6 +199,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 	checkUSDCallowance(address).then(data => setAllawance(data));
 	checkNamePrice().then(data => setNamePrice(data));
 	const [namePrice, setNamePrice] = useState(0);
+	const	[name, set_name] = useState(adventurer.name || adventurer.tokenID);
 	
 
 	const [input, setInput] = useState('');
@@ -230,9 +232,9 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 		setInput(event.target.value);
 	};
 
-	let handleSubmit = (event)=> {
-		event.preventDefault();
-		claimName(input, adventurer.tokenID, active, address, chainID, provider, ({error, data}) => {
+	let handleSubmit = () => {
+		// event.preventDefault();
+		claimName(name, adventurer.tokenID, active, address, chainID, provider, ({error, data}) => {
 			if (error) {
 				return console.error(error);
 			}
@@ -252,9 +254,44 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 	};
 	
 	const	canLevelUp = adventurer.xp >= (xpRequired(adventurer.level));
+
+
 	return (
 		<Box className={'nes-container pt-6 px-4 with-title w-full md:w-2/3'}>
-			<p className={'title bg-white dark:bg-dark-600 z-50 relative'} style={{paddingTop: 2}}>{adventurer.name || adventurer.tokenID}</p>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative ' + `${adventurer.usdcAllw >= namePrice && !adventurer.name ? 'invisible' : ' '}`} style={{paddingTop: 2}}>{adventurer.usdcAllw >= namePrice ? adventurer.name : adventurer.tokenID}</p>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative cursor-pointer group  ' + `${adventurer.usdcAllw >= namePrice && !adventurer.name ? '' : 'invisible'}`} style={{paddingTop: 20}}>
+				<div className={'flex flex-row items-center'}>
+					<AutowidthInput
+						value={name}
+						onChange={(e) => set_name(e.target.value)}
+						extraWidth={0}
+						placeholder={adventurer.name || adventurer.tokenID}
+						className={'bg-opacity-0 bg-white focus:outline-none pl-1 relative uppercase '} />
+					<div
+						onClick={() => {
+							if (name && (name !== (adventurer.name || adventurer.tokenID))) {
+								handleSubmit();
+							}
+						}}
+						className={`ml-1 p-1 -m-1 transition-all opacity-0 ${name && (name !== (adventurer.name || adventurer.tokenID)) ? 'w-7 opacity-100 cursor-pointer' : 'w-0 group-hover:opacity-100 group-hover:w-7 cursor-default'}`}>
+						{name && (name !== (adventurer.name || adventurer.tokenID)) ?
+							<svg width={'20'} height={'20'} viewBox={'0 0 24 24'} fill={'none'} xmlns={'http://www.w3.org/2000/svg'}>
+								<rect x={'6'} y={'16'} width={'4'} height={'4'} fill={'currentcolor'}/>
+								<rect x={'2'} y={'12'} width={'4'} height={'4'} fill={'currentcolor'}/>
+								<rect x={'14'} y={'8'} width={'4'} height={'4'} fill={'currentcolor'}/>
+								<rect x={'18'} y={'4'} width={'4'} height={'4'} fill={'currentcolor'}/>
+								<rect x={'10'} y={'12'} width={'4'} height={'4'} fill={'currentcolor'}/>
+							</svg>
+							:
+							<svg width={'20'} height={'20'} viewBox={'0 0 24 24'} fill={'none'} xmlns={'http://www.w3.org/2000/svg'}>
+								<path d={'M6.82861 14.6066L9.65704 17.435L5.4144 18.8492L6.82861 14.6066Z'} fill={'currentcolor'}/>
+								<rect x={'13.1929'} y={'8.24255'} width={'4'} height={'7'} transform={'rotate(45 13.1929 8.24255)'} fill={'currentcolor'}/>
+								<rect x={'17.4351'} y={'4'} width={'4'} height={'4'} transform={'rotate(45 17.4351 4)'} fill={'currentcolor'}/>
+							</svg>
+						}
+					</div>
+				</div>
+			</p>
 			<div className={'flex flex-row items-center w-full py-2'}>
 				<div className={'opacity-80 text-xs md:text-sm w-48'}>{'ID:'}</div>
 				<div className={'w-full text-right md:text-left pr-4 md:pr-0'}>
@@ -274,12 +311,12 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 				</div>
 			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
-				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.name ? 'GOLD:' : 'NAME:'}</div>
-				<form className={adventurer.name ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= namePrice ? handleSubmit : handleSubmitAllowance}>
-					{adventurer.usdcAllw >= namePrice ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button style={{textDecoration: 'underline'}}>Only named Adventurers can claim gold. Names cost 30 USDC. You must first set attributes and allow USDC</button>)}
+				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.usdcAllw >= namePrice  ? 'GOLD:' : 'NAME:'}</div>
+				<form className={adventurer.usdcAllw >= namePrice  ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= namePrice ? handleSubmit : handleSubmitAllowance}>
+					{adventurer.usdcAllw >= namePrice ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button >Only named Adventurers can claim gold. Names cost 30 USDC. You must first <p style={{textDecoration: 'underline'}}>allow USDC</p></button>)}
 					
 				</form>
-				<div className={adventurer.name ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
+				<div className={adventurer.usdcAllw >= namePrice  ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
 					<p>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p> 
 					
 					
