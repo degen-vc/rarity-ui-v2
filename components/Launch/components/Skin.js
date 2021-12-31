@@ -62,9 +62,7 @@ function _Skin({id,managerAddress, type}){
                             <Form.Control style={{backgroundColor: 'black'}} size="sm" type="number" placeholder="summoner id" value=
                             {summonerId === 0 ? undefined : summonerId} 
                                 onChange={e => setSummonerId(e.target.value)}/>
-                            <Button size="sm" onClick={()=>{
-                                assign.send(type === "common" ? addresses.commonSkins : addresses.summonerSkins,id.toString(),summonerId)
-                            }}>Assign</Button>
+                            <Button size="sm" onClick={()=>{}}><a href="https://opensea.io/assets/matic/0x31f2c273c305f8F5965b8Ca3Ec754b819b82dE7e/1">Buy</a></Button>
                         </Stack>
                     </Card.Body>
                 </Card>

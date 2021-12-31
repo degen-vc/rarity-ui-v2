@@ -87,7 +87,7 @@ export function Connected({account}){
 			{/* {chainId != 250 && <>{'Please connect to the Fantom network from your wallet'}</>} */}
 			<br/><br/>
 			{currentPrice !== undefined ? 
-				<>{'Common Costumes Price : '}
+				<>{'Costume Price : '}
 					<div style={{...boldStyle, color:'lightgreen'}}>
                 &nbsp;{Math.round(parseInt((currentPrice / 1e16).toString()))/100}&nbsp;
 						{'$WSGOLD'}&nbsp;&nbsp;
@@ -147,7 +147,7 @@ export function Connected({account}){
 function skins(skinBalance, account, managerAddress, type){
 	let arr =[];
 	if(skinBalance && account && managerAddress){
-		if (skinBalance == 0) return <>{'You have no '}{type === 'common' ? 'Common' : 'Rare'}{' Skin :( '}<br/></>;
+		if (skinBalance == 0) return <>{'You have no costumes yet '}<br/></>;
 		for(let i = 0; i < skinBalance; i++)
 			arr.push(i);
 		return <>
