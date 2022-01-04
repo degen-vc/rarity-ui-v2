@@ -1,3 +1,3 @@
 export default function Loading(){
-    return(<>Loading ...<br/></>)
+	return(<>{'Loading ...'}<br/></>);
 }

@@ -5,7 +5,7 @@
 **	@Filename:				FlyoutMenu.js
 ******************************************************************************/
 
-import	React							from	'react';
+// import	React							from	'react';
 import	Image							from	'next/image';
 import	useRarity						from	'contexts/useRarity';
 import	useWeb3							from	'contexts/useWeb3';

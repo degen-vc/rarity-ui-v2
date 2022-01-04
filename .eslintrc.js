@@ -29,5 +29,7 @@ module.exports = {
 		'array-bracket-spacing': [2, 'never'],
 		'react/jsx-curly-brace-presence': ['error', {'props': 'always', 'children': 'always'}],
 		'semi': 'error',
+		'react/jsx-uses-react': 'off',
+		'react/react-in-jsx-scope': 'off'
 	}
 };

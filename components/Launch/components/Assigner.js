@@ -1,17 +1,18 @@
-import * as managerJson from '../artifacts/contracts/RaritySkinManager.sol/RaritySkinManager.json';
-import {useContractFunction} from '@usedapp/core';
-import {ethers} from 'ethers';
-import {Form, Button} from 'react-bootstrap';
-import {useState} from 'react';
+// import * as managerJson from '../artifacts/contracts/RaritySkinManager.sol/RaritySkinManager.json';
+// import {useContractFunction} from '@usedapp/core';
+// import {ethers} from 'ethers';
+// import {Form, Button} from 'react-bootstrap';
+// import {useState} from 'react';
 
-export default function Assigner({managerAddress}){
-	const managerABI = JSON.stringify(managerJson.abi);
-	const managerInterface = new ethers.utils.Interface(managerABI);
-	const managerContract = new ethers.Contract(managerAddress[0], managerInterface);
-	const assign = useContractFunction(managerContract,'assignSkinToSummoner');
-	const [summonerId, setSummonerId] = useState(0);
-	const [tokenId, setTokenId] = useState(0);
-	const [address, setAddress] = useState('');
+// export default function Assigner({managerAddress}){
+export default function Assigner(){
+	// const managerABI = JSON.stringify(managerJson.abi);
+	// const managerInterface = new ethers.utils.Interface(managerABI);
+	// const managerContract = new ethers.Contract(managerAddress[0], managerInterface);
+	// const assign = useContractFunction(managerContract,'assignSkinToSummoner');
+	// const [summonerId, setSummonerId] = useState(0);
+	// const [tokenId, setTokenId] = useState(0);
+	// const [address, setAddress] = useState('');
 
 	return(<>
 		{'Dress your adventurer for the party'}<br/>

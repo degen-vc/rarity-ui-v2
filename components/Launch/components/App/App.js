@@ -6,7 +6,7 @@ import {Connected} from '../Connected';
 
 export default function Mead(){
 	const {activateBrowserWallet, account} = useEthers();
-	const style = {color : '#ffffff', backgroundColor: '#000000'};
+	// const style = {color : '#ffffff', backgroundColor: '#000000'};
 	return(
 		<div className={'App'} style={{color : '#ffffff', backgroundColor: '#000000'}}>
 			<Navbar bg={'dark'}>

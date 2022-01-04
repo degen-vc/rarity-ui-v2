@@ -5,7 +5,7 @@
 **	@Filename:				index.js
 ******************************************************************************/
 
-import	React						from	'react';
+// import	React						from	'react';
 import	SectionNoAdventurer			from	'sections/SectionNoAdventurer';
 import	SectionCharacterSheet		from	'sections/SectionCharacterSheet';
 import	useWeb3						from	'contexts/useWeb3';

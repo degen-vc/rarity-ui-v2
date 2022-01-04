@@ -5,7 +5,7 @@
 **	@Filename:				market.js
 ******************************************************************************/
 
-import	React, {useState}				from	'react';
+import	{useState}				from	'react';
 import	Image							from	'next/image';
 import	useUI							from	'contexts/useUI';
 import	Typer							from	'components/Typer';

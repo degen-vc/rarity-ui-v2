@@ -5,18 +5,18 @@
 **	@Filename:				bank.js
 ******************************************************************************/
 
-import	React, {useState, useEffect}	from	'react';
+import	{useState, useEffect}	from	'react';
 import	Image							from	'next/image';
 import	{ethers}						from	'ethers';
-import	useSWR							from	'swr';
+// import	useSWR							from	'swr';
 import	useWeb3							from	'contexts/useWeb3';
 import	Typer							from	'components/Typer';
 import	DialogBox						from	'components/DialogBox';
 import	Box								from	'components/Box';
-import	{fetcher}						from	'utils';
+// import	{fetcher}						from	'utils';
 import	{apeInVault, apeOutVault, depositInVault, withdrawFromVault}					from	'utils/actions';
 
-import { ChainId, DAppProvider} from '@usedapp/core';
+// import { ChainId, DAppProvider} from '@usedapp/core';
 import App from 'components/Launch/components/App/App';
 
 
@@ -171,17 +171,17 @@ function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError,
 function	Index({router}) {
 	const	{provider, address} = useWeb3();
 	const	[selectedVault, set_selectedVault] = useState({id: -1});
-	const	[ftmBalance, set_ftmBalance] = useState(0);
-	const	[daiBalance, set_daiBalance] = useState(0);
-	const	[daiShare, set_daiShare] = useState(0);
-	const	[daiShareRaw, set_daiShareRaw] = useState(0);
-	const	[ftmShare, set_ftmShare] = useState(0);
-	const	[ftmShareRaw, set_ftmShareRaw] = useState(0);
+	// const	[ftmBalance, set_ftmBalance] = useState(0);
+	// const	[daiBalance, set_daiBalance] = useState(0);
+	// const	[daiShare, set_daiShare] = useState(0);
+	// const	[daiShareRaw, set_daiShareRaw] = useState(0);
+	// const	[ftmShare, set_ftmShare] = useState(0);
+	// const	[ftmShareRaw, set_ftmShareRaw] = useState(0);
 	const	[isDeposit, set_isDeposit] = useState(1);
-	const	{data: vaultTheFantom} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.FTM_VAULT_ADDR}&network=250`, fetcher);
-	const	{data: vaultDaiHard} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.DAI_VAULT_ADDR}&network=250`, fetcher);
+	// const	{data: vaultTheFantom} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.FTM_VAULT_ADDR}&network=250`, fetcher);
+	// const	{data: vaultDaiHard} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.DAI_VAULT_ADDR}&network=250`, fetcher);
 
-	const	[nonce, set_nonce] = useState(0);
+	const	[, set_nonce] = useState(0);
 	const	[isTxPending, set_isTxPending] = useState(false);
 	const	[hasDeposited, set_hasDeposited] = useState(false);
 	const	[hasDepositError, set_hasDepositError] = useState(false);

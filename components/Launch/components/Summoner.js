@@ -37,17 +37,17 @@ function _Summoner({id, skinId, skinAddress, price}){
 		<>
 			{!summonerClass && <div>{'Loading...&nbsp;'}</div>}
 			{summonerClass && skinId === 0 && 
-            <Card style={{width: '15rem', margin: '0.2rem', paddingTop: '1rem'}} bg={'dark'}>
-            	<Card.Img src={emptyImg}/>
-            	<Card.Body>
-            		<Card.Title>{classes[summonerClass - 1]}</Card.Title>
-            		<Card.Text>
-            			{id}
-            			<br/>{'no skin'}
-            		</Card.Text>
-            		<Button size={'sm'} onClick={()=>{mint.send([id],{value: price.toString()});}}>{'Mint a new skin !'}</Button>
-            	</Card.Body>
-            </Card>}
+				<Card style={{width: '15rem', margin: '0.2rem', paddingTop: '1rem'}} bg={'dark'}>
+					<Card.Img src={emptyImg}/>
+					<Card.Body>
+						<Card.Title>{classes[summonerClass - 1]}</Card.Title>
+						<Card.Text>
+							{id}
+							<br/>{'no skin'}
+						</Card.Text>
+						<Button size={'sm'} onClick={()=>{mint.send([id],{value: price.toString()});}}>{'Mint a new skin !'}</Button>
+					</Card.Body>
+				</Card>}
 			{summonerClass && skinId !== 0 && <_SummonerWithSkin summonerClass={summonerClass} skinAddress={skinAddress} skinId={skinId} id={id} price={price} />}
 		</>
 	);
