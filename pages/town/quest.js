@@ -7,7 +7,7 @@
 
 import	React, {useState, useEffect}	from	'react';
 import	Image							from	'next/image';
-import	useUI							from	'contexts/useUI';
+// import	useUI							from	'contexts/useUI';
 import	useWeb3							from	'contexts/useWeb3';
 import	useRarity						from	'contexts/useRarity';
 import	Typer							from	'components/Typer';
@@ -17,7 +17,7 @@ import	SectionDungeonTheForest			from	'sections/SectionDungeonTheForest';
 import	Box								from	'components/Box';
 import	CLASSES							from	'utils/codex/classes';
 
-import { dungeonTypes, isDungeonAvailable } from 'utils/scarcity-functions';
+import {dungeonTypes, isDungeonAvailable} from 'utils/scarcity-functions';
 
 function	DialogChoices({router, adventurersCount}) {
 	const	[selectedOption, set_selectedOption] = useState(0);
@@ -303,7 +303,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 
 function	Index({rarities, router}) {
 	const	{active, address} = useWeb3();
-	const	{theme} = useUI();
+	// const	{theme} = useUI();
 	const	adventurers = Object.values(rarities);
 
 	return (
