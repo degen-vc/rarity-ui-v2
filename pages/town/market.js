@@ -52,7 +52,10 @@ function	Index({router}) {
 				</div>
 				<DialogBox
 					options={[
-						{label: 'Go back to the tavern', onClick: () => router.push('/town/tavern')},
+						
+						{label: 'Wrap or unwrap your gold', onClick: () => router.push('/town/tavern')},
+						{label: 'Buy, sell, pool or unpool wrapped gold', onClick: () => router.push('https://www.scarcity.gold/gold-and-wrapped-gold')},
+						{label: 'Instructions', onClick: () => router.push('https://www.scarcity.gold/gold-and-wrapped-gold')},
 					]} />
 			</div>
 		</section>

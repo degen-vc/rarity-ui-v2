@@ -171,12 +171,12 @@ function FlyoutMenu() {
 												</div>
 												<div className={'ml-4'}>
 													<span className={'text-xs cursor-pointer uppercase'}>
-														<span className={'hidden md:inline cursor-pointer'}>{'MARKET'}</span>
-														<span className={'inline md:hidden cursor-pointer'}>{'MARKET'}</span>
+														<span className={'hidden md:inline cursor-pointer'}>{'GOLD'}</span>
+														<span className={'inline md:hidden cursor-pointer'}>{'GOLD'}</span>
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Use gold to buy items.'}
+															{'Create and trade wrapped gold'}
 														</p>
 													</div>
 												</div>

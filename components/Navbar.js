@@ -11,13 +11,30 @@ import	useWeb3							from	'contexts/useWeb3';
 import	ModalLogin						from	'components/ModalLogin';
 import	FlyoutMenu						from	'components/FlyoutMenu';
 import	AdventurerModalMenu				from	'components/AdventurerModalMenu';
+import	{Provider, Contract}									from	'ethcall';
+import 	WRAPPED_GOLD_ABI 														from 'utils/abi/wrappedGold.abi';
+
+
 
 function	Navbar({router}) {
 	const	{active, address} = useWeb3();
 	const	[initialPopup, set_initialPopup] = useState(false);
 	const	[modalLoginOpen, set_modalLoginOpen] = useState(false);
 
+	async function wGoldGet() {
+		const wGold = new Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI);
+
+		const wGoldOnAcc = await wGold.balanceOf(address);
+		console.log(`WGOLD - ${JSON.stringify(wGoldOnAcc.data)}`);
+		return +`${wGoldOnAcc}`;
+	}
+
+
+	wGoldGet().then(data => console.log(data));
+
+
 	useEffect(() => {
+		// wGoldGet().then(data => console.log(data));
 		if (initialPopup)
 			return;
 
@@ -58,6 +75,7 @@ function	Navbar({router}) {
 					{renderWalletButton()}
 				</div>
 			</div>
+
 			<div className={'items-center justify-start md:justify-end flex flex-row w-full mt-3 md:mt-0'}>
 				<div className={'group items-center justify-end flex-row flex mr-6 cursor-pointer'} onClick={() => router.push('/')}>
 					<span>

@@ -12,25 +12,25 @@ import	{ethers}												from	'ethers';
 import	{Provider, Contract}									from	'ethcall';
 import	useSWR													from	'swr';
 import	ModalCurrentAdventurer									from	'components/ModalCurrentAdventurer';
-import	{chunk, fetcher, toAddress}								from	'utils';
-import	ITEMS													from	'utils/codex/items';
-import	RARITY_ABI												from	'utils/abi/rarity.abi';
+import	{chunk, fetcher, toAddress}					from	'utils';
+import	ITEMS																from	'utils/codex/items';
+import	RARITY_ABI													from	'utils/abi/rarity.abi';
 import	RARITY_ATTR_ABI											from	'utils/abi/rarityAttr.abi';
 import	RARITY_GOLD_ABI											from	'utils/abi/rarityGold.abi';
 import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 import	RARITY_SKILLS_ABI										from	'utils/abi/raritySkills.abi';
-import	RARITY_LIBRARY_ABI										from	'utils/abi/rarityLibrary.abi';
-import	RARITY_CRAFTING_HELPER_ABI								from	'utils/abi/rarityCraftingHelper.abi';
+import	RARITY_LIBRARY_ABI									from	'utils/abi/rarityLibrary.abi';
+import	RARITY_CRAFTING_HELPER_ABI					from	'utils/abi/rarityCraftingHelper.abi';
 import	THE_CELLAR_ABI											from	'utils/abi/dungeonTheCellar.abi';
 import	THE_FOREST_ABI											from	'utils/abi/dungeonTheForest.abi';
 
 import	MANIFEST_GOODS											from	'utils/codex/items_manifest_goods.json';
 import	MANIFEST_ARMORS											from	'utils/codex/items_manifest_armors.json';
 import	MANIFEST_WEAPONS										from	'utils/codex/items_manifest_weapons.json';
-import 	USDC_ABI from 'utils/abi/USDC.abi';
+import 	USDC_ABI 														from 'utils/abi/USDC.abi';
 
 
-import { dungeonTypes, isDungeonAvailable, numberOfDungeonsAvailable } from 'utils/scarcity-functions';
+import {dungeonTypes, isDungeonAvailable, numberOfDungeonsAvailable} from 'utils/scarcity-functions';
 
 const	RarityContext = createContext();
 let		isUpdatingRarities = false;
