@@ -18,7 +18,7 @@ const	_CLASSES = {
 		id: 1,
 		name: 'Barbarian',
 		img: '/front/barbarian.svg',
-		description: 'No friend of the books, unlike any librarian.\nStrength, weapons, and anger serve the Barbarian',
+		description: 'A barbarian lives by their brawn and their blades, and brings down brutes and mighty beasts. Pity the the foe who gets in their way.',
 		skills: ['Climb', 'Craft', 'Handle Animal', 'Intimidate', 'Jump', 'Listen', 'Ride', 'Survival', 'Swim'],
 		baseSkill: 4,
 		info: [
@@ -32,7 +32,7 @@ const	_CLASSES = {
 		id: 2,
 		name: 'Bard',
 		img: '/front/bard.svg',
-		description: 'Words, songs, and music are certainly not hard.\n The magic of the voice is the weapon of the Bard',
+		description: 'Rhyme, rhythm, and lore are the bard\'s sword and shield. They turn the tide of battle with a strum of their lyre and mischief in their eyes.',
 		skills: ['Appraise', 'Balance', 'Bluff', 'Climb', 'Concentration', 'Craft', 'Decipher Script', 'Diplomacy', 'Disguise', 'Escape Artist', 'Gather Information', 'Hide', 'Jump', 'Knowledge', 'Listen', 'Move Silently', 'Perform', 'Profession', 'Sense Motive', 'Sleight Of Hand', 'Speak Language', 'Spellcraft', 'Swim', 'Tumble', 'Use Magic Device'],
 		baseSkill: 6,
 		info: [
@@ -47,7 +47,7 @@ const	_CLASSES = {
 		id: 3,
 		name: 'Cleric',
 		img: '/front/cleric.svg',
-		description: 'In the world of adventure, pains and wounds are quite generic.\nIf you live a life or danger, you best know a Cleric',
+		description: 'By light and might divine, the cleric is both healer and warrior. No ordinary priest, they pray to their gods to heal their allies and to smite their foes.',
 		skills: ['Concentration', 'Craft', 'Diplomacy', 'Heal', 'Knowledge', 'Knowledge', 'Knowledge', 'Knowledge', 'Profession', 'Spellcraft'],
 		baseSkill: 2,
 		info: [
@@ -62,7 +62,7 @@ const	_CLASSES = {
 		id: 4,
 		name: 'Druid',
 		img: '/front/druid.svg',
-		description: 'All life is connected in something that is rather fluid.\nThe trees, insects, and animals are all friends of the Druid',
+		description: 'Nature works in mysterious ways, and Druids are her devoted and attentive servants. They wield her awesome power through the elements.',
 		skills: ['Concentration', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal', 'Knowledge', 'Listen', 'Profession', 'Ride', 'Spellcraft', 'Spot', 'Survival', 'Swim'],
 		baseSkill: 4,
 		info: [
@@ -76,7 +76,7 @@ const	_CLASSES = {
 		id: 5,
 		name: 'Fighter',
 		img: '/front/fighter.svg',
-		description: 'Scorn should not be directed at one with a dream to be a writer.\nBut tactics and sword play are what drive the Fighter',
+		description: 'With the fighting spirit of an expert smiter, your weapons, armor and skills make you the perfect fighter.',
 		skills: ['Climb', 'Craft', 'Handle Animal', 'Intimidate', 'Jump', 'Ride', 'Swim'],
 		baseSkill: 2,
 		info: [
@@ -91,7 +91,7 @@ const	_CLASSES = {
 		id: 6,
 		name: 'Monk',
 		img: '/front/monk.svg',
-		description: 'Some pursue vanity, and others just want to get drunk.\nInner peace, and control of the body are the goals of a monk',
+		description: 'With rigor and dedication, the body and mind are forged. If your only problem is beer then you are a perfect monk.',
 		skills: ['Balance', 'Climb', 'Concentration', 'Craft', 'Diplomacy', 'Escape Artist', 'Hide', 'Jump', 'Knowledge', 'Knowledge', 'Listen', 'Move Silently', 'Perform', 'Profession', 'Sense Motive', 'Spot', 'Swim', 'Tumble'],
 		baseSkill: 4,
 		info: [
@@ -105,7 +105,7 @@ const	_CLASSES = {
 		id: 7,
 		name: 'Paladin',
 		img: '/front/paladin.svg',
-		description: 'Some hearts when inspected are found with malice therein.\nBut righteous and honor are the tenets of the Paladin',
+		description: 'Unshakable in virtue, Paladins live the path of righteousness and devotion to their creed. Behind theirs shield and gods they you are unassailable.',
 		skills: ['Concentration', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal', 'Knowledge', 'Knowledge', 'Profession', 'Ride', 'Sense Motive'],
 		baseSkill: 2,
 		info: [
@@ -119,7 +119,7 @@ const	_CLASSES = {
 		id: 8,
 		name: 'Ranger',
 		img: '/front/ranger.svg',
-		description: 'Most, avoid, flee, and fear only a little bit of danger.\nWith a bow in the wilderness, you might find a Ranger',
+		description: 'Swift and silent, the ranger is as deadly as the arrows and long knives they wield. With stealth and precision they slay their quarries.',
 		skills: ['Climb', 'Concentration', 'Craft', 'Handle Animal', 'Heal', 'Hide', 'Jump', 'Knowledge', 'Knowledge', 'Knowledge', 'Listen', 'Move Silently', 'Profession', 'Ride', 'Search', 'Spot', 'Survival', 'Swim', 'Use Rope'],
 		baseSkill: 6,
 		info: [
@@ -133,7 +133,7 @@ const	_CLASSES = {
 		id: 9,
 		name: 'Rogue',
 		img: '/front/rogue.svg',
-		description: 'The rich are rich and the poor are poor is in vogue.\nBut with sticky fingers and sharp daggers you find the Rogue',
+		description: 'Sharp and deceptive as a hidden blade, lock-picks, sticky fingers, and poisoned knifes are just some of the tools of their trade.',
 		skills: ['Appraise', 'Balance', 'Bluff', 'Climb', 'Craft', 'Decipher Script', 'Diplomacy', 'Disable Device', 'Disguise', 'Escape Artist', 'Forgery', 'Gather Information', 'Hide', 'Intimidate', 'Jump', 'Knowledge', 'Listen', 'Move Silently', 'Open Lock', 'Perform', 'Profession', 'Search', 'Sense Motive', 'Sleight Of Hand', 'Spot', 'Swim', 'Tumble', 'Use Magic Device', 'Use Rope'],
 		baseSkill: 8,
 		info: [
@@ -148,7 +148,7 @@ const	_CLASSES = {
 		id: 10,
 		name: 'Sorcerer',
 		img: '/front/sorcerer.svg',
-		description: 'A scholarly teacher of magic seems like a torturer.\nBut this is not of concern to the innate magic of a Sorcerer',
+		description: 'Sorcerers have unbridled magic coursing through their veins, and wield it in uncanny ways to send foes fleeing.',
 		skills: ['Bluff', 'Concentration', 'Craft', 'Knowledge', 'Profession', 'Spellcraft'],
 		baseSkill: 2,
 		info: [
@@ -163,7 +163,7 @@ const	_CLASSES = {
 		id: 11,
 		name: 'Wizard',
 		img: '/front/wizard.svg',
-		description: 'Many waste their time on a log, idle like a lizard.\nHowever, through study, immense power is granted to the Wizard',
+		description: 'The wizard is a patient and diligent scholar of the laws of the Universe and able to bend them to their will and reshape reality.',
 		skills: ['Concentration', 'Craft', 'Decipher Script', 'Knowledge', 'Profession', 'Spellcraft'],
 		baseSkill: 2,
 		info: [
