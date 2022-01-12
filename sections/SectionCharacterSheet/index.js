@@ -25,6 +25,9 @@ import	useWeb3								from	'contexts/useWeb3';
 
 import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 import 	USDC_ABI from 'utils/abi/USDC.abi';
+import 	WRAPPED_GOLD_ABI 														from 'utils/abi/wrappedGold.abi';
+import  SCARCITY_GOLD_ABI from 'utils/abi/gold.abi';
+
 
 
 
@@ -67,6 +70,16 @@ async function checkUSDCallowance(address) {
 	const usdc = new Contract(process.env.USDC_ADDR, USDC_ABI);
 
 	const [allowance] = await fetchAdventurer([usdc.allowance(address, process.env.RARITY_NAMES_ADDR)]);
+	console.log(` GOLD allowance - ${allowance}`);
+	return +`${allowance}`;
+}
+
+async function checkGoldAllowance(id) {
+
+
+	const gold = new Contract(process.env.SCARCITY_GOLD, SCARCITY_GOLD_ABI);
+
+	const [allowance] = await fetchAdventurer([gold.allowance(id, 238)]);
 	console.log(` USDC allowance - ${allowance}`);
 	return +`${allowance}`;
 }
@@ -162,6 +175,52 @@ async function getUSDCallowance(provider, amount, callback) {
 	// return allowance;
 }
 
+async function getGOLDapprove(provider, amount, id, callback) {
+	const	_toast = toast.loading('Approving GOLD use');
+
+	const signer = provider.getSigner();
+
+	const approveGold = new ethers.Contract(
+		process.env.SCARCITY_GOLD, 
+		['function approve(uint256 from, uint256 spender, uint256 amount) external returns (bool)'],
+		signer
+	);
+
+	try {
+		await approveGold.callStatic.approve(id, 238, amount * 1000);
+	} catch (error) {
+		toast.dismiss(_toast);
+		toast.error('Impossible to submit transaction');
+		callback({error, data: undefined});
+		return;
+	}
+
+	try {
+		const	transaction = await approveGold.approve(id, 238, amount * 1000);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status == 1) {
+			callback({error: false, data: 'id'});
+			toast.dismiss(_toast);
+			toast.success('Transaction successful');
+		} else {
+			console.log(transactionResult.status);
+			toast.dismiss(_toast);
+			toast.error('Transaction reverted');
+			callback({error: true, data: undefined});
+		}
+	} catch (error) {
+		console.error(error);
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+		callback({error, data: 'id'});
+	}
+
+	// const allowance = await claimName.approve(process.env.RARITY_NAMES_ADDR, 10000);
+
+	// console.log(`${allowance}`,);
+	// return allowance;
+}
+
 
 
 
@@ -195,15 +254,18 @@ function	AdventurerTab({adventurer, updateRarity, provider}) {
 const	Info = ({adventurer, updateRarity, provider}) => {
 	// const	{provider2, chainID} = useWeb3();
 	const	{active, address, chainID, provider2} = useWeb3();
+	const [allowance, setAllawance] = useState(0);
+	const [GoldAllowance, setGoldAllawance] = useState(0);
 
 	checkUSDCallowance(address).then(data => setAllawance(data));
+	checkGoldAllowance(adventurer.tokenID).then(data => setGoldAllawance(data));
 	checkNamePrice().then(data => setNamePrice(data));
 	const [namePrice, setNamePrice] = useState(0);
 	const	[name, set_name] = useState(adventurer.name || adventurer.tokenID);
 	
 
 	const [input, setInput] = useState('');
-	const [allowance, setAllawance] = useState(0);
+	
 
 	console.log(allowance, namePrice);
 
@@ -216,6 +278,17 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 	// }
 
 	// checkUSDCallowance(address).then(data => setAllawance(data));
+
+
+	// checkGoldAllowance(active, address, chainID, provider).then(data => {
+	// 	setAllawance(data);
+	// });
+	// async function getUSDCallowanceInner() {
+	// 	let allow = await checkUSDCallowance(active, address, chainID, provider).then(data => data);
+	// 	return allow;
+	// }
+
+	// checkGoldAllowance(address).then(data => setAllawance(data));
 
 
 	useEffect(() => {
@@ -245,7 +318,17 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 
 	let handleSubmitAllowance = (event)=> {
 		event.preventDefault();
-		getUSDCallowance(provider, namePrice,({error, data}) => {
+		getUSDCallowance(provider, namePrice, adventurer.tokenID, ({error, data}) => {
+			if (error) {
+				return console.error(error);
+			}
+			updateRarity(adventurer.tokenID);
+		});
+	};
+
+	let handleApproveGold = (event)=> {
+		event.preventDefault();
+		getGOLDapprove(provider, namePrice, adventurer.tokenID, ({error, data}) => {
 			if (error) {
 				return console.error(error);
 			}
@@ -318,7 +401,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 				</form>
 				<div className={adventurer.usdcAllw >= namePrice  ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
 					<p>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p> 
-					
+					<button className={GoldAllowance >= adventurer.gold.balance  ? 'd-none' : ''} onClick={handleApproveGold}>Approve</button>
 					
 				</div>
 			</div>

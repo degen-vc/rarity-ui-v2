@@ -24,13 +24,13 @@ function	Navbar({router}) {
 	async function wGoldGet() {
 		const wGold = new Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI);
 
-		const wGoldOnAcc = await wGold.balanceOf(address);
-		console.log(`WGOLD - ${JSON.stringify(wGoldOnAcc.data)}`);
-		return +`${wGoldOnAcc}`;
+		const wGoldOnAcc = await wGold.balanceOf(address, process.env.WRAPPED_GOLD);
+		console.log(`WGOLD - ${JSON.stringify(wGoldOnAcc)}`);
+		return `${wGoldOnAcc}`;
 	}
 
 
-	wGoldGet().then(data => console.log(data));
+	// wGoldGet().then(data => console.log(data));
 
 
 	useEffect(() => {

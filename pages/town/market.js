@@ -19,7 +19,7 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{'Welcome to Scarcity. I´m Vigo the Innkeeper. Bazifra my daughter will soon host the launch party in our tavern. In the meantime feel free to explore the Cellar for crafting materials.'}
+					{'I´M VIGO THE INNKEEPER. YES, A MARKET IS BEING BUILT FOR GOODS, ARMOR AND WEAPONS DENOMINATED IN GOLD. YOU CAN ALSO TRADE THEM ON OPENSEA - THATS AVAILABLE RIGHT NOW. GOOD TRADING TO YOU!'}
 				</Typer>&nbsp;
 			</>
 		);

@@ -83,7 +83,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			if (hadInitialMessage) {
 				return (
 					<>
-						{'WELCOME! I AM FACU THE INNKEEPER!'}
+						{'WELCOME! I AM VIGO THE INNKEEPER!'}
 						{' THE FINEST ADVENTURES IN THE GAMEVERSE STAY IN MY INN. '}
 						{' RECRUIT ONE TODAY!'}
 						<div />
@@ -94,7 +94,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			return (
 				<>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-						{'WELCOME! I AM FACU THE INNKEEPER!'}
+						{'WELCOME! I AM VIGO THE INNKEEPER!'}
 					</Typer>&nbsp;
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 						{'THE FINEST ADVENTURES IN THE GAMEVERSE STAY IN MY INN. '}

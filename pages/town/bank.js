@@ -493,7 +493,7 @@ function	Index({router}) {
 				<div className={'flex flex-col md:flex-row items-center mb-8 md:mb-8'}>
 					<div className={'w-auto md:w-64 mr-0 md:mr-8'} style={{minWidth: 256}}>
 						<Image
-							src={'/avatar/ivan.gif'}
+							src={'/avatar/ivanna.png'}
 							loading={'eager'}
 							quality={100}
 							width={256}
