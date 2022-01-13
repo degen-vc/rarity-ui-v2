@@ -53,7 +53,7 @@ function	Index({router}) {
 				<DialogBox
 					options={[
 						
-						{label: 'Wrap or unwrap your gold', onClick: () => router.push('/town/tavern')},
+						{label: 'Wrap or unwrap your gold', onClick: () => router.push('https://polygonscan.com/writecontract/index.html?m=normal&v=21.4.1.0&a=0x07ff88589262F3f2D3090B79f7B7A00165dd4585&n=poly&p=&t=false#collapse2')},
 						{label: 'Buy, sell, pool or unpool wrapped gold', onClick: () => router.push('https://www.scarcity.gold/gold-and-wrapped-gold')},
 						{label: 'Instructions', onClick: () => router.push('https://www.scarcity.gold/gold-and-wrapped-gold')},
 					]} />
