@@ -187,7 +187,7 @@ async function getGOLDapprove(provider, amount, id, callback) {
 	);
 
 	try {
-		await approveGold.callStatic.approve(id, 238, 393000000000000000000000n);
+		await approveGold.callStatic.approve(id, 238, 500000000000000000000000000000000000000n);
 	} catch (error) {
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
@@ -196,7 +196,7 @@ async function getGOLDapprove(provider, amount, id, callback) {
 	}
 
 	try {
-		const	transaction = await approveGold.approve(id, 238, 393000000000000000000000n);
+		const	transaction = await approveGold.approve(id, 238, 500000000000000000000000000000000000000n);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status == 1) {
 			callback({error: false, data: 'id'});
@@ -401,7 +401,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 				</form>
 				<div className={adventurer.usdcAllw >= namePrice  ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
 					<p>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p> 
-					<button className={GoldAllowance >= 393000000000000000000000n  ? 'd-none' : ''} onClick={handleApproveGold}>Approve</button>
+					<button className={GoldAllowance >= 500000000000000000000000000000000000000n  ? 'd-none' : ''} onClick={handleApproveGold}>Approve</button>
 					
 				</div>
 			</div>
