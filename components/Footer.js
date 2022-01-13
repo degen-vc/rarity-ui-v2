@@ -17,7 +17,7 @@ function	Footer() {
 				{`Switch to ${theme === 'light' || theme === 'light-initial' ? 'dark' : 'light'} mode`}
 			</div>
 			<div>
-				<a href={'https://github.com/degen-vc/scarcity'} target={'_blank'} rel={'noopener noreferrer'}>{'Github'} </a> { ' | '}
+				<a href={'https://github.com/degen-vc/scarcity/tree/v2'} target={'_blank'} rel={'noopener noreferrer'}>{'Github'} </a> { ' | '}
 				<a href={'https://twitter.com/scarcitygverse'} target={'_blank'} rel={'noopener noreferrer'}>{'Twitter'} </a> { ' | '}
 				<a href={'https://discord.gg/S584hZNTUJ'} target={'_blank'} rel={'noopener noreferrer'}>{'Discord'} </a> { ' | '}
 				<a href={'https://github.com/Rarity-Extended/RarityExtended'} target={'_blank'} rel={'noopener noreferrer'}>{'Original Code'} </a> { ' | '}
