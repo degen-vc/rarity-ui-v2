@@ -1,7 +1,7 @@
 /***************************************************************
-** Contains utility functions to help split up the logic
-** between the scarcity and the separately-updated rarity parts
-** of the application.
+* Contains utility functions to help split up the logic
+* between the scarcity and the separately-updated rarity parts
+* of the application.
 ****************************************************************/
 
 export const dungeonTypes = {

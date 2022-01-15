@@ -9,7 +9,7 @@ import	React, {useEffect, useState}	from	'react';
 import	useKeyPress						from	'hook/useKeyPress';
 import	Box								from	'components/Box';
 
-function	Index({options, nonce, selectedOption = -1}) {
+function	Index({options, nonce = null, selectedOption = -1}) {
 	const	[option, set_option] = useState(selectedOption > 0 ? selectedOption : 0);
 	const	keyUp = useKeyPress('ArrowUp');
 	const	keyDown = useKeyPress('ArrowDown');
