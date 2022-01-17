@@ -7,7 +7,7 @@
 
 import	React, {useState}					from	'react';
 import	Image								from	'next/image';
-import	useDungeon, {DungeonContextApp}		from	'contexts/useDungeonsTheCellar';
+import	useDungeon, {DungeonContextApp}		from	'contexts/useDungeon';
 import	useWeb3								from	'contexts/useWeb3';
 import	useRarity							from	'contexts/useRarity';
 import	DialogBox							from	'components/DialogBox';

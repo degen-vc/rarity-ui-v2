@@ -33,6 +33,7 @@
     "dotenv-webpack": "^7.0.3",
     "ethcall": "4.0.6",
     "ethers": "^5.4.6",
+    "graphql": "^16.2.0",
     "next": "11.1.2",
     "next-seo": "^4.26.0",
     "postcss": "^8.3.6",
@@ -43,7 +44,8 @@
     "react-hot-toast": "^2.1.1",
     "sharp": "^0.29.3",
     "swr": "^1.0.0",
-    "tailwindcss": "^2.2.15"
+    "tailwindcss": "^2.2.15",
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

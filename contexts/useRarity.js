@@ -244,7 +244,6 @@ export const RarityContextApp = ({children}) => {
 				canAdventure: forestResearch?.discovered === true || Number(forestResearch?.timeInDays) === 0
 			};
 		}
-
 		if (toAddress(owner) !== toAddress(address)) {
 			return;
 		}

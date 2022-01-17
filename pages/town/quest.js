@@ -10,11 +10,11 @@ import	Image							from	'next/image';
 // import	useUI							from	'contexts/useUI';
 import	useWeb3							from	'contexts/useWeb3';
 import	useRarity						from	'contexts/useRarity';
+import	Box								from	'components/Box';
 import	Typer							from	'components/Typer';
 import	DialogBox						from	'components/DialogBox';
 import	SectionDungeonTheCellar			from	'sections/SectionDungeonTheCellar';
 import	SectionDungeonTheForest			from	'sections/SectionDungeonTheForest';
-import	Box								from	'components/Box';
 import	CLASSES							from	'utils/codex/classes';
 
 import {dungeonTypes, isDungeonAvailable} from 'utils/scarcity-functions';
@@ -98,7 +98,39 @@ function	DialogChoices({router, adventurersCount}) {
 			</>
 		);
 	}
-
+	if (router?.query?.tab === 'battle-royale') {
+		return (
+			<>
+				<Box className='mb-9 p-6 h-96'>
+					<Image
+						src={'/quests/battle-royale-placeholder.jpeg'}
+						quality={100}
+						layout='fill'
+					/>
+				</Box>
+				<Box className='mb-9 p-6'>
+					Battle Royale, much wow! (Placeholder text)
+				</Box>
+				<DialogBox
+					selectedOption={selectedOption}
+					nonce={dialogNonce}
+					options={[
+						{
+							label: (
+								<>
+									{'ENTER BATTLE ROYALE WITH '}
+									<span className={'text-tag-info'}>{`${currentAdventurer?.tokenID}, ${CLASSES[currentAdventurer?.class].name} LVL ${currentAdventurer?.level}`}</span>
+								</>
+							),
+							onClick: () => router.push(`/dungeons/battle-royale?adventurer=${currentAdventurer?.tokenID}`)
+						},
+						{label: 'TAUNT', onClick: () => console.log('taunt')},
+						{label: 'CHECK RESULTS FEED', onClick: () => console.log('check results feed')},
+						{label: 'NO, JUST HEAD BACK TO TOWN', onClick: () => router.push('/town/quest')},
+					]} />
+			</>
+		);
+	}
 
 	return (
 		<DialogBox
@@ -123,6 +155,15 @@ function	DialogChoices({router, adventurersCount}) {
 					),
 					onClick: () => router.push('/town/quest?tab=the-forest')
 				},
+				{
+					label: (
+						<>
+							{'THE GLORY OF '}
+							<span className={'text-tag-info'}>{'BATTLE ROYALE'}</span>
+						</>
+					),
+					onClick: () => router.push('/town/quest?tab=battle-royale')
+				}
 			].filter(o => Boolean(o))} />
 	);
 }

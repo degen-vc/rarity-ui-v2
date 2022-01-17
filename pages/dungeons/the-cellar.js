@@ -8,7 +8,7 @@
 import	React, {useState, useEffect}			from	'react';
 import	Image									from	'next/image';
 import	Link									from	'next/link';
-import	useDungeon, {DungeonContextApp}			from	'contexts/useDungeonsTheCellar';
+import	useDungeon, {DungeonContextApp}			from	'contexts/useDungeon';
 import	useWeb3									from	'contexts/useWeb3';
 import	useRarity								from	'contexts/useRarity';
 import	{lootDungeonTheCellar}					from	'utils/actions';
