@@ -253,13 +253,10 @@ function	AdventurerTab({adventurer, updateRarity, provider}) {
 
 const	Info = ({adventurer, updateRarity, provider}) => {
 	// const	{provider2, chainID} = useWeb3();
-<<<<<<< HEAD
-	const	{active, address, chainID, provider2} = useWeb3();
+
+	const	{active, address, chainID, provider2} = UseWeb3();
 	const [allowance, setAllawance] = useState(0);
 	const [GoldAllowance, setGoldAllawance] = useState(0);
-=======
-	const	{active, address, chainID} = UseWeb3();
->>>>>>> launch2
 
 	checkUSDCallowance(address).then(data => setAllawance(data));
 	checkGoldAllowance(adventurer.tokenID).then(data => setGoldAllawance(data));
