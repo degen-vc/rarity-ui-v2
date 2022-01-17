@@ -12,7 +12,7 @@ import "./RaritySkinManager.sol";
 // way to interact with it, besides using his address instead of the original one.
 contract RaritySkinManagerFix is Ownable {
     
-    address constant rarity = 0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb;
+    address constant rarity = 0x2a8ac1b2fCB475C7646f93b6E69930d1eB67c053;
 
     // original contract
     RaritySkinManager constant exManager = RaritySkinManager(0x00D13f9f18da2b1368F88954b36e376bFa19C84D);

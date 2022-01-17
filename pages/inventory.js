@@ -5,7 +5,7 @@
 **	@Filename:				items.js
 ******************************************************************************/
 
-import	React						from	'react';
+// import	React						from	'react';
 import	Image						from	'next/image';
 import	useRarity					from	'contexts/useRarity';
 import	Box							from	'components/Box';

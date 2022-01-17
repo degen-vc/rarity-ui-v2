@@ -5,23 +5,23 @@
 **	@Filename:				bank.js
 ******************************************************************************/
 
-import	React, {useState, useEffect}	from	'react';
+import	{useState, useEffect}	from	'react';
 import	Image							from	'next/image';
 import	{ethers}						from	'ethers';
-import	useSWR							from	'swr';
+// import	useSWR							from	'swr';
 import	useWeb3							from	'contexts/useWeb3';
 import	Typer							from	'components/Typer';
 import	DialogBox						from	'components/DialogBox';
 import	Box								from	'components/Box';
-import	{fetcher}						from	'utils';
+// import	{fetcher}						from	'utils';
 import	{apeInVault, apeOutVault, depositInVault, withdrawFromVault}					from	'utils/actions';
 
-import { ChainId, DAppProvider} from '@usedapp/core';
+// import { ChainId, DAppProvider} from '@usedapp/core';
 import App from 'components/Launch/components/App/App';
 
 
 
-const bankImplemented = false;	// Remove this flag once implemented in Polygon!
+const bankImplemented = true;	// Remove this flag once implemented in Polygon!
 
 function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError, isDeposit}) {
 	const	[nonce, set_nonce] = useState(0);
@@ -171,17 +171,17 @@ function	NPCHeadline({selectedVault, isTxPending, hasDeposited, hasDepositError,
 function	Index({router}) {
 	const	{provider, address} = useWeb3();
 	const	[selectedVault, set_selectedVault] = useState({id: -1});
-	const	[ftmBalance, set_ftmBalance] = useState(0);
-	const	[daiBalance, set_daiBalance] = useState(0);
-	const	[daiShare, set_daiShare] = useState(0);
-	const	[daiShareRaw, set_daiShareRaw] = useState(0);
-	const	[ftmShare, set_ftmShare] = useState(0);
-	const	[ftmShareRaw, set_ftmShareRaw] = useState(0);
+	// const	[ftmBalance, set_ftmBalance] = useState(0);
+	// const	[daiBalance, set_daiBalance] = useState(0);
+	// const	[daiShare, set_daiShare] = useState(0);
+	// const	[daiShareRaw, set_daiShareRaw] = useState(0);
+	// const	[ftmShare, set_ftmShare] = useState(0);
+	// const	[ftmShareRaw, set_ftmShareRaw] = useState(0);
 	const	[isDeposit, set_isDeposit] = useState(1);
-	const	{data: vaultTheFantom} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.FTM_VAULT_ADDR}&network=250`, fetcher);
-	const	{data: vaultDaiHard} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.DAI_VAULT_ADDR}&network=250`, fetcher);
+	// const	{data: vaultTheFantom} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.FTM_VAULT_ADDR}&network=250`, fetcher);
+	// const	{data: vaultDaiHard} = useSWR(`https://ape.tax/api/specificApy?address=${process.env.DAI_VAULT_ADDR}&network=250`, fetcher);
 
-	const	[nonce, set_nonce] = useState(0);
+	const	[, set_nonce] = useState(0);
 	const	[isTxPending, set_isTxPending] = useState(false);
 	const	[hasDeposited, set_hasDeposited] = useState(false);
 	const	[hasDepositError, set_hasDepositError] = useState(false);
@@ -405,7 +405,7 @@ function	Index({router}) {
 			
 			<Box className={'py-6 px-8 mt-0 text-sm mb-8'}>
 				<App accoutn={address}></App>
-				<div className={'hidden md:flex flex-row items-center text-megaxs text-black dark:text-white text-opacity-60 mb-4'}>
+				{/* <div className={'hidden md:flex flex-row items-center text-megaxs text-black dark:text-white text-opacity-60 mb-4'}>
 					<div className={'w-4/12'}><p>{'Vault:'}</p></div>
 					<div className={'w-2/12'}><p>{'Token:'}</p></div>
 					<div className={'w-2/12'}><p>{'APY:'}</p></div>
@@ -482,7 +482,7 @@ function	Index({router}) {
 						<p className={'mr-auto text-megaxs text-black dark:text-white text-opacity-60 inline md:hidden'}>{'In Vault:'}</p>
 						<p>{Number(daiShare || 0)?.toFixed(2)}</p>
 					</div>
-				</div>
+				</div> */}
 			</Box>
 		);
 	}

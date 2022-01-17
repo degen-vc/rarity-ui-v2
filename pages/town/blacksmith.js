@@ -5,7 +5,7 @@
 **	@Filename:				blacksmith.js
 ******************************************************************************/
 
-import	React, {useState, useEffect}		from	'react';
+import	{useState, useEffect, useCallback}		from	'react';
 import	{ethers}							from	'ethers';
 import	{Provider, Contract}				from	'ethcall';
 import	Image								from	'next/image';
@@ -571,7 +571,7 @@ function	Index({rarities, router}) {
 
 	useEffect(() => {
 		checkCraftingStatus();
-	}, [currentAdventurer?.tokenID]);
+	}, [checkCraftingStatus]);
 
 	return (
 		<section className={'max-w-full'}>

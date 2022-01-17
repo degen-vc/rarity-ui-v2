@@ -5,7 +5,7 @@
 **	@Filename:				Attributes.js
 ******************************************************************************/
 
-import	React, {useState}			from	'react';
+import	{useState}			from	'react';
 import	{setAttributes}				from	'utils/actions';
 import	Box							from	'components/Box';
 

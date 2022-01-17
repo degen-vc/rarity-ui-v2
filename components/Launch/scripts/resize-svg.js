@@ -1,7 +1,7 @@
-const svge = require('svgexport')
+import {render} from 'svgexport';
 
 function main(){
-    svge.render("/Users/tobou/Downloads/LIVRABLEFIN/basique/chaussurescheap3.svg", e => console.log(e))
+	render('/Users/tobou/Downloads/LIVRABLEFIN/basique/chaussurescheap3.svg', e => console.log(e));
 }
 
-main()
+main();

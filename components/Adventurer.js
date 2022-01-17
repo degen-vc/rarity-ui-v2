@@ -5,7 +5,7 @@
 **	@Filename:				Adventurer.js
 ******************************************************************************/
 
-import	React		from	'react';
+// import	React		from	'react';
 import	Image		from	'next/image';
 import	Box			from	'components/Box';
 

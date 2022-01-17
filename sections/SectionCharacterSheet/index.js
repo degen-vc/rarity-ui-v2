@@ -5,7 +5,7 @@
 **	@Filename:				index.js
 ******************************************************************************/
 
-import	React, {useState, useEffect}	from	'react';
+import	{useState, useEffect}	from	'react';
 import	toast				from	'react-hot-toast';
 import	AutowidthInput		from	'react-autowidth-input';
 
@@ -21,7 +21,7 @@ import	Inventory			from	'sections/SectionCharacterSheet/Inventory';
 import	{classMappingImg}	from	'utils/constants';
 import  {ethers} from	'ethers';
 import	{Provider, Contract}				from	'ethcall';
-import	useWeb3								from	'contexts/useWeb3';
+import	UseWeb3								from	'contexts/useWeb3';
 
 import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 import 	USDC_ABI from 'utils/abi/USDC.abi';
@@ -47,7 +47,7 @@ async function newEthCallProvider(provider, devMode) {
 }
 
 async function	fetchAdventurer(calls) {
-	const	{active, address, chainID, provider} = useWeb3();
+	const	{chainID, provider} = UseWeb3();
 
 	const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
 	const	callResult = await ethcallProvider.all(calls);
@@ -253,9 +253,13 @@ function	AdventurerTab({adventurer, updateRarity, provider}) {
 
 const	Info = ({adventurer, updateRarity, provider}) => {
 	// const	{provider2, chainID} = useWeb3();
+<<<<<<< HEAD
 	const	{active, address, chainID, provider2} = useWeb3();
 	const [allowance, setAllawance] = useState(0);
 	const [GoldAllowance, setGoldAllawance] = useState(0);
+=======
+	const	{active, address, chainID} = UseWeb3();
+>>>>>>> launch2
 
 	checkUSDCallowance(address).then(data => setAllawance(data));
 	checkGoldAllowance(adventurer.tokenID).then(data => setGoldAllawance(data));
