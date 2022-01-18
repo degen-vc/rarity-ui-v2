@@ -8,21 +8,21 @@ export default function Mead(){
 	const {activateBrowserWallet, account} = useEthers();
 	// const style = {color : '#ffffff', backgroundColor: '#000000'};
 	return(
-		<div className={'App'} style={{color : '#ffffff', backgroundColor: '#000000'}}>
-			<Navbar bg={'dark'}>
-				<Navbar.Brand style={{color : '#ffffff'}}>
+		<div className={'App bg-white dark:bg-dark-600'}>
+			<Navbar className={'bg-white dark:bg-dark-600'}>
+				<Navbar.Brand className={'bg-white dark:bg-dark-600'}>
 					{/* <Link to='/'>
                     &nbsp;&nbsp;Rarity Summoner's Rare Skins&nbsp;&nbsp;
 
                 </Link> */}
 				</Navbar.Brand>
-				<Navbar.Brand style={{color : '#ffffff'}}>
+				<Navbar.Brand className={'bg-white dark:bg-dark-600'}>
 					{/* <Link to='/mead'>
                         MEAD
                     </Link> */}
 				</Navbar.Brand>
 			</Navbar>
-			<Container style={{color : '#ffffff', backgroundColor: '#000000'}}>
+			<Container className={'bg-white dark:bg-dark-600'}>
 				<Row>
 					<Col>
 						<Row>
@@ -37,7 +37,7 @@ export default function Mead(){
 						</Row>
 						{account && <Connected account={account}/>}
 
-						{Array(100).fill(<br/>)} 
+						{/* {Array(100).fill(<br/>)}  */}
 					</Col>
 				</Row>
 			</Container>

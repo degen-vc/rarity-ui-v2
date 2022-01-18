@@ -13,6 +13,7 @@ import Summoner from './Summoner';
 import SkinInfos from './SkinInfos';
 import Assigner from './Assigner';
 import SxgvTokenAbi from 'utils/abi/sxgvToken.abi.js';
+import	Box					from	'components/Box';
 
 export function Connected({account}){
 	const sxgvTokenInterface = new ethers.utils.Interface(JSON.stringify(SxgvTokenAbi));
@@ -51,55 +52,57 @@ export function Connected({account}){
     
 	// 250 is fantom's chain id
 	return(
-		<>
-			{'Total tokens available'}<div style={{...boldStyle, color:'lightgreen'}}>
+		<><Box className={'nes-container with-title p-4'}>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'Farmind data'}</p>
+			<div className={''}>
+				{'Total tokens available'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((totalTokensAvailable / 1e16).toString()))/100}&nbsp;
-				{'$SGV'}&nbsp;&nbsp;
-			</div>
-			<br/>
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
 			
-			{'My Tokens'}<div style={{...boldStyle, color:'lightgreen'}}>
+				{'My Tokens'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((myTokens / 1e16).toString()))/100}&nbsp;
-				{'$SGV'}&nbsp;&nbsp;
-			</div>
-			<br/>
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
 			
-			{'Yield Per Day'}<div style={{...boldStyle, color:'lightgreen'}}>
+				{'Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt(((yieldPerDay? yieldPerDay[0]: 0) / 1e16).toString()))/100}&nbsp;
-				{'$SGV'}&nbsp;&nbsp;
-			</div>
-			<br/>
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
 			
-			{'Rouges Yield Per Day'}<div style={{...boldStyle, color:'lightgreen'}}>
+				{'Rouges Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt(((myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0) / 1e16).toString()))/100}&nbsp;
-				{'$SGV'}&nbsp;&nbsp;
-			</div>
-			<br/>
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
 
-			{'Pending'}<div style={{...boldStyle, color:'lightgreen'}}>
+				{'Pending'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((availableForClaim / 1e16).toString()))/100}&nbsp;
-				{'$SGV'}&nbsp;&nbsp;
-			</div>{'CLAIM'}
-			<br/><br/>
-			<h1>{'You need a costume to go to the  launch party!'}</h1>
-			<br/>
-			{/* {'Connected to '}{account.substring(0,5) + '...' + account.substring(account.length - 3)}<br/> */}
-			{/* {chainId != 250 && <>{'Please connect to the Fantom network from your wallet'}</>} */}
-			<br/><br/>
+					{'$SGV'}&nbsp;&nbsp;
+				</div><br/><div className={' bg-green dark:bg-lgreen  text-white dark:black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}}>{'CLAIM'}</div></div></Box>
+
+		{/* {'Connected to '}{account.substring(0,5) + '...' + account.substring(account.length - 3)}<br/> */}
+		{/* {chainId != 250 && <>{'Please connect to the Fantom network from your wallet'}</>} */}
+		<br/><br/>
+		<Box className={'nes-container with-title p-4'}>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'Purchase Costume'}</p>
 			{currentPrice !== undefined ? 
-				<>{'Costume Price : '}
-					<div style={{...boldStyle, color:'lightgreen'}}>
+				<><p>{'Costume Price : '}
+					<div className={'text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((currentPrice / 1e16).toString()))/100}&nbsp;
 						{'$WSGOLD'}&nbsp;&nbsp;
 					</div>
-					<br/></>
+					<br/></p></>
 				: 
 				<>{'Loading ...'}<br/></>}
 			{currentPrice && <>
 				<Stack direction={'horizontal'}>
 					<div>{'I want '}</div>
 					<div>
-						<Form.Control size={'sm'} type={'number'} value={amount} min={0} onChange={e => setAmount(e.target.value)} style={{backgroundColor: 'black'}}/>
+						<Form.Control size={'sm'} type={'number'} value={amount} min={0} onChange={e => setAmount(e.target.value)} style={{backgroundColor: 'transparent'}}/>
 					</div>
 					<div>{'new costumes'}</div>
 					<div>
@@ -111,35 +114,44 @@ export function Connected({account}){
 			{/* {'Find them on '}<a href={'https://paintswap.finance/marketplace/collections/0x6fed400da17f2678c450aa1d35e909653b3b482a'}>{'OpenSea(!)'}</a> 
         &nbsp;{'or '}<a href={'https://artion.io/explore'}>{'Rarities(!)'}</a><br/> */}
 			<br/>
-
+		</Box>
 			
 			
-			{/* Get infos on a Rare Skin <div style={{display: "inline-block"}}>
+		{/* Get infos on a Rare Skin <div style={{display: "inline-block"}}>
             <Form.Control size="sm" type="number" placeholder="skin id" value={skinId !== 0 ? skinId : undefined} onChange={e => setSkinId(e.target.value)}/>
         </div> */}
-			{skinId > 0 && skinId <= 5000 && managerAddress && <><br/><br/><SkinInfos id={skinId} managerAddress={managerAddress}/></>}
-			<br/><br/>
-			{managerAddress && <Assigner managerAddress={managerAddress} />}
-			<br/><br/>
-			{/* {skins(skinBalance, account, managerAddress, "rare")} */}
+		{skinId > 0 && skinId <= 5000 && managerAddress && <><br/><br/><SkinInfos id={skinId} managerAddress={managerAddress}/></>}
+		<br/>
 
-			{!loading && !error && summonerList(data).length > 0 && <>
-				<br/>
-				<Stack direction={'horizontal'}>
-					<div>{'Your summoners :'}</div>
-					<div className={'ms-auto'}>
-						<Button size={'sm'} onClick={()=>{
-							mintAndAssign.send(summonerIds(data),{value: (currentPrice * summonerList(data).length).toString()});
-						}}>{'Give a new skin to each summoner !'}</Button>
-					</div>
-				</Stack>
-				<br/>
-			</>}
+		{/* {skins(skinBalance, account, managerAddress, "rare")} */}
 
-			<Row>{summoners(loading, error, data, managerAddress, currentPrice)}</Row>
-        
+		{/* {!loading && !error && summonerList(data).length > 0 && <>
 			<br/>
-			{skins(commonBalance, account, managerAddress, 'common')}
+			<Stack direction={'horizontal'}>
+				<div>{'Your summoners :'}</div>
+				<div className={'ms-auto'}>
+					<Button size={'sm'} onClick={()=>{
+						mintAndAssign.send(summonerIds(data),{value: (currentPrice * summonerList(data).length).toString()});
+					}}>{'Give a new skin to each summoner !'}</Button>
+				</div>
+			</Stack>
+			<br/>
+		</>} */}
+
+		{/* <Row>{summoners(loading, error, data, managerAddress, currentPrice)}</Row> */}
+        
+		<br/>
+		<Box className={'flex flex-col items-center'}>
+			<p style={{fontSize: '25px', margin: '20px'}}>{'DRESS YOUR ADVENTURER FOR THE PARTY'}</p>
+			<p style={{fontSize: '20px', margin: '20px'}}>{'MORE DETAILS'}</p>
+			<p style={{fontSize: '15px', margin: '60px', textTransform: 'none'}}>{'The costumes are generated at random as one of the 11 Adventurer classes.'}<br/><br/>
+				{'As an example, if you own a Paladin and mint one costume, you may not receive a Paladin costume.'}<br/><br/>
+				{'If you have the matching Adventurer, you can immediately connect the costume.'}<br/><br/>
+				{"You have two options if you don't have a matching costume."}<br/><br/>
+				{'You could sell that costume on open-sea.'}<br/>
+				{'You could mint an Adventurer to go along with that costume.'}</p>
+				<div className={' bg-green dark:bg-lgreen  text-white dark:black'} style={{width: '170px', paddingRight: '5px', paddingLeft: '5px'}}>{'Learn More'}</div><br/>
+			{skins(commonBalance, account, managerAddress, 'common')}</Box>
 		</>
 	);
 }
@@ -151,8 +163,8 @@ function skins(skinBalance, account, managerAddress, type){
 		for(let i = 0; i < skinBalance; i++)
 			arr.push(i);
 		return <>
-			{'Your '}{type === 'common' ? 'Common Costumes' : 'Rare Skins'}{' : '}<br/><br/>
-			<Row>{arr.map(index => <Skin key={index} index={index} account={account} managerAddress={managerAddress[0]} type={type}/>)}</Row>
+			{/* {'Your '}{type === 'common' ? 'Common Costumes' : 'Rare Skins'}{' : '}<br/><br/> */}
+			{arr.map(index => <><Skin key={index} index={index} account={account} managerAddress={managerAddress[0]} type={type}/><br/></>)}
 		</>;
 	} else {
 		return <Loading/>;
