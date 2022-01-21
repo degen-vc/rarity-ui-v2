@@ -60,7 +60,7 @@ const networkVars = {
 			'chainId': '0x89',
 			'blockExplorerUrls': ['https://polygonscan.com/'],
 			'chainName': 'Polygon',
-			'rpcUrls': ['https://rpc-mainnet.matic.network'],
+			'rpcUrls': ['https://rpc-mainnet.matic.network/'],
 			'nativeCurrency': {
 				'name': 'Polygon',
 				'symbol': 'MATIC',
@@ -81,7 +81,7 @@ const networkVars = {
 		RARITY_NAMES_ADDR: '0x181746D67F9a459181910F262739802b89071f06',
 		USDC_ADDR: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
 		USDC_PROXY_ADDR: '0xDD9185DB084f5C4fFf3b4f70E7bA62123b812226',
-		WRAPPED_GOLD: '0x07ff88589262F3f2D3090B79f7B7A00165dd4585',
+		WRAPPED_GOLD: '0xAfeDb81EE72EDe29c08AE350c5a7AF60D4Eb7162',
 		SCARCITY_GOLD: '0x49Cc4B94DDA8F3b0C9904944199C6eA8A134B3bd',
 
 
