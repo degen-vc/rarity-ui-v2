@@ -5,7 +5,6 @@
 **	@Filename:				Footer.js
 ******************************************************************************/
 
-import	React			from	'react';
 import	useUI			from	'contexts/useUI';
 
 function	Footer() {
@@ -23,6 +22,7 @@ function	Footer() {
 				<a href={'https://github.com/Rarity-Extended/RarityExtended'} target={'_blank'} rel={'noopener noreferrer'}>{'Original Code'} </a> { ' | '}
 				<a href={'https://degen-vc.gitbook.io/scarcity/'} target={'_blank'} rel={'noopener noreferrer'}>{'Docs'} </a> { ' | '}
 				<a href={'https://scarcity.gold/'} target={'_blank'} rel={'noopener noreferrer'}>{'Guide'} </a> { ' | '}
+				<a href={'https://medium.com/scarcity-gameverse'} target={'_blank'} rel={'noopener noreferrer'}>{'Medium'} </a> { ' | '}
 				<a href={'https://opensea.io/collection/scarcity-adventurers'} target={'_blank'} rel={'noopener noreferrer'}>{'OpenSea'} </a> 
 			</div>
 		</div>

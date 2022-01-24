@@ -56,14 +56,44 @@ export function Connected({account}){
     }`);
 	const {chainId} = useEthers();
 
-	console.log(`44444 - ${wsgoldAllowance}`);
-
 	const boldStyle = {fontWeight: 'bold', display: 'inline-block'};
     
 	// 250 is fantom's chain id
 	return(
 		<><Box className={'nes-container with-title p-4'}>
-			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'Farmind data'}</p>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'Farming data'}</p>
+			<div className={''}>
+				{'Total tokens available'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+                &nbsp;{Math.round(parseInt((totalTokensAvailable / 1e16).toString()))/100}&nbsp;
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
+			
+				{'My Tokens'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+                &nbsp;{Math.round(parseInt((myTokens / 1e16).toString()))/100}&nbsp;
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
+			
+				{'Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+                &nbsp;{Math.round(parseInt(((yieldPerDay? yieldPerDay[0]: 0) / 1e16).toString()))/100}&nbsp;
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
+			
+				{'Rouges Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+                &nbsp;{Math.round(parseInt(((myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0) / 1e16).toString()))/100}&nbsp;
+					{'$SGV'}&nbsp;&nbsp;
+				</div>
+				<br/>
+
+				{'Pending'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+                &nbsp;{Math.round(parseInt((availableForClaim / 1e16).toString()))/100}&nbsp;
+					{'$SGV'}&nbsp;&nbsp;
+				</div><br/><Button className={'bg-green dark:bg-lgreen  text-white dark:text-black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}} onClick={()=>{clamSGV.send()}}>{'CLAIM'}</Button></div></Box>
+
+				<Box className={'nes-container with-title p-4'}>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'Farming data'}</p>
 			<div className={''}>
 				{'Total tokens available'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((totalTokensAvailable / 1e16).toString()))/100}&nbsp;
@@ -161,7 +191,7 @@ export function Connected({account}){
 				{"You have two options if you don't have a matching costume."}<br/><br/>
 				{'You could sell that costume on open-sea.'}<br/>
 				{'You could mint an Adventurer to go along with that costume.'}</p>
-				<div className={' bg-green dark:bg-lgreen  text-white dark:black'} style={{width: '170px', paddingRight: '5px', paddingLeft: '5px'}}>{'Learn More'}</div><br/>
+			<div className={' bg-green dark:bg-lgreen  text-white dark:black'} style={{width: '170px', paddingRight: '5px', paddingLeft: '5px'}}>{'Learn More'}</div><br/>
 			{skins(commonBalance, account, managerAddress, 'common')}</Box>
 		</>
 	);
