@@ -27,7 +27,7 @@ import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 import	useWeb3							from	'contexts/useWeb3';
 
 import 	USDC_ABI from 'utils/abi/USDC.abi';
-import 	WRAPPED_GOLD_ABI 														from 'utils/abi/wrappedGold.abi';
+import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 import  SCARCITY_GOLD_ABI from 'utils/abi/gold.abi';
 
 

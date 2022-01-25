@@ -13,11 +13,13 @@ import Summoner from './Summoner';
 import SkinInfos from './SkinInfos';
 import Assigner from './Assigner';
 import SxgvTokenAbi from 'utils/abi/sxgvToken.abi.js';
-import	Box					from	'components/Box';
+import Box					from	'components/Box';
 import WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
+import useRarity from	'contexts/useRarity';
+
 
 export function Connected({account}){
-	const rarityMFix = '0xfB48543dFFC6566638709a3D0a8e66eBed73732A';
+	const rarityMFix = '0x781394c4878e217A02CD66248df86dc4dC427738';
 
 	const sxgvTokenInterface = new ethers.utils.Interface(JSON.stringify(SxgvTokenAbi));
 	const wsgoldInterface = new ethers.utils.Interface(JSON.stringify(WRAPPED_GOLD_ABI));
@@ -27,7 +29,7 @@ export function Connected({account}){
 	const RSMFixContract = new ethers.Contract(rarityMFix, SkinManagerFixInterface);
 	const clamSGV = useContractFunction(RSMFixContract, 'claimAll');
 	const approveWSGold = useContractFunction(WSGolsContract,'approve');
-	const sxgvTokenAdress = '0xB0519b72fE39b8AcA96ba1c64e07FAd1cc3B8D99';
+	const sxgvTokenAdress = '0xa6e91fe4fcbdb2747628d6d6972b0374382896a3';
 	const totalTokensAvailable = useContractCall({abi: sxgvTokenInterface, address: sxgvTokenAdress, method: 'balanceOf', args: [rarityMFix]});
 	const myTokens = useContractCall({abi: sxgvTokenInterface, address: sxgvTokenAdress, method: 'balanceOf', args: [account]});
 	const yieldPerDay = useContractCall({abi: SkinManagerFixInterface, address: rarityMFix, method: 'myAdventurersYieldPerDay', args: [account]});
@@ -55,13 +57,22 @@ export function Connected({account}){
         }
     }`);
 	const {chainId} = useEthers();
-
 	const boldStyle = {fontWeight: 'bold', display: 'inline-block'};
-    
-	// 250 is fantom's chain id
+	const	{rarities, updateRarity, currentAdventurer} = useRarity();
+	const currentSkin = useContractCall({abi: SkinManagerFixInterface, address: rarityMFix, method: 'skinOf', args: [+currentAdventurer?.tokenID]});
+	const currentAvailableForClaim = useContractCall({abi: SkinManagerFixInterface, address: rarityMFix, method: 'availableForClaim', args: currentSkin? [+`${currentSkin[0]['tokenId']}`]: '0'});
+	const classNuber = useContractCall({abi: commonInterface, address: addresses.commonSkins, method: 'class', args: currentSkin? [+`${currentSkin[0]['tokenId']}`]: '0'});
+	const isRouge = `${classNuber}` == 9;
+	const claim = useContractFunction(RSMFixContract, 'claim');
+
+
+
+	console.log(`${isRouge}`);
+
+
 	return(
 		<><Box className={'nes-container with-title p-4'}>
-			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'Farming data'}</p>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'My Farming data'}</p>
 			<div className={''}>
 				{'Total tokens available'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((totalTokensAvailable / 1e16).toString()))/100}&nbsp;
@@ -69,19 +80,19 @@ export function Connected({account}){
 				</div>
 				<br/>
 			
-				{'My Tokens'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+				{'Tokens'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((myTokens / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div>
 				<br/>
 			
-				{'Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+				{'Adventurers Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt(((yieldPerDay? yieldPerDay[0]: 0) / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div>
 				<br/>
 			
-				{'Rouges Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+				{'Approx. Rouges Yield (20%)'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt(((myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0) / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div>
@@ -91,38 +102,31 @@ export function Connected({account}){
                 &nbsp;{Math.round(parseInt((availableForClaim / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div><br/><Button className={'bg-green dark:bg-lgreen  text-white dark:text-black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}} onClick={()=>{clamSGV.send()}}>{'CLAIM'}</Button></div></Box>
-
-				<Box className={'nes-container with-title p-4'}>
-			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>{'Farming data'}</p>
+		<br/><br/>
+		<Box className={'nes-container with-title p-4'}>
+			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>
+				{`Farming data of ${currentAdventurer?.name ? currentAdventurer?.name : 'adventurer ' + currentAdventurer?.tokenID}`}
+			</p>
 			<div className={''}>
-				{'Total tokens available'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
-                &nbsp;{Math.round(parseInt((totalTokensAvailable / 1e16).toString()))/100}&nbsp;
+
+				<b className={ isRouge? ' d-none' : ''}>{'Yield Per Day'}</b><div style={{marginTop: '-20px'}} className={'absolute ml-50 text-black dark:text-white' + (isRouge? ' d-none' : '')}>
+                &nbsp;{62.05}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div>
-				<br/>
+				<br className={ isRouge? ' d-none' : ''}/>
 			
-				{'My Tokens'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
-                &nbsp;{Math.round(parseInt((myTokens / 1e16).toString()))/100}&nbsp;
-					{'$SGV'}&nbsp;&nbsp;
-				</div>
-				<br/>
-			
-				{'Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
-                &nbsp;{Math.round(parseInt(((yieldPerDay? yieldPerDay[0]: 0) / 1e16).toString()))/100}&nbsp;
-					{'$SGV'}&nbsp;&nbsp;
-				</div>
-				<br/>
-			
-				{'Rouges Yield Per Day'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+				<b className={ isRouge? '' : ' d-none'}>{'Approx. Rouges Yield (20%)'}</b><div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen' + ( isRouge? '' : ' d-none')}>
                 &nbsp;{Math.round(parseInt(((myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0) / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div>
-				<br/>
+				<br className={ isRouge? '' : ' d-none'}/>
 
 				{'Pending'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
-                &nbsp;{Math.round(parseInt((availableForClaim / 1e16).toString()))/100}&nbsp;
+                &nbsp;{Math.round(parseInt((currentAvailableForClaim / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
-				</div><br/><Button className={'bg-green dark:bg-lgreen  text-white dark:text-black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}} onClick={()=>{clamSGV.send()}}>{'CLAIM'}</Button></div></Box>
+				</div><br/><Button className={'bg-green dark:bg-lgreen  text-white dark:text-black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}} onClick={()=>{claim.send(currentSkin? [+`${currentSkin[0]['tokenId']}`]: '0')}}>{'CLAIM'}</Button>
+			</div>
+		</Box>
 
 		{/* {'Connected to '}{account.substring(0,5) + '...' + account.substring(account.length - 3)}<br/> */}
 		{/* {chainId != 250 && <>{'Please connect to the Fantom network from your wallet'}</>} */}
