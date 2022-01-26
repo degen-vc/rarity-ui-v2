@@ -84,7 +84,7 @@ function	AppWrapper(props) {
 		<>
 			<Head>
 				<title>{'Scarcity Gameverse'}</title>
-				<link rel={'icon'} href={'og.ico'} />
+				<link rel={'icon'} href={'/og.ico'} />
 				<meta httpEquiv={'X-UA-Compatible'} content={'IE=edge'} />
 				<meta name={'viewport'} content={'width=device-width, initial-scale=1'} />
 				<meta name={'description'} content={'Scarcity Gameverse'} />

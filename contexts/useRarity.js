@@ -6,7 +6,7 @@
 ******************************************************************************/
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import	React, {useState, useEffect, useContext, createContext}	from	'react';
+import	{useState, useEffect, useContext, createContext}	from	'react';
 import	useWeb3													from	'contexts/useWeb3';
 import	{ethers}												from	'ethers';
 import	{Provider, Contract}									from	'ethcall';
