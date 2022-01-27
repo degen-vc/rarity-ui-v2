@@ -105,7 +105,7 @@ export function Connected({account}){
 		<br/><br/>
 		<Box className={'nes-container with-title p-4'}>
 			<p className={'title bg-white dark:bg-dark-600 z-50 relative '} style={{marginTop: '-30px'}}>
-				{`Farming data of ${currentAdventurer?.name ? currentAdventurer?.name : 'adventurer ' + currentAdventurer?.tokenID}`}
+				{`Farming data for ${currentAdventurer?.name ? currentAdventurer?.name : 'adventurer ' + currentAdventurer?.tokenID}`}
 			</p>
 			<div className={''}>
 
