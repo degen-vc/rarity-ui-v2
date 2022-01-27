@@ -98,7 +98,7 @@ export function Connected({account}){
 				</div>
 				<br/>
 
-				{'Pending'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+				{'Claimable'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((availableForClaim / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div><br/><Button className={'bg-green dark:bg-lgreen  text-white dark:text-black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}} onClick={()=>{clamSGV.send()}}>{'CLAIM'}</Button></div></Box>
@@ -121,7 +121,7 @@ export function Connected({account}){
 				</div>
 				<br className={ isRouge? '' : ' d-none'}/>
 
-				{'Pending'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+				{'Claimable'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt((currentAvailableForClaim / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div><br/><Button className={'bg-green dark:bg-lgreen  text-white dark:text-black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}} onClick={()=>{claim.send(currentSkin? [+`${currentSkin[0]['tokenId']}`]: '0')}}>{'CLAIM'}</Button>
@@ -150,8 +150,8 @@ export function Connected({account}){
 					</div>
 					<div>{'new costumes'}</div>
 					<div>
-						<Button className={'bg-green dark:bg-lgreen  text-white dark:text-black '} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px', margin: '10px'}} size={'sm'} onClick={()=>{mintRandomClasses.send(amount,{value: '0'});}}>{'Mint'}</Button>
 						<Button className={'bg-green dark:bg-lgreen  text-white dark:text-black ' + (`${wsgoldAllowance}` != '115792089237316195423570985008687907853269984665640564039457584007913129639935' ? ' ' : ' hidden')} style={{width: '120px', paddingRight: '5px', paddingLeft: '5px'}} size={'sm'} onClick={()=>{approveWSGold.send(addresses.commonSkins, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);}}>{'Approve'}</Button>
+						<Button className={'bg-green dark:bg-lgreen  text-white dark:text-black '} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px', margin: '10px'}} size={'sm'} onClick={()=>{mintRandomClasses.send(amount,{value: '0'});}}>{'Mint'}</Button>
 					</div>
 				</Stack><br/></>
 			}
@@ -188,14 +188,14 @@ export function Connected({account}){
 		<br/>
 		<Box className={'flex flex-col items-center'}>
 			<p style={{fontSize: '25px', margin: '20px'}}>{'DRESS YOUR ADVENTURER FOR THE PARTY'}</p>
-			<p style={{fontSize: '20px', margin: '20px'}}>{'MORE DETAILS'}</p>
+			{/* <p style={{fontSize: '20px', margin: '20px'}}>{'MORE DETAILS'}</p> */}
 			<p style={{fontSize: '15px', margin: '60px', textTransform: 'none'}}>{'The costumes are generated at random as one of the 11 Adventurer classes.'}<br/><br/>
 				{'As an example, if you own a Paladin and mint one costume, you may not receive a Paladin costume.'}<br/><br/>
 				{'If you have the matching Adventurer, you can immediately connect the costume.'}<br/><br/>
 				{"You have two options if you don't have a matching costume."}<br/><br/>
 				{'You could sell that costume on open-sea.'}<br/>
 				{'You could mint an Adventurer to go along with that costume.'}</p>
-			<div className={' bg-green dark:bg-lgreen  text-white dark:black'} style={{width: '170px', paddingRight: '5px', paddingLeft: '5px'}}>{'Learn More'}</div><br/>
+			<div className={' bg-green dark:bg-lgreen  text-white dark:black'} style={{width: '170px', paddingRight: '5px', paddingLeft: '5px'}}><a href={'https://scarcity.gold'}  target={'_blank'} rel={'noopener noreferrer'}>{'Learn More'}</a></div><br/>
 			{skins(commonBalance, account, managerAddress, 'common')}</Box>
 		</>
 	);
