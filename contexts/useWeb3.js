@@ -46,6 +46,7 @@ export const Web3ContextApp = ({children}) => {
 	const onUpdate = useCallback(async (update) => {
 		if (update.provider) {
 			set_provider(library);
+			console.log(`library - ${library}`);
 		}
 		if (update.chainId) {
 			if (update.chainId.startsWith('0x')) {
@@ -76,6 +77,7 @@ export const Web3ContextApp = ({children}) => {
 
 	const onActivate = useCallback(async () => {
 		set_provider(library);
+		// console.log(`library - ${JSON.stringify(library)}`);
 		set_address(toAddress(account));
 		library.getNetwork().then(e => set_chainID(e.chainId));
 		library.getNetwork().then(e => set_chainTime(e.timestamp));

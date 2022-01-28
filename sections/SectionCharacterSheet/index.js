@@ -24,8 +24,10 @@ import	{Provider, Contract}				from	'ethcall';
 import	UseWeb3								from	'contexts/useWeb3';
 
 import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
+import	useWeb3							from	'contexts/useWeb3';
+
 import 	USDC_ABI from 'utils/abi/USDC.abi';
-import 	WRAPPED_GOLD_ABI 														from 'utils/abi/wrappedGold.abi';
+import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 import  SCARCITY_GOLD_ABI from 'utils/abi/gold.abi';
 
 
@@ -253,10 +255,10 @@ function	AdventurerTab({adventurer, updateRarity, provider}) {
 
 const	Info = ({adventurer, updateRarity, provider}) => {
 	// const	{provider2, chainID} = useWeb3();
-
-	const	{active, address, chainID, provider2} = UseWeb3();
+	const	{active, address, chainID, provider2} = useWeb3();
 	const [allowance, setAllawance] = useState(0);
 	const [GoldAllowance, setGoldAllawance] = useState(0);
+
 
 	checkUSDCallowance(address).then(data => setAllawance(data));
 	checkGoldAllowance(adventurer.tokenID).then(data => setGoldAllawance(data));

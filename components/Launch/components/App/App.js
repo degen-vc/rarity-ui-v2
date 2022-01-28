@@ -8,36 +8,23 @@ export default function Mead(){
 	const {activateBrowserWallet, account} = useEthers();
 	// const style = {color : '#ffffff', backgroundColor: '#000000'};
 	return(
-		<div className={'App'} style={{color : '#ffffff', backgroundColor: '#000000'}}>
-			<Navbar bg={'dark'}>
-				<Navbar.Brand style={{color : '#ffffff'}}>
-					{/* <Link to='/'>
-                    &nbsp;&nbsp;Rarity Summoner's Rare Skins&nbsp;&nbsp;
-
-                </Link> */}
+		<div className={'App bg-white dark:bg-dark-600'}>
+			<Navbar className={'bg-white dark:bg-dark-600'}>
+				<Navbar.Brand className={'bg-white dark:bg-dark-600'}>
 				</Navbar.Brand>
-				<Navbar.Brand style={{color : '#ffffff'}}>
-					{/* <Link to='/mead'>
-                        MEAD
-                    </Link> */}
+				<Navbar.Brand className={'bg-white dark:bg-dark-600'}>
 				</Navbar.Brand>
 			</Navbar>
-			<Container style={{color : '#ffffff', backgroundColor: '#000000'}}>
+			<Container className={'bg-white dark:bg-dark-600'}>
 				<Row>
 					<Col>
 						<Row>
 							<Col>
 								<br/>
-                                
 								{!account && <><br/>&nbsp;&nbsp;<Button onClick={() => activateBrowserWallet()}>{'Connect Wallet'}</Button></>}
-
-								{/* ugly cheap fix to background-color nor filling the whole screen */}
 							</Col>
-                            
 						</Row>
 						{account && <Connected account={account}/>}
-
-						{Array(100).fill(<br/>)} 
 					</Col>
 				</Row>
 			</Container>

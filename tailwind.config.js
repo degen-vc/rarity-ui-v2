@@ -17,6 +17,8 @@ module.exports = {
 			mono: ['IBM Plex Mono', 'monospace']
 		},
 		colors: {
+			green: 'green',
+			lgreen: 'lightgreen',
 			black: '#000000',
 			blackLight: '#828282',
 			darkWhite: '#F2F2F2',
@@ -69,10 +71,14 @@ module.exports = {
 				'8.5': '2.125rem',
 				'23': '5.75rem',
 			},
+			margin: {
+				50: '45%',
+			},
 			width: {
 				57: '14.25rem',
 				75: '18.75rem',
 				77: '19.25rem',
+				50: '45%',
 				screen: '100vw'
 			},
 			height: {
