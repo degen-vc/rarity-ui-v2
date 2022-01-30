@@ -10,6 +10,10 @@ import	SectionNoAdventurer			from	'sections/SectionNoAdventurer';
 import	SectionCharacterSheet		from	'sections/SectionCharacterSheet';
 import	useWeb3						from	'contexts/useWeb3';
 import	useRarity					from	'contexts/useRarity';
+import	ModalFeats										from	'components/ModalFeats';
+import	{featsPerClass, initialFeatsPerClass}			from	'utils/libs/rarityFeats';
+
+
 
 function	Index({router}) {
 	const	{provider, chainTime} = useWeb3();
