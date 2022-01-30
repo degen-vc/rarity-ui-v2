@@ -1073,3 +1073,35 @@ export async function	approveERC20({provider, contractAddress, adventurerID, spe
 		return;
 	}
 }
+
+/**********************************************************************
+**	TRANSFER
+**********************************************************************/
+export const transfer = async (provider, contractAddress, contractABI, sender, recepient, amount, isGold) => {
+	let	_toast = toast.loading(`Transfer ${amount} ${isGold ? 'Gold' : 'Craft Materials'} from Adventurer ${sender} to Adventurer ${recepient}`);
+	const	signer = provider.getSigner();
+	const amountToTransfer = isGold ?  ethers.utils.parseEther(amount) : amount;
+
+	try {
+		const	contract = new ethers.Contract(
+			contractAddress,
+			contractABI,
+			signer
+		);
+		const	transaction = await contract.transfer(sender, recepient, amountToTransfer);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			toast.dismiss(_toast);
+			toast.success('Transfer successful');
+			return;
+		} else {
+			toast.dismiss(_toast);
+			toast.error('Transfer reverted');
+			return;
+		}
+	} catch (e) {
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+		return;
+	}
+};

@@ -155,15 +155,15 @@ function	DialogChoices({router, adventurersCount}) {
 					),
 					onClick: () => router.push('/town/quest?tab=the-forest')
 				},
-				{
-					label: (
-						<>
-							{'THE GLORY OF '}
-							<span className={'text-tag-info'}>{'BATTLE ROYALE'}</span>
-						</>
-					),
-					onClick: () => router.push('/town/quest?tab=battle-royale')
-				}
+				// {
+				// 	label: (
+				// 		<>
+				// 			{'THE GLORY OF '}
+				// 			<span className={'text-tag-info'}>{'BATTLE ROYALE'}</span>
+				// 		</>
+				// 	),
+				// 	onClick: () => router.push('/town/quest?tab=battle-royale')
+				// }
 			].filter(o => Boolean(o))} />
 	);
 }
