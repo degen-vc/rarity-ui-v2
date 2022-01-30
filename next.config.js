@@ -8,51 +8,6 @@
 const Dotenv = require('dotenv-webpack');
 
 const networkVars = {
-<<<<<<< HEAD
-=======
-	ftm: {
-		NETWORK_NAME: 'Fantom',
-		NETWORK_KEY: process.env.FMT_KEY,
-		CHAIN_ID: 250,
-		NETWORK_API_URL: 'https://api.ftmscan.com/api',
-		MULTICALL_ADDRESS: '0xc04d660976c923ddba750341fe5923e47900cf24',
-		ADD_ETH_CHAIN_PARAM: JSON.stringify({
-			'chainId': '0xFA',
-			'blockExplorerUrls': ['https://ftmscan.com'],
-			'chainName': 'Fantom Opera',
-			'rpcUrls': ['https://rpc.ftm.tools'],
-			'nativeCurrency': {
-				'name': 'Fantom',
-				'symbol': 'FTM',
-				'decimals': 18
-			}
-		}),
-
-		// Contracts
-		RARITY_ADDR: '0x44c37Eef72F5C141fa95896030BC6c0A0c16325B',
-		RARITY_ATTR_ADDR: '0x9e2f4677b48ebE83F70Cf9EfD32bAE98CAa9faf5',
-		RARITY_GOLD_ADDR: '0x49Cc4B94DDA8F3b0C9904944199C6eA8A134B3bd',
-		RARITY_SKILLS_ADDR: '0x639bc6637e4b861C8DED7955b1c715A509Cef99c',
-
-		RARITY_FEATS_ADDR: '0x4F51ee975c01b0D6B29754657d7b3cC182f20d8a',
-		RARITY_FEATS_ABI: require('./utils/abi/rarityFeats.abi.json'),
-		
-		RARITY_CRAFTING_ADDR: '0x4DC7c7E689b52d217Ce4D5664aD14C5089A9EfBb',
-		RARITY_CRAFTING_HELPER_ADDR: '0xf3a69301d1492493eB50c330aEE58402C4bcfA1D',	// FTM Only
-
-		RARITY_XP_PROXY: '0x640bdeff13ae5527424acd868F65357270b05eB8',
-		RARITY_NAMES_ADDR: '0x181746D67F9a459181910F262739802b89071f06',
-
-		USDC_ADDR: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-		USDC_PROXY_ADDR: '0xDD9185DB084f5C4fFf3b4f70E7bA62123b812226',
-
-
-		// Dungeon
-		DUNGEON_THE_CELLAR_ADDR: '0x2A0F1cB17680161cF255348dDFDeE94ea8Ca196A',
-		DUNGEON_THE_FOREST_ADDR: '0x48e6F88F1Ab05677675dE9d14a705f8A137ea2bC',
-		DUNGEON_THE_FOREST_V1_ADDR: '0xb37d3d79ea86B0334d9322c695339D577A3D57be',
-	},
->>>>>>> main2
 	polygon: {
 		NETWORK_NAME: 'Polygon',
 		NETWORK_KEY: 'DTV5YPK2WGU2HNC9P3XEKFF6ZYQZPVPRAP', //process.env.POLYGON_KEY,
