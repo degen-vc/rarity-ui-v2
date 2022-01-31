@@ -6,9 +6,24 @@
 ******************************************************************************/
 
 import	{ethers}			from	'ethers';
+import	{Contract}			from	'ethcall';
 import	toast				from	'react-hot-toast';
 import	CLASSES				from	'utils/codex/classes';
+import  {newEthCallProvider} from 'utils';
+import  {parsePlots} from 'utils/scarcity-functions';
+
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';
+import  SGV_TOKEN_ABI from 'utils/abi/sgvToken.abi';
+
+export const onSuccessToast = (_toast, msg) => {
+	toast.dismiss(_toast);
+	toast.success(msg);
+};
+
+export const onErrorToast = (_toast, msg = 'Something went wrong, please try again later') => {
+	toast.dismiss(_toast);
+	toast.error(msg);
+};
 
 async function	_adventure(loader, {provider, contractAddress, tokenID}, callback) {
 	const	_toast = toast.loading(loader);
@@ -258,6 +273,7 @@ export async function	claimGold({provider, contractAddress, tokenID}, callback) 
 	try {
 		await rarity.callStatic.claim(tokenID);
 	} catch (error) {
+		console.log(error);
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
 		callback({error, data: undefined});
@@ -1073,3 +1089,128 @@ export async function	approveERC20({provider, contractAddress, adventurerID, spe
 		return;
 	}
 }
+
+/**********************************************************************
+**	LANDS GAME Actions
+**********************************************************************/
+export const getLandsGameInfo = async (provider, contractAddress, abi, address, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const game = new Contract(contractAddress, abi);
+
+	const maxStakeCall = game.MAX_STAKE();
+	const [maxStake] = await ethcallProvider.all([maxStakeCall]);
+
+	const pointsBalanceCall = game.earned(address);
+	const [pointsBalance] = await ethcallProvider.all([pointsBalanceCall]);
+
+	const needCall = await game.rewardNeeded();
+	const [rewardNeeded] = await ethcallProvider.all([needCall]);
+
+	const stakedCall = await game.balanceOf(address);
+	const [staked] = await ethcallProvider.all([stakedCall]);
+
+	const plotsCall = await game.getPlots();
+	const [plots] = await ethcallProvider.all([plotsCall]);
+
+	callback({
+		plots: parsePlots(plots, address),
+		balance: ethers.utils.formatEther(pointsBalance),
+		staked: ethers.utils.formatEther(staked),
+		rewardNeeded: ethers.utils.formatEther(rewardNeeded),
+		maxStake: ethers.utils.formatEther(maxStake),
+		canBuy: ethers.BigNumber.from(pointsBalance).gte(rewardNeeded)
+	});
+};
+
+export const buyPlot = async (provider, contractAddress, abi, x, y) => {
+	let _toast = toast.loading(`Buy ${x}:${y} chords plot`);
+	const signer = provider.getSigner();
+	const gameContract = new ethers.Contract(contractAddress, abi, signer);
+
+	try {
+		const transaction = await gameContract.redeem(x, y);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, `You've successfully bought ${x}:${y} chords plot`);
+			return;
+		}
+	} catch (e) {
+		onErrorToast(_toast);
+		return;
+	}
+};
+
+
+/**********************************************************************
+**	SGV TOKEN Actions
+**********************************************************************/
+export const getSGVBalance = async (provider, address, callback) => {
+	const contractAddress = process.env.SGV_TOKEN_ADDR;
+	const ethcallProvider = await newEthCallProvider(provider);
+	const sgvContract = new Contract(contractAddress, SGV_TOKEN_ABI);
+	const sgvBalanceCall = sgvContract.balanceOf(address); 
+	const [sgvBalance] = await ethcallProvider.all([sgvBalanceCall]);
+	
+	callback(ethers.utils.formatEther(sgvBalance));
+};
+
+export const stakeSgvTokens = async (provider, mapContractAddress, mapAbi, value, maxValue) => {
+	let _toast = toast.loading(`1/2 - Approving ${value} $SGV staking...`);
+	const sgvContractAddress = process.env.SGV_TOKEN_ADDR;
+	const signer = provider.getSigner();
+	const valueToStake = ethers.utils.parseEther(value);
+	const maxStake = ethers.utils.parseEther(maxValue);
+
+	const sgvContract = new ethers.Contract(sgvContractAddress, SGV_TOKEN_ABI, signer);
+	const gameContract = new ethers.Contract(mapContractAddress, mapAbi, signer);
+
+	// TODO(???): add same logic for approve as for gold
+	try {
+		if (ethers.BigNumber.from(valueToStake).gte(maxStake)) {
+			onErrorToast(_toast, `You can't stake more than ${maxValue} $SGV`);
+			return;
+		}
+		const transaction = await sgvContract.approve(mapContractAddress, valueToStake);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, 'Approve successfull');
+		}
+	} catch (e) {
+		onErrorToast(_toast);
+		return;
+	}
+
+	try {
+		_toast = toast.loading('2/2 - Staking tokens...');
+		const transaction = await gameContract.stake(valueToStake);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, `${value} $SGV Tokens staked!`);
+			return;
+		}
+	} catch (e) {
+		onErrorToast(_toast);
+		return;
+	}
+};
+
+export const unstakeSgvTokens = async (provider, contractAddress, abi, stakedValue) => {
+	const _toast = toast.loading('Unstake $SGV Tokens');
+	const signer = provider.getSigner();
+	const gameContract = new ethers.Contract(contractAddress, abi, signer);
+	if (stakedValue === 0) {
+		onErrorToast(_toast, 'You don\' have tokens to unstake');
+		return;
+	}
+	try {
+		const transaction = await gameContract.exit();
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, 'Tokens successfully unstaked');
+			return;
+		}
+	} catch (e) {
+		onErrorToast(_toast);
+		return;
+	}
+};

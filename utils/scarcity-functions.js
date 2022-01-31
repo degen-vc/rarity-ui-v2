@@ -23,3 +23,8 @@ export function isDungeonAvailable(dungeon) {
 export const numberOfDungeonsAvailable = Object.keys(dungeonTypes).reduce((count, dungeonKey) => (
     isDungeonAvailable(dungeonTypes[dungeonKey]) ? count + 1 : count
 ), 0);
+
+export const parsePlots = (plots, address) => plots.reduce((all, plot) => {
+	const [x, y, owner] = `${plot}`.split(',');
+	return {...all, [`${x}-${y}`]: {x, y, owner, isOwner: address === owner}};
+}, {});
