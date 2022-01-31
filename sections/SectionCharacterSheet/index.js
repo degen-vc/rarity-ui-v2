@@ -16,7 +16,9 @@ import	{xpRequired}		from	'utils/libs/rarity';
 import	Box					from	'components/Box';
 import	Attributes			from	'sections/SectionCharacterSheet/Attributes';	
 import	Balloon				from	'sections/SectionCharacterSheet/Balloon';	
-import	Skills				from	'sections/SectionCharacterSheet/Skills';	
+import	Skills				from	'sections/SectionCharacterSheet/Skills';
+import	Feats				from	'sections/SectionCharacterSheet/Feats';	
+
 import	Inventory			from	'sections/SectionCharacterSheet/Inventory';
 import	{classMappingImg}	from	'utils/constants';
 import  {ethers} from	'ethers';
@@ -24,8 +26,10 @@ import	{Provider, Contract}				from	'ethcall';
 import	UseWeb3								from	'contexts/useWeb3';
 
 import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
+import	useWeb3							from	'contexts/useWeb3';
+
 import 	USDC_ABI from 'utils/abi/USDC.abi';
-import 	WRAPPED_GOLD_ABI 														from 'utils/abi/wrappedGold.abi';
+import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 import  SCARCITY_GOLD_ABI from 'utils/abi/gold.abi';
 
 
@@ -240,23 +244,29 @@ function	AdventurerTab({adventurer, updateRarity, provider}) {
 				</div>
 				<div
 					onClick={() => set_selectedTab(1)}
-					className={`w-full cursor-pointer text-center border-solid border-l-0 md:border-l-4 ${selectedTab === 1 ? 'bg-gray-principal md:bg-white dark:bg-dark-400 md:dark:bg-dark-600 border-b-4 md:border-b-0' : 'border-b-4 md:border-b-4'} border-black dark:border-dark-100 text-center py-4`}>
+					className={`w-full cursor-pointer text-center border-solid border-l-0 md:border-l-4 ${selectedTab === 1 ? 'bg-gray-principal md:bg-white dark:bg-dark-400 md:dark:bg-dark-600 border-b-0' : 'border-b-0 md:border-b-4'} border-black dark:border-dark-100 text-center py-4`}>
+					<p>{'Feats'}</p>
+				</div>
+				<div
+					onClick={() => set_selectedTab(2)}
+					className={`w-full cursor-pointer text-center border-solid border-l-0 md:border-l-4 ${selectedTab === 2 ? 'bg-gray-principal md:bg-white dark:bg-dark-400 md:dark:bg-dark-600 border-b-4 md:border-b-0' : 'border-b-4 md:border-b-4'} border-black dark:border-dark-100 text-center py-4`}>
 					<p>{'Inventory'}</p>
 				</div>
 			</div>
 			<div className={'w-full border-black dark:border-dark-100 py-4 md:-mt-1'}>
-				{selectedTab === 0 ? <Skills adventurer={adventurer} updateRarity={updateRarity} provider={provider} /> : <Inventory adventurer={adventurer} />}
-			</div>
+				{selectedTab === 0 ? <Skills adventurer={adventurer} updateRarity={updateRarity} provider={provider} /> : null}
+				{selectedTab === 1 ? <Feats adventurer={adventurer} updateRarity={updateRarity} provider={provider} /> : null}
+				{selectedTab === 2 ? <Inventory adventurer={adventurer} /> : null}			</div>
 		</Box>
 	);
 }
 
 const	Info = ({adventurer, updateRarity, provider}) => {
 	// const	{provider2, chainID} = useWeb3();
-
-	const	{active, address, chainID, provider2} = UseWeb3();
+	const	{active, address, chainID, provider2} = useWeb3();
 	const [allowance, setAllawance] = useState(0);
 	const [GoldAllowance, setGoldAllawance] = useState(0);
+
 
 	checkUSDCallowance(address).then(data => setAllawance(data));
 	checkGoldAllowance(adventurer.tokenID).then(data => setGoldAllawance(data));

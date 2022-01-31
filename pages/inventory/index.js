@@ -6,9 +6,10 @@
 ******************************************************************************/
 
 // import	React						from	'react';
-import	Image						from	'next/image';
+import	Image						  from	'next/image';
+import	Link						  from	'next/link';
 import	useRarity					from	'contexts/useRarity';
-import	Box							from	'components/Box';
+import	Box							  from	'components/Box';
 
 function	SectionItem({item}) {
 	function	renderWeaponChildren() {
@@ -141,6 +142,16 @@ function	Index() {
 		<section className={'mt-24 md:mt-12'}>
 			<div className={'flex flex-col max-w-screen-lg w-full mx-auto'}>
 				<h1 className={'text-black dark:text-white text-base mb-12'}>{'Inventory'}</h1>
+				<Box className={'p-2 md:p-4 mb-12'}>
+					<Link href={'/inventory/transfer'}>
+						<div className={'py-3 px-2 group hover:bg-gray-principal dark:hover:bg-dark-100 cursor-pointer bg-white dark:bg-dark-600'}>
+							<div className={'cursor-pointer'} style={{cursor: 'pointer'}}>
+								<span className={'inline mb-1 mr-2 group-hover:opacity-100 opacity-5'} style={{cursor: 'pointer'}}>{'>'}</span>
+								<span className={'cursor-pointer text-xs'} style={{cursor: 'pointer'}}>{'TRANSFER GOLD AND CRAFT MATERIALS'}</span>
+							</div>
+						</div>
+					</Link>
+				</Box>
 				<div className={'w-full grid grid-cols-1 gap-6'}>
 					{renderInventory()}
 				</div>

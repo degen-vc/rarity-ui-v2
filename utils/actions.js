@@ -1222,3 +1222,80 @@ export const unstakeSgvTokens = async (provider, contractAddress, abi, stakedVal
 		return;
 	}
 };
+
+/**********************************************************************
+**	TRANSFER
+**********************************************************************/
+export const transfer = async (provider, contractAddress, contractABI, sender, recepient, amount, isGold) => {
+	let	_toast = toast.loading(`Transfer ${amount} ${isGold ? 'Gold' : 'Craft Materials'} from Adventurer ${sender} to Adventurer ${recepient}`);
+	const	signer = provider.getSigner();
+	const amountToTransfer = isGold ?  ethers.utils.parseEther(amount) : amount;
+
+	try {
+		const	contract = new ethers.Contract(
+			contractAddress,
+			contractABI,
+			signer
+		);
+		const	transaction = await contract.transfer(sender, recepient, amountToTransfer);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			toast.dismiss(_toast);
+			toast.success('Transfer successful');
+			return;
+		} else {
+			toast.dismiss(_toast);
+			toast.error('Transfer reverted');
+			return;
+		}
+	} catch (e) {
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+		return;
+	}
+};
+
+export async function	learnFeat({provider, tokenID, feat}, callback) {
+	const	_toast = toast.loading('Learning new feat...');
+	const	signer = provider.getSigner();
+	const	rarity = new ethers.Contract(
+		process.env.RARITY_FEATS_ADDR,
+		process.env.RARITY_FEATS_ABI,
+		signer
+	);
+
+	/**********************************************************************
+	**	In order to avoid dumb error, let's first check if the TX would
+	**	be successful with a static call
+	**********************************************************************/
+	try {
+		await rarity.callStatic.select_feat(tokenID, feat);
+	} catch (error) {
+		toast.dismiss(_toast);
+		toast.error('Impossible to submit transaction');
+		callback({error, data: undefined});
+		return;
+	}
+
+	/**********************************************************************
+	**	If the call is successful, try to perform the actual TX
+	**********************************************************************/
+	try {
+		const	transaction = await rarity.select_feat(tokenID, feat);
+		const	transactionResult = await transaction.wait(2);
+		if (transactionResult.status === 1) {
+			callback({error: false, data: tokenID});
+			toast.dismiss(_toast);
+			toast.success('Your knowledge increased');
+		} else {
+			toast.dismiss(_toast);
+			toast.error('You failed to learn a new feat');
+			callback({error: true, data: undefined});
+		}
+	} catch (error) {
+		console.error(error);
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+		callback({error, data: undefined});
+	}
+}

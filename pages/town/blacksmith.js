@@ -140,7 +140,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 			selectedOption={selectedOption}
 			nonce={dialogNonce}
 			options={[
-				{label: 'WELCOME', onClick: () => router.push('/town/blacksmith')},
+				// {label: 'WELCOME', onClick: () => router.push('/town/blacksmith')},
 				{label: 'Start crafting', onClick: () => router.push('/town/blacksmith?tab=workshop')},
 				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Upgrade an Artifact', onClick: () => router.push('/town/blacksmith?tab=upgrade')},
 				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Restore an Artifact', onClick: () => router.push('/town/blacksmith?tab=restore')},

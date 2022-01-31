@@ -6,7 +6,7 @@
 ******************************************************************************/
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import	React, {useState, useEffect, useContext, createContext}	from	'react';
+import	{useState, useEffect, useContext, createContext}	from	'react';
 import	useWeb3													from	'contexts/useWeb3';
 import	{ethers}												from	'ethers';
 import	{Provider, Contract}									from	'ethcall';
@@ -140,6 +140,7 @@ export const RarityContextApp = ({children}) => {
 		// RARITY_CRAFTING_HELPER_ADDR
 		const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
 		const usdcAllowance = new Contract(process.env.USDC_ADDR, USDC_ABI);
+		const	rarityFeats = new Contract(process.env.RARITY_FEATS_ADDR, process.env.RARITY_FEATS_ABI);
 
 
 		namesGet(tokenID);
@@ -157,6 +158,7 @@ export const RarityContextApp = ({children}) => {
 			raritySkills.get_skills(tokenID),
 			rarityNames.summoner_name(tokenID),
 			usdcAllowance.allowance(address, process.env.RARITY_NAMES_ADDR),
+			rarityFeats.get_feats_by_id(tokenID),
 			isDungeonAvailable(dungeonTypes.CELLAR) && rarityDungeonCellar.adventurers_log(tokenID),
 			isDungeonAvailable(dungeonTypes.FOREST) && rarityDungeonForest.getResearchBySummoner(tokenID),
 		].filter(x => Boolean(x));
@@ -224,13 +226,13 @@ export const RarityContextApp = ({children}) => {
 	**	Actually update the state based on the data fetched
 	**************************************************************************/
 	function		setRarity(tokenID, multicallResult, callResult, inventoryCallResult) {
-		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name, usdcAllw] = multicallResult.slice(0, 8);
-		// console.log(`name - `, name);
-		// console.log(`multicallResult - `, multicallResult);
+		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name, usdcAllw, feats] = multicallResult.slice(0, 9);
+		console.log('name - ', name);
+		console.log('multicallResult - ', multicallResult);
 		const	[claimableGold] = callResult;
 
 		// Sets up dungeons based on available ones (the order that dungeons are checked here is important!)
-		const dungeonResults = multicallResult.slice(8);
+		const dungeonResults = multicallResult.slice(9);
 		const dungeons = {};
 		if (isDungeonAvailable(dungeonTypes.CELLAR)) {
 			const cellarLog = dungeonResults.shift();
@@ -272,6 +274,8 @@ export const RarityContextApp = ({children}) => {
 					charisma: initialAttributes ? abilityScores['charisma'] : 8,
 				},
 				skills: skills,
+				feats: (feats || []).map(f => Number(f)),
+
 				dungeons,
 				inventory: inventoryCallResult
 			} : p);
@@ -300,6 +304,8 @@ export const RarityContextApp = ({children}) => {
 				charisma: initialAttributes ? abilityScores['charisma'] : 8,
 			},
 			skills: skills,
+			feats: (feats || []).map(f => Number(f)),
+
 			dungeons,
 			inventory: inventoryCallResult
 		}}));
@@ -342,7 +348,7 @@ export const RarityContextApp = ({children}) => {
 		}
 
 		const	callResults = await fetchAdventurer(preparedCalls);
-		const	chunkedCallResult = chunk(callResults, 8 + numberOfDungeonsAvailable);
+		const	chunkedCallResult = chunk(callResults, 9 + numberOfDungeonsAvailable);
 		const	extraCallResults = await fetchAdventurerExtra(preparedExtraCalls);
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
 		const	inventoryCallResult = await fetchAdventurerInventory(preparedInventoryCalls);

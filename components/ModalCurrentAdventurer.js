@@ -5,7 +5,7 @@
 **	@Filename:				ModalCurrentAdventurer.js
 ******************************************************************************/
 
-import	React, {Fragment, useState}		from	'react';
+import	{Fragment, useState}		from	'react';
 import	{Dialog, Transition}			from	'@headlessui/react';
 import	Adventurer						from	'components/Adventurer';
 import	ListBox							from	'components/ListBox';

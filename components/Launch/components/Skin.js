@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
-// import {useContractCall, useContractFunction} from '@usedapp/core';
-import {useContractCall} from '@usedapp/core';
+import {useContractCall, useContractFunction} from '@usedapp/core';
+// import {useContractCall} from '@usedapp/core';
 
 import {ethers} from 'ethers';
 import * as addresses from '../addresses.json';
@@ -9,6 +9,8 @@ import * as managerJson from '../artifacts/contracts/RaritySkinManager.sol/Rarit
 import Loading from './Loading';
 import {Card, Button, Stack, Form} from 'react-bootstrap';
 import {useState} from 'react';
+import	Box					from	'components/Box';
+
 
 export default function Skin({account, index, managerAddress, type}){
 	const skinAddress = type === 'common' ? addresses.commonSkins : addresses.summonerSkins;
@@ -33,9 +35,9 @@ function _Skin({id,managerAddress, type}){
 	const skinsInterface = new ethers.utils.Interface(skinsABI);
 	const skinBase64 = useContractCall({abi: skinsInterface, address: skinAddress, method: 'tokenURI', args: [id.toString()]});
 	const skinClass = useContractCall({abi: skinsInterface, address: skinAddress, method:'class', args:[id.toString()]});
-	// const managerContract = new ethers.Contract(managerAddress, managerInterface);
+	const managerContract = new ethers.Contract(managerAddress, managerInterface);
 	const skinKey = useContractCall({abi: managerInterface, address: managerAddress, method: 'skinKey', args: [[skinAddress, id.toString()]]});
-	// const assign = useContractFunction(managerContract,'assignSkinToSummoner');
+	const assign = useContractFunction(managerContract,'assignSkinToSummoner');
 	const [summonerId, setSummonerId] = useState(0);
 	const classes = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Wizard'];
 
@@ -52,9 +54,9 @@ function _Skin({id,managerAddress, type}){
 		<>
 			{!skinBase64 && <div>{'Loading...&nbsp;'}</div>}
 			{skinBase64 && <>
-				<Card style={{width: '15rem', margin: '0.2rem', paddingTop: '1rem'}} bg={'dark'}>
-					<Card.Img src={imgUri}/>
-					<Card.Body>
+				<Card className={'bg-white dark:bg-dark-600 flex flex-col items-center'}>
+					<Card.Img src={imgUri} className={'w-50 m-7'}/>
+					<Card.Body className={'bg-white dark:bg-dark-600 flex flex-col items-center'}>
 						<Card.Title>{skinJson.name}</Card.Title>
 						{skinClass && skinKey && <Card.Text>
 							{classes[skinClass - 1]}<br/>
@@ -62,13 +64,14 @@ function _Skin({id,managerAddress, type}){
 						</Card.Text>}
 						{!skinClass && <Loading/>}
 						<Stack direction={'horizontal'}>
-							<Form.Control style={{backgroundColor: 'black'}} size={'sm'} type={'number'} placeholder={'summoner id'} value=
+							<Form.Control style={{backgroundColor: 'transparent'}} size={'sm'} type={'number'} placeholder={'summoner id'} value=
 								{summonerId === 0 ? undefined : summonerId} 
 							onChange={e => setSummonerId(e.target.value)}/>
-							<Button size={'sm'} onClick={()=>{}}><a href={'https://opensea.io/assets/matic/0x31f2c273c305f8F5965b8Ca3Ec754b819b82dE7e/1'}>{'Buy'}</a></Button>
+							<Button size={'sm'} onClick={()=> {assign.send(skinAddress, id.toString(), summonerId,);}}><a>{'Dress'}</a></Button>
 						</Stack>
 					</Card.Body>
 				</Card>
+				<br/>
 			</>}
 		</>
 	);
