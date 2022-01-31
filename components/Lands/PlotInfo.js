@@ -6,7 +6,7 @@ const PlotInfo = ({plot, buyPlot, staked, points, rewardNeeded, canBuy, sgvBalan
 	const renderPlotActions = () => {
 		if (!plot) return null;
 		if (plot?.owner) {
-			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{plot?.isOwner ? 'You\'ve already own this plot' : 'Someone already owns this plot'}</p>;
+			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{plot?.isOwner ? 'You already own this plot' : 'Someone already owns this plot'}</p>;
 		}
 		if (canBuy) {
 			return (
@@ -29,7 +29,7 @@ const PlotInfo = ({plot, buyPlot, staked, points, rewardNeeded, canBuy, sgvBalan
 			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{'Stake $SGV tokens to earn points'}</p>;
 		} else if (points < rewardNeeded && !sgvBalance) {
 			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{'$SGV tokens are needed to buy plot'}</p>;
-		}
+		} return null;
 	};
 
 	return (
@@ -39,11 +39,11 @@ const PlotInfo = ({plot, buyPlot, staked, points, rewardNeeded, canBuy, sgvBalan
 					<InfoBlock
 						className={'flex-1 mb-4 m:mb-0'}
 						name={'Your points:'}
-						value={points && Number(points).toFixed(4)} />
+						value={points && points.toFixed(4)} />
 					<InfoBlock
 						className={'flex-1 mb-4 xs:mb-0'}
 						name={'Points to buy:'}
-						value={rewardNeeded && Number(rewardNeeded).toFixed(4)} />
+						value={rewardNeeded && rewardNeeded.toFixed(4)} />
 				</div>
 				<div className={'flex flex-col m:flex-row flex-1 items-center justify-between m:items-end'}>
 					<InfoBlock

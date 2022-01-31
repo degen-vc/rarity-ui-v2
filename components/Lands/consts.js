@@ -7,8 +7,6 @@ export const MAPS = {
 	[landsGameAddress]: {
 		abi: LAND_GAME_ABI,
 		address: landsGameAddress,
-		rows: 20,
-		cols: 32,
 		url: 'https://i.ytimg.com/vi/QuBh955v3f8/maxresdefault.jpg'
 	}
 };

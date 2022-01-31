@@ -48,14 +48,14 @@ const Lands = () => {
 			<PlotInfo
 				plot={plot}
 				buyPlot={onBuyPlot}
-				rewardNeeded={gameInfo?.rewardNeeded}
-				points={gameInfo?.balance}
-				canBuy={gameInfo?.canBuy}
-				staked={gameInfo?.staked}
+				rewardNeeded={gameInfo?.rewardNeeded && Number(gameInfo?.rewardNeeded)}
+				points={gameInfo?.balance && Number(gameInfo?.balance)}
+				canBuy={gameInfo?.canBuy && Number(gameInfo?.canBuy)}
+				staked={gameInfo?.staked && Number(gameInfo?.staked)}
 				sgvBalance={sgvBalance} />
 			<Map
-				rows={map?.rows}
-				cols={map?.cols}
+				rows={gameInfo?.mapYSize}
+				cols={gameInfo?.mapXSize}
 				url={map?.url}
 				plot={plot}
 				plots={gameInfo?.plots}

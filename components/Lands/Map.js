@@ -1,6 +1,6 @@
 import Box from 'components/Box';
 
-// TODO(???): move map to canvas if possible
+// TODO(???): MOVE MAP GRID TO CANVAS IF POSSIBLE
 const Map = ({rows, cols, url, plot, plots, selectPlot}) => {
 	const rowsArr = [...Array(rows).keys()];
 	const colsArr = [...Array(cols).keys()];
@@ -25,14 +25,14 @@ const Map = ({rows, cols, url, plot, plots, selectPlot}) => {
 									const xCell = col+1;
 									const yCell = row+1;
 									const isBought = plots?.[`${xCell}-${yCell}`];
-									const cellBg = isBought ? isBought?.isOwner ? 'bg-items-epic' : 'bg-blackLight' : 'hover:bg-items-legendary';
+									const cellBg = isBought ? isBought?.isOwner ? 'bg-items-epic' : 'bg-blackLight opacity-90' : 'hover:bg-items-legendary';
 									const isActive = (plot?.x === xCell && plot?.y === yCell) ? 'bg-items-legendary' : '';
 
 									return (
 										<div
 											key={col}
-											style={{width: `calc(100% / ${cols})`, cursor: 'pointer', transition: 'all .3s'}}
-											className={`border-black border-solid border relative ${cellBg} ${isActive} opacity-80`}
+											style={{width: `calc(100% / ${cols})`, cursor: 'pointer', transition: 'all .1s'}}
+											className={`border-black border-solid border relative opacity-80 ${cellBg} ${isActive}`}
 											onClick={() => select(isBought || {x: xCell, y: yCell})}
 										/>
 									);

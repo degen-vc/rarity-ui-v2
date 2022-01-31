@@ -9,7 +9,7 @@ import	{ethers}			from	'ethers';
 import	{Contract}			from	'ethcall';
 import	toast				from	'react-hot-toast';
 import	CLASSES				from	'utils/codex/classes';
-import  {newEthCallProvider} from 'utils';
+import  {newEthCallProvider, bigNumber} from 'utils';
 import  {parsePlots} from 'utils/scarcity-functions';
 
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';
@@ -1112,13 +1112,21 @@ export const getLandsGameInfo = async (provider, contractAddress, abi, address, 
 	const plotsCall = await game.getPlots();
 	const [plots] = await ethcallProvider.all([plotsCall]);
 
+	const mapXSizeCall = await game.mapXSize();
+	const [mapXSize] = await ethcallProvider.all([mapXSizeCall]);
+
+	const mapYSizeCall = await game.mapYSize();
+	const [mapYSize] = await ethcallProvider.all([mapYSizeCall]);
+
 	callback({
 		plots: parsePlots(plots, address),
 		balance: ethers.utils.formatEther(pointsBalance),
 		staked: ethers.utils.formatEther(staked),
 		rewardNeeded: ethers.utils.formatEther(rewardNeeded),
 		maxStake: ethers.utils.formatEther(maxStake),
-		canBuy: ethers.BigNumber.from(pointsBalance).gte(rewardNeeded)
+		canBuy: pointsBalance > 0 && bigNumber.from(pointsBalance).gte(rewardNeeded),
+		mapXSize: Number(`${mapXSize}`),
+		mapYSize: Number(`${mapYSize}`),
 	});
 };
 
@@ -1166,7 +1174,7 @@ export const stakeSgvTokens = async (provider, mapContractAddress, mapAbi, value
 
 	// TODO(???): add same logic for approve as for gold
 	try {
-		if (ethers.BigNumber.from(valueToStake).gte(maxStake)) {
+		if (bigNumber.from(valueToStake).gte(maxStake)) {
 			onErrorToast(_toast, `You can't stake more than ${maxValue} $SGV`);
 			return;
 		}
