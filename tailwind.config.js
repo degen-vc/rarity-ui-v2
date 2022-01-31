@@ -52,6 +52,10 @@ module.exports = {
 			}
 		},
 		extend: {
+			screens: {
+				'xs': '480px',
+				'm': '992px'
+			},
 			lineHeight: {
 				11: '3.25rem',
 				'120px': '120px'
@@ -80,6 +84,9 @@ module.exports = {
 				77: '19.25rem',
 				50: '45%',
 				screen: '100vw'
+			},
+			minWidth: {
+				'2/3': '66.6%'
 			},
 			height: {
 				15: '60px'

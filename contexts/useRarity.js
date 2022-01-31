@@ -176,7 +176,7 @@ export const RarityContextApp = ({children}) => {
 		const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
 
 		const rarityName = await fetchAdventurer([rarityNames.summoner_name(id)]);
-		console.log(`${rarityName}`);
+		// console.log(`${rarityName}`);
 	}
 
 	/**************************************************************************
@@ -227,8 +227,8 @@ export const RarityContextApp = ({children}) => {
 	**************************************************************************/
 	function		setRarity(tokenID, multicallResult, callResult, inventoryCallResult) {
 		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name, usdcAllw, feats] = multicallResult.slice(0, 9);
-		console.log(`name - `, name);
-		console.log(`multicallResult - `, multicallResult);
+		console.log('name - ', name);
+		console.log('multicallResult - ', multicallResult);
 		const	[claimableGold] = callResult;
 
 		// Sets up dungeons based on available ones (the order that dungeons are checked here is important!)
@@ -358,7 +358,7 @@ export const RarityContextApp = ({children}) => {
 		});
 		sharedCalls().then(result => prepareSharedInventory(result[0]));
 
-		console.log(`chunkedinventoryCallResult - `, chunkedinventoryCallResult);
+		// console.log(`chunkedinventoryCallResult - `, chunkedinventoryCallResult);
 
 
 		set_loaded(true);
