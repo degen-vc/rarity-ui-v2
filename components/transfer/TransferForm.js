@@ -89,7 +89,7 @@ const TransferForm = () => {
 	return (
 		<Box className={'mt-12 p-4 with-title nes-container'}>
 			<p className={'title bg-white dark:bg-dark-600 z-50 relative'} style={{paddingTop: '0.5rem'}}>{'Transfer gold and craft materials'}</p>
-			<div className={'md:flex items-start py-2'}>
+			<div className={'md:flex items-start py-2 mb-2'}>
 				<div className={'mb-2 md:mb-0 md:mr-4 flex-1'}>
 					<p className={'text-megaxs text-black py-2 dark:text-white'}>{'Sender'}</p>
 					<input
