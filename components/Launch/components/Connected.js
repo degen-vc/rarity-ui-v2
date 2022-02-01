@@ -150,8 +150,20 @@ export function Connected({account}){
 					</div>
 					<div>{'new costumes'}</div>
 					<div>
-						<Button className={'bg-green dark:bg-lgreen  text-white dark:text-black ' + (`${wsgoldAllowance}` != '115792089237316195423570985008687907853269984665640564039457584007913129639935' ? ' ' : ' hidden')} style={{width: '120px', paddingRight: '5px', paddingLeft: '5px'}} size={'sm'} onClick={()=>{approveWSGold.send(addresses.commonSkins, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);}}>{'Approve'}</Button>
-						<Button className={'bg-green dark:bg-lgreen  text-white dark:text-black '} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px', margin: '10px'}} size={'sm'} onClick={()=>{mintRandomClasses.send(amount,{value: '0'});}}>{'Mint'}</Button>
+						<Button
+							className={'bg-green dark:bg-lgreen  text-white dark:text-black ' + (wsgoldAllowance.toString().length > 18 ? ' ' : ' hidden')}
+							style={{width: '120px', paddingRight: '5px', paddingLeft: '5px'}}
+							size={'sm'}
+							onClick={()=>{approveWSGold.send(addresses.commonSkins, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);}}>
+							{'Approve'}
+						</Button>
+						<Button
+							className={amount != 0 ? 'bg-green dark:bg-lgreen  text-white dark:text-black ' : 'hidden'}
+							style={{width: '90px', paddingRight: '5px', paddingLeft: '5px', margin: '10px'}}
+							size={'sm'}
+							onClick={()=>{mintRandomClasses.send(amount,{value: '0'});}}>
+							{'Mint'}
+						</Button>
 					</div>
 				</Stack><br/></>
 			}
