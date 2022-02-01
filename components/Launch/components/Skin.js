@@ -63,12 +63,12 @@ function _Skin({id,managerAddress, type}){
 							{<Assignation skinKey={skinKey} managerAddress={managerAddress} />}
 						</Card.Text>}
 						{!skinClass && <Loading/>}
-						<Stack direction={'horizontal'}>
-							<Form.Control style={{backgroundColor: 'transparent'}} size={'sm'} type={'number'} placeholder={'summoner id'} value=
-								{summonerId === 0 ? undefined : summonerId} 
-							onChange={e => setSummonerId(e.target.value)}/>
-							<Button size={'sm'} onClick={()=> {assign.send(skinAddress, id.toString(), summonerId,);}}><a>{'Dress'}</a></Button>
-						</Stack>
+						{/* <Stack direction={'vertical'}> */}<br/>
+						<Form.Control style={{backgroundColor: 'transparent'}} size={'sm'} type={'number'} placeholder={'Advanturer id'} value=
+							{summonerId === 0 ? undefined : summonerId} 
+						onChange={e => setSummonerId(e.target.value)}/>&nbsp;
+						<Button className={'bg-green dark:bg-lgreen  text-white dark:text-black'} style={{width: '90px', paddingRight: '5px', paddingLeft: '5px'}} size={'sm'} onClick={()=> {assign.send(skinAddress, id.toString(), summonerId,);}}><a>{'Dress'}</a></Button>
+						{/* </Stack> */}
 					</Card.Body>
 				</Card>
 				<br/>

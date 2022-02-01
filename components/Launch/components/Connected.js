@@ -92,7 +92,7 @@ export function Connected({account}){
 				</div>
 				<br/>
 			
-				{'Approx. Rouges Yield (20%)'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
+				{'Approx. Rogues Yield (20%)'}<div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen'}>
                 &nbsp;{Math.round(parseInt(((myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0) / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div>
@@ -115,7 +115,7 @@ export function Connected({account}){
 				</div>
 				<br className={ isRouge? ' d-none' : ''}/>
 			
-				<b className={ isRouge? '' : ' d-none'}>{'Approx. Rouges Yield (20%)'}</b><div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen' + ( isRouge? '' : ' d-none')}>
+				<b className={ isRouge? '' : ' d-none'}>{'Approx. Rogues Yield (20%)'}</b><div style={{marginTop: '-20px'}} className={'absolute ml-50 text-green dark:text-lgreen' + ( isRouge? '' : ' d-none')}>
                 &nbsp;{Math.round(parseInt(((myRoguesYieldPerDay? myRoguesYieldPerDay[0] : 0) / 1e16).toString()))/100}&nbsp;
 					{'$SGV'}&nbsp;&nbsp;
 				</div>
