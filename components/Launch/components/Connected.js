@@ -67,7 +67,7 @@ export function Connected({account}){
 
 
 
-	console.log(wsgoldAllowance.toString(16).length, wsgoldAllowance.toString(16));
+	// console.log(wsgoldAllowance.toString(16).length, wsgoldAllowance.toString(16));
 
 
 	return(
@@ -151,7 +151,7 @@ export function Connected({account}){
 					<div>{'new costumes'}</div>
 					<div>
 						<Button
-							className={'bg-green dark:bg-lgreen  text-white dark:text-black ' + (wsgoldAllowance.toString(16).length < 21 ? ' ' : ' hidden')}
+							className={'bg-green dark:bg-lgreen  text-white dark:text-black ' + (wsgoldAllowance?.toString(16).length < 21 ? ' ' : ' hidden')}
 							style={{width: '120px', paddingRight: '5px', paddingLeft: '5px'}}
 							size={'sm'}
 							onClick={()=>{approveWSGold.send(addresses.commonSkins, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);}}>
