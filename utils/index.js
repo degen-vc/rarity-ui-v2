@@ -6,6 +6,7 @@
 ******************************************************************************/
 
 import	{ethers}						from	'ethers';
+import	{Provider}			from	'ethcall';
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000';
 
@@ -49,3 +50,9 @@ export function	formatValue(value, decimals = 2) {
 export const chunk = (arr, size) => arr.reduce((acc, e, i) => (i % size ? acc[acc.length - 1].push(e) : acc.push([e]), acc), []);
 
 export const fetcher = (...args) => fetch(...args).then(res => res.json());
+
+export const newEthCallProvider = async (provider) => {
+	const	ethcallProvider = new Provider();
+	await	ethcallProvider.init(provider);
+	return ethcallProvider;
+};

@@ -226,6 +226,28 @@ function FlyoutMenu() {
 												</div>
 											</a>
 										</Link>
+										<Link href={'/town/lands'}>
+											<a className={'flex items-center p-2 -m-3 transition duration-150 ease-in-out hover:bg-gray-principal dark:hover:bg-dark-300 focus:outline-none'}>
+												<div className={'w-20 h-20 rounded-lg flex justify-center items-center'} style={{minWidth: 80}}>
+													<Image
+														src={'/menu/Marketplace.png'}
+														loading={'eager'}
+														width={80}
+														height={80} />
+												</div>
+												<div className={'ml-4'}>
+													<span className={'text-xs cursor-pointer uppercase'}>
+														<span className={'hidden md:inline cursor-pointer'}>{'LANDS'}</span>
+														<span className={'inline md:hidden cursor-pointer'}>{'LANDS'}</span>
+													</span>
+													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
+														<p>
+															{'Stake tokens and buy lands'}
+														</p>
+													</div>
+												</div>
+											</a>
+										</Link>
 									</div>
 								</div>
 							</Popover.Panel>
