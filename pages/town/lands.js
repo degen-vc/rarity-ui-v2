@@ -1,10 +1,10 @@
 import {useState, useEffect} from 'react';
 import useWeb3 from	'contexts/useWeb3';
-import LandsHeader from 'components/lands/LandsHeader';
-import StakeForm from 'components/lands/StakeForm';
-import PlotInfo from 'components/lands/PlotInfo';
-import Map from 'components/lands/Map';
-import {MAPS} from 'components/lands/consts';
+import LandsHeader from 'components/Lands/LandsHeader';
+import StakeForm from 'components/Lands/StakeForm';
+import PlotInfo from 'components/Lands/PlotInfo';
+import Map from 'components/Lands/Map';
+import {MAPS} from 'components/Lands/consts';
 import {getSGVBalance, getLandsGameInfo, stakeSgvTokens, unstakeSgvTokens, buyPlot} from 'utils/actions';
 
 const Lands = () => {

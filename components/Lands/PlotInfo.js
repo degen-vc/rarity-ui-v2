@@ -1,6 +1,6 @@
 import Button	from 'components/Button';
 import BoxWithTitle from 'components/BoxWithTitle';
-import InfoBlock from 'components/lands/InfoBlock';
+import InfoBlock from 'components/Lands/InfoBlock';
 
 const PlotInfo = ({plot, buyPlot, staked, points, rewardNeeded, canBuy, sgvBalance}) => {
 	const renderPlotActions = () => {

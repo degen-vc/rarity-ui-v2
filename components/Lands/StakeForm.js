@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import Button	from 'components/Button';
 import BoxWithTitle from 'components/BoxWithTitle';
-import InfoBlock from 'components/lands/InfoBlock';
+import InfoBlock from 'components/Lands/InfoBlock';
 
 const VALID_AMOUNT_RGX = /^[0-9]*\.?[0-9]*$/;
 
