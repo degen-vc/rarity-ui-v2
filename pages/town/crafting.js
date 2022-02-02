@@ -520,7 +520,7 @@ function	Index({rarities, router}) {
 	const	[approveStatus, set_approveStatus] = useState({approvedGold: false, approvedCraftingMaterials: false});
 	const	adventurers = Object.values(rarities);
 
-	async function	checkCraftingStatus() {
+	const	checkCraftingStatus = useCallback(async () => {
 		const	rarity = new Contract(process.env.RARITY_ADDR, RARITY_ABI);
 		const	rarityGold = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
 		const	rarityDungeonCellar = new Contract(process.env.DUNGEON_THE_CELLAR_ADDR, THE_CELLAR_ABI);
@@ -539,7 +539,8 @@ function	Index({rarities, router}) {
 			approvedCraftingMaterials: !ethers.BigNumber.from(craftingMaterialsAllowance).isZero(),
 		});
 		return (callResult);
-	}
+	}, [currentAdventurer?.tokenID, provider, chainID]);
+
 	async function	approveGold() {
 		approveERC20({
 			provider,
@@ -570,8 +571,9 @@ function	Index({rarities, router}) {
 	}
 
 	useEffect(() => {
+		if (!provider) return;
 		checkCraftingStatus();
-	}, [checkCraftingStatus]);
+	}, [checkCraftingStatus, provider]);
 
 	return (
 		<section className={'max-w-full'}>
