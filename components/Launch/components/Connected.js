@@ -1,5 +1,5 @@
-import {Form, Stack, Row, Button} from 'react-bootstrap';
-import {useContractCall, useEthers, useContractFunction} from '@usedapp/core';
+import {Form, Stack, Button} from 'react-bootstrap';
+import {useContractCall, useContractFunction} from '@usedapp/core';
 import {ethers} from 'ethers';
 import * as addresses from '../addresses.json';
 // import * as summonerSkinsJson from '../artifacts/contracts/SummonerSkins.sol/SummonerSkins.json';
@@ -8,10 +8,10 @@ import * as commonSkinsJson from '../artifacts/contracts/alts/CommonSummonerSkin
 import Skin from './Skin';
 import {useState} from 'react';
 import Loading from './Loading';
-import {useQuery, gql} from '@apollo/client';
+// import {useQuery, gql} from '@apollo/client';
 import Summoner from './Summoner';
 import SkinInfos from './SkinInfos';
-import Assigner from './Assigner';
+// import Assigner from './Assigner';
 import SxgvTokenAbi from 'utils/abi/sxgvToken.abi.js';
 import Box					from	'components/Box';
 import WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
@@ -47,18 +47,18 @@ export function Connected({account}){
 	const wsgoldAllowance = useContractCall({abi: wsgoldInterface, address: process.env.WRAPPED_GOLD, method: 'allowance', args: [account, addresses.commonSkins]});
 	const commonContract = new ethers.Contract(addresses.commonSkins,commonInterface);
 	const mintRandomClasses = useContractFunction(commonContract,'mint');
-	const mintAndAssign = useContractFunction(commonContract, 'mintAndAssign');
+	// const mintAndAssign = useContractFunction(commonContract, 'mintAndAssign');
 	const [amount, setAmount] = useState(10);
 	const managerAddress = [addresses.manager];
 	const [skinId, setSkinId] = useState(0);
-	const {loading, error, data} = useQuery(gql`{
-        summoners(where: {owner:"${account.toLowerCase()}"}) {
-            id
-        }
-    }`);
-	const {chainId} = useEthers();
-	const boldStyle = {fontWeight: 'bold', display: 'inline-block'};
-	const	{rarities, updateRarity, currentAdventurer} = useRarity();
+	// const {loading, error, data} = useQuery(gql`{
+  //       summoners(where: {owner:"${account.toLowerCase()}"}) {
+  //           id
+  //       }
+  //   }`);
+	// const {chainId} = useEthers();
+	// const boldStyle = {fontWeight: 'bold', display: 'inline-block'};
+	const	{currentAdventurer} = useRarity();
 	const currentSkin = useContractCall({abi: SkinManagerFixInterface, address: rarityMFix, method: 'skinOf', args: [+currentAdventurer?.tokenID]});
 	const currentAvailableForClaim = useContractCall({abi: SkinManagerFixInterface, address: rarityMFix, method: 'availableForClaim', args: currentSkin? [+`${currentSkin[0]['tokenId']}`]: '0'});
 	const classNuber = useContractCall({abi: commonInterface, address: addresses.commonSkins, method: 'class', args: currentSkin? [+`${currentSkin[0]['tokenId']}`]: '0'});
@@ -228,25 +228,25 @@ function skins(skinBalance, account, managerAddress, type){
 	}
 }
 
-function summoners(loading, error, data, managerAddress, currentPrice){
-	let summonerList;
+// function summoners(loading, error, data, managerAddress, currentPrice){
+// 	let summonerList;
 
-	if (loading) return <Loading/>;
-	if (error) return <>{'GraphQL Error :( unable to load summoners'}</>;
-	if (data && managerAddress && currentPrice){
-		summonerList = data.summoners;
-		if (summonerList.length == 0){
-			return <>{'You have no summoners :( '}<br/></>;
-		} else {
-			return summonerList.map(summoner => <Summoner id={parseInt(summoner.id)} key={parseInt(summoner.id)} price={currentPrice} managerAddress={managerAddress}/>);
-		}
-	}
-}
+// 	if (loading) return <Loading/>;
+// 	if (error) return <>{'GraphQL Error :( unable to load summoners'}</>;
+// 	if (data && managerAddress && currentPrice){
+// 		summonerList = data.summoners;
+// 		if (summonerList.length == 0){
+// 			return <>{'You have no summoners :( '}<br/></>;
+// 		} else {
+// 			return summonerList.map(summoner => <Summoner id={parseInt(summoner.id)} key={parseInt(summoner.id)} price={currentPrice} managerAddress={managerAddress}/>);
+// 		}
+// 	}
+// }
 
-function summonerIds(data){
-	return data.summoners.map(summoner => parseInt(summoner.id));
-}
+// function summonerIds(data){
+// 	return data.summoners.map(summoner => parseInt(summoner.id));
+// }
 
-function summonerList(data){
-	return data.summoners;
-}
+// function summonerList(data){
+// 	return data.summoners;
+// }
