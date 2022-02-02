@@ -2,7 +2,7 @@
 **	@Author:				Rarity Extended
 **	@Twitter:				@RXtended
 **	@Date:					Saturday September 11th 2021
-**	@Filename:				blacksmith.js
+**	@Filename:				crafting.js
 ******************************************************************************/
 
 import	{useState, useEffect, useCallback}		from	'react';
@@ -66,7 +66,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 					<DialogBox
 						selectedOption={selectedOption}
 						nonce={dialogNonce}
-						options={[{label: 'Nevermind', onClick: () => router.push('/town/blacksmith')}]} />
+						options={[{label: 'Nevermind', onClick: () => router.push('/town/crafting')}]} />
 				);	
 			}
 			return (
@@ -78,7 +78,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 							label: (<>{'LEARN HOW TO '}<span className={'text-tag-info'}>{'CRAFT'}</span></>),
 							onClick: () => openModalSkills()
 						},
-						{label: 'Nevermind', onClick: () => router.push('/town/blacksmith')},
+						{label: 'Nevermind', onClick: () => router.push('/town/crafting')},
 					]} />
 			);
 		}
@@ -88,7 +88,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 					selectedOption={selectedOption}
 					nonce={dialogNonce}
 					options={[
-						{label: 'Nevermind', onClick: () => router.push('/town/blacksmith')},
+						{label: 'Nevermind', onClick: () => router.push('/town/crafting')},
 					]} />
 			);
 		}
@@ -105,7 +105,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 			});
 		}
 		if (options.length > 0) {
-			options.push({label: 'Nevermind', onClick: () => router.push('/town/blacksmith')});
+			options.push({label: 'Nevermind', onClick: () => router.push('/town/crafting')});
 			return (
 				<DialogBox
 					selectedOption={selectedOption}
@@ -131,7 +131,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 						label: (<>{'CRAFT SOME '}<span className={'text-tag-info'}>{'WEAPONS'}</span></>),
 						onClick: () => set_category(2)
 					},
-					{label: 'Nevermind', onClick: () => router.push('/town/blacksmith')},
+					{label: 'Nevermind', onClick: () => router.push('/town/crafting')},
 				]} />
 		);
 	}
@@ -140,10 +140,10 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 			selectedOption={selectedOption}
 			nonce={dialogNonce}
 			options={[
-				// {label: 'WELCOME', onClick: () => router.push('/town/blacksmith')},
-				{label: 'Start crafting', onClick: () => router.push('/town/blacksmith?tab=workshop')},
-				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Upgrade an Artifact', onClick: () => router.push('/town/blacksmith?tab=upgrade')},
-				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Restore an Artifact', onClick: () => router.push('/town/blacksmith?tab=restore')},
+				// {label: 'WELCOME', onClick: () => router.push('/town/crafting')},
+				{label: 'Start crafting', onClick: () => router.push('/town/crafting?tab=workshop')},
+				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Upgrade an Artifact', onClick: () => router.push('/town/crafting?tab=upgrade')},
+				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Restore an Artifact', onClick: () => router.push('/town/crafting?tab=restore')},
 			].filter(o => Boolean(o))} />
 	);
 }
@@ -486,7 +486,7 @@ function	NCPHeadline({router, approveStatus, adventurerCanCraft, adventurerHasXp
 					{'CRAFT GOODS, ARMOR AND WEAPONS! '}
 				</Typer>
 				{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
-					{'CEAZOR THE BLACKSMITH'}
+					{'CEAZOR THE crafting'}
 				</Typer></span> */}
 				<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 					{' YOU CAN ONLY CRAFT THESE ITEMS IF YOU HAVE THE SKILLS AND MATERIALS NEEDED. '}
