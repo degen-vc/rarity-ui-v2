@@ -9,7 +9,7 @@ import Skin from './Skin';
 import {useState} from 'react';
 import Loading from './Loading';
 // import {useQuery, gql} from '@apollo/client';
-import Summoner from './Summoner';
+// import Summoner from './Summoner';
 import SkinInfos from './SkinInfos';
 // import Assigner from './Assigner';
 import SxgvTokenAbi from 'utils/abi/sxgvToken.abi.js';
@@ -214,6 +214,7 @@ export function Connected({account}){
 }
 
 function skins(skinBalance, account, managerAddress, type){
+
 	let arr =[];
 	if(skinBalance && account && managerAddress){
 		if (skinBalance == 0) return <>{'You have no costumes yet '}<br/></>;

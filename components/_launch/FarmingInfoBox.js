@@ -1,29 +1,21 @@
 import BoxWithTitle from 'components/BoxWithTitle';
-import InfoBlock from 'components/InfoBlock';
+import InfoRow from 'components/InfoRow';
 import Button	from 'components/Button';
 
 const FarmingInfoBox = ({sgvTotal, sgvBalance, sgvYield, sgvRogueYield, sgvAvailable, clamSGV}) => {
 	return (
-		<BoxWithTitle title={'MY FARMING DATA'} className={'md:w-2/3 md:mr-6 text-center'}>
-			<div className={'xs:flex'}>
-				<InfoBlock className={'flex-1 mb-4 px-2'} name={'TOTAL TOKENS AVAILABLE'} value={sgvTotal} />
-				<InfoBlock className={'flex-1 text-center'} name={'YOUR BALANCE'} value={sgvBalance} />
-			</div>
-			<div className={'xs:flex my-4 xs:my-0 xs:mt-4'}>
-				<InfoBlock className={'flex-1 mb-4 px-2'} name={'ADVENTURERS YIELD $SGV/PER DAY'} value={sgvYield}  />
-				<InfoBlock className={'flex-1 text-center'} name={'APPROX. ROUGES YIELD (20%)'} value={sgvRogueYield}  />
-			</div>
-			<div className={'xs:flex xs:mt-4'}>
-				<InfoBlock className={'flex-1 px-2'} name={'CLAIMABLE'} value={sgvAvailable} />
-				<div className={'flex-1 mt-4 xs:mt-2'}>
-					<Button
-						className={'inline-block cursor-pointer hover:bg-white focus:bg-white dark:hover:bg-dark-400 dark:focus:bg-dark-400 bg-gray-principal dark:bg-dark-400 text-center'}
-						backgroundColor={'bg-gray-principal dark:bg-dark-400'}
-						onClick={() => clamSGV} >
-						{'CLAIM'}
-					</Button>
-				</div>
-			</div>
+		<BoxWithTitle title={'MY FARMING DATA'} className={'m:w-2/3 m:mr-6 text-center'}>
+			<InfoRow name={'TOTAL TOKENS AVAILABLE ($SGV)'} value={sgvTotal} />
+			<InfoRow name={'YOUR BALANCE ($SGV)'} value={sgvBalance} />
+			<InfoRow name={'ADVENTURERS YIELD PER DAY ($SGV)'} value={sgvYield}  />
+			<InfoRow name={'APPROX. ROUGES YIELD (20%) ($SGV)'} value={sgvRogueYield}  />
+			<InfoRow name={'CLAIMABLE ($SGV)'} value={sgvAvailable} />
+			<Button
+				className={'mt-4 inline-block cursor-pointer hover:bg-white focus:bg-white dark:hover:bg-dark-400 dark:focus:bg-dark-400 bg-gray-principal dark:bg-dark-400 text-center'}
+				backgroundColor={'bg-gray-principal dark:bg-dark-400'}
+				onClick={() => clamSGV} >
+				{'CLAIM'}
+			</Button>
 		</BoxWithTitle>
 	);
 };

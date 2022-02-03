@@ -33,6 +33,7 @@ function _Skin({id,managerAddress, type}){
 	const managerInterface = new ethers.utils.Interface(managerABI);
 	const skinsABI = JSON.stringify(summonerSkinsJson.abi);
 	const skinsInterface = new ethers.utils.Interface(skinsABI);
+	
 	const skinBase64 = useContractCall({abi: skinsInterface, address: skinAddress, method: 'tokenURI', args: [id.toString()]});
 	const skinClass = useContractCall({abi: skinsInterface, address: skinAddress, method:'class', args:[id.toString()]});
 	const managerContract = new ethers.Contract(managerAddress, managerInterface);

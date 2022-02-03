@@ -10,7 +10,7 @@ const PurchaseCostumeForm = ({currentPrice}) => {
 	return (
 		<BoxWithTitle className={'mt-12 items-between md:flex justify-between'} title={'PURCHASE COSTUME'}>
 			<div className={'sm:w-2/3 m-auto md:mx-0'}>
-				<div className={'sm:flex w-full justify-between'}>
+				<div className={'sm:flex w-full justify-between mb-2'}>
 					<InfoBlock
 						className={'mb-4 m:mb-2 text-center sm:text-left'}
 						name={'COSTUME PRICE:'}
