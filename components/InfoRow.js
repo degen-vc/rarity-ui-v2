@@ -1,7 +1,7 @@
 const InfoRow = ({name, value, className}) => (
-	<div className={`w-full flex flex-row items-center justify-between py-2 ${className}`}>
-		<span className={'text-left opacity-80 text-xs md:text-sm mr-2 max-w-fit '}>{name}</span>
-		<span className={'text-right min-w-fit'}>{value}</span>
+	<div className={`text-xs m:text-sm w-full flex flex-row justify-between py-2 ${className}`}>
+		<span className={'text-left opacity-80 mr-2'}>{name}</span>
+		<span className={'text-right flex-1'} style={{whiteSpace: 'nowrap'}}>{value}</span>
 	</div>
 );
 export default InfoRow;

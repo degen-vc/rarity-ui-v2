@@ -30,7 +30,7 @@ const CommonSkinsI = new ethers.utils.Interface('[{"inputs":[{"internalType":"ad
 const WSGolsContract = new ethers.Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI);
 const RSMFixContract = new ethers.Contract(rarityMFix, SkinManagerFixI);
 
-const amountToSgvString = (amount, currency = '') => `${Math.round(parseInt((amount / 1e16).toString()))/100 || 0}${` ${currency}`|| ''}`;
+const amountToSgvString = (amount, currency = 'SGV') => `${Math.round(parseInt((amount / 1e16).toString()))/100 || 0} $${currency}`;
 
 const Launch = () => {
 	const	{address} = useWeb3();
