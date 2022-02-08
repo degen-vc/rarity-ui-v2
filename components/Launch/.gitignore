@@ -1,7 +1,0 @@
-node_modules
-cache
-secrets.json
-mergedSources
-.deps
-build
-.firebase
