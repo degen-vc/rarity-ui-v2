@@ -10,10 +10,13 @@ import	{Contract}			from	'ethcall';
 import	toast				from	'react-hot-toast';
 import	CLASSES				from	'utils/codex/classes';
 import  {newEthCallProvider, bigNumber} from 'utils';
-import  {parsePlots} from 'utils/scarcity-functions';
+import  {parsePlots, parseSkinBase64} from 'utils/scarcity-functions';
 
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';
 import  SGV_TOKEN_ABI from 'utils/abi/sgvToken.abi';
+import  MANAGER_SKINS_ABI from 'utils/abi/managerSkins.abi';
+import  SUMMOER_SKINS_ABI from 'utils/abi/summonerSkins.abi';
+import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 
 export const onSuccessToast = (_toast, msg) => {
 	toast.dismiss(_toast);
@@ -1299,3 +1302,179 @@ export async function	learnFeat({provider, tokenID, feat}, callback) {
 		callback({error, data: undefined});
 	}
 }
+
+/**********************************************************************
+	**	WRAPPED GOLD ACTIONS
+**********************************************************************/
+export const getWGoldBalance = async (provider, address, allowanceAddress, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const contract = new Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI);
+	const calls = [
+		contract.balanceOf(address),
+		contract.allowance(address, allowanceAddress)
+	];
+	const [wGold = 0, allowance = 0]  = await ethcallProvider.all(calls);
+	return callback({balance: ethers.utils.formatEther(`${wGold}`), allowance: Number(allowance)});
+};
+
+export const approveWGold = async (provider, callback) => {
+	let _toast = toast.loading('Approving $WSGold');
+	const signer = provider.getSigner();
+	const contract = new ethers.Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI, signer);
+	try {
+		const transaction = await contract.approve(process.env.COMMON_SKIN_ADDR, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			callback();
+			onSuccessToast(_toast, '$WSGold successfully approved');
+		}
+	} catch (e) {
+		onErrorToast(_toast);
+		return;
+	}
+};
+
+export const mintRandomCostume = async (provider, amount) => {
+	let _toast = toast.loading(`Minting ${amount} costumes...`);
+	const signer = provider.getSigner();
+	const contract = new ethers.Contract(process.env.COMMON_SKIN_ADDR, SUMMOER_SKINS_ABI, signer);
+	try {
+		const transaction = await contract.mint(amount, {value: '0'});
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, `${amount} costumes successfully minted`);
+			return;
+		}
+	} catch (e) {
+		console.log(e);
+		onErrorToast(_toast);
+		return;
+	}
+};
+
+/**********************************************************************
+	**	LAUNCH PARTY ACTIONS
+**********************************************************************/
+export const getUserManagerSkinInfo = async (provider, address, tokenID, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const managerContract = new Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI);
+	const calls = [
+		managerContract.myAdventurersYieldPerDay(address),
+		managerContract.myRoguesYieldPerDay(address),
+		managerContract.availableForClaimAll(address),
+		managerContract.skinOf(tokenID),
+	];
+	const [sgvYield = 0, sgvRogueYield = 0, sgvAvailable = 0, currentSkin = 0] = await ethcallProvider.all(calls);
+	
+	try {
+		if (!currentSkin) return;
+		const currentSgvAvailableCall = managerContract.availableForClaim(currentSkin['tokenId']);
+		const currentSgvAvailable = await ethcallProvider.all([currentSgvAvailableCall]);
+		return callback({sgvYield, sgvRogueYield, sgvAvailable, currentSkin, currentSgvAvailable});
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const getManagerSkinInfo = async (provider, skinContractAddr, skinId) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const managerContract = new Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI); 
+	const skinKeyCall = managerContract.skinKey([skinContractAddr, skinId]);
+	const skinKey = await ethcallProvider.all([skinKeyCall]);
+
+	try {
+		if (!skinKey) return;
+		const assignationCall = managerContract.summonerOf(skinKey[0]);
+		const assignation = await ethcallProvider.all([assignationCall]);
+		return {skinKey, assignation};
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const getCommonSkinsInfo = async (provider, address, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const contract = new Contract(process.env.COMMON_SKIN_ADDR, SUMMOER_SKINS_ABI);
+	const calls = [
+		contract.balanceOf(address),
+		contract.price()
+	];
+	const [balance = 0, price = 0] = await ethcallProvider.all(calls);
+	return callback({balance, price});
+};
+
+export const getSkinInfo = async (provider, address, skinContractAddr, abi, index, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const contract = new Contract(skinContractAddr, abi);
+	const skinIdCall = contract.tokenOfOwnerByIndex(address, index);
+	const skinId = await ethcallProvider.all([skinIdCall]);
+	try {
+		if (!skinId) return;
+		const skinCalls = [
+			contract.tokenURI(skinId.toString()),
+			contract.class(skinId.toString()),
+		];
+		const	[skinBase64 = {}, skinClass = 0] = await ethcallProvider.all(skinCalls);
+		const {skinKey, assignation} = await getManagerSkinInfo(provider, skinContractAddr, skinId.toString());
+		const {skinJson, skinImgUri} = parseSkinBase64(skinBase64);
+		
+		return callback({skinId: skinId?.toString(), skinJson, skinImgUri, skinClass: skinClass.toString(), skinKey: skinKey?.[0], assignation});
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const dressSummoner = async (provider, skinName, skinId, summonerId) => {
+	let _toast = toast.loading(`Assign ${skinName} to ${summonerId} adventurer...`);
+	const signer = provider.getSigner();
+	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
+	try {
+		const transaction = await managerContract.assignSkinToSummoner(process.env.COMMON_SKIN_ADDR, skinId, summonerId);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, `Summoner ${summonerId} successfully dressed on ${skinName}`);
+			return;
+		}
+	} catch (e) {
+		console.log(e);
+		onErrorToast(_toast);
+		return;
+	}
+};
+
+export const claimAllSgv = async (provider) => {
+	let _toast = toast.loading('Claiming $SGV...');
+	const signer = provider.getSigner();
+	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
+	try {
+		const transaction = await managerContract.claimAll();
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, '$SGV successfully claimed');
+			return;
+		}
+	} catch (e) {
+		console.log(e);
+		onErrorToast(_toast);
+		return;
+	}
+};
+
+export const claimSgv = async (provider, tokenId) => {
+	let _toast = toast.loading('Claiming $SGV...');
+	const signer = provider.getSigner();
+	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
+	try {
+		const transaction = await managerContract.claim(tokenId);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, '$SGV successfully claimed');
+			return;
+		}
+	} catch (e) {
+		console.log(e);
+		onErrorToast(_toast);
+		return;
+	}
+};
+

@@ -227,8 +227,8 @@ export const RarityContextApp = ({children}) => {
 	**************************************************************************/
 	function		setRarity(tokenID, multicallResult, callResult, inventoryCallResult) {
 		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name, usdcAllw, feats] = multicallResult.slice(0, 9);
-		console.log('name - ', name);
-		console.log('multicallResult - ', multicallResult);
+		// console.log('name - ', name);
+		// console.log('multicallResult - ', multicallResult);
 		const	[claimableGold] = callResult;
 
 		// Sets up dungeons based on available ones (the order that dungeons are checked here is important!)

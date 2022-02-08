@@ -19,3 +19,9 @@ export const classMappingImg = [
 	'/front/sorcerer.svg',
 	'/front/wizard.svg',
 ];
+
+export const DIGITS_REGEX = /^\d+$/;
+export const DIGIT_DOTS_REGEX = /^[0-9]*\.?[0-9]*$/;
+
+export const CLASSES = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Wizard'];
+

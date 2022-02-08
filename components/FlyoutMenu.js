@@ -182,7 +182,7 @@ function FlyoutMenu() {
 												</div>
 											</a>
 										</Link>
-										<Link href={'/town/launch_party'}>
+										<Link href={'/town/launch-party'}>
 											<a className={'flex items-center p-2 -m-3 transition duration-150 ease-in-out hover:bg-gray-principal dark:hover:bg-dark-300 focus:outline-none'}>
 												<div className={'w-20 h-20 rounded-lg flex justify-center items-center'} style={{minWidth: 80}}>
 													<Image
