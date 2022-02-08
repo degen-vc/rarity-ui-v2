@@ -10,24 +10,16 @@ import DialogBox from	'components/DialogBox';
 import {getCommonSkinsInfo} from 'utils/actions';
 
 const Launch = ({router}) => {
-	const mountedRef = useRef(true);
-
 	const	{address, provider} = useWeb3();
 	const	{currentAdventurer} = useRarity();
 	const [commonInfo, setCommonInfo] = useState(null);
 
-	const onSetCommonInfo = (info) => {
-		if (!mountedRef.current) return null;
-		setCommonInfo(info);
-	};
-
 	useEffect(() => {
 		if (!provider || !address || !currentAdventurer) return;
-		getCommonSkinsInfo(provider, address, onSetCommonInfo);
-		return () => { mountedRef.current = false; };
+		getCommonSkinsInfo(provider, address, setCommonInfo);
 	}, [provider, address, currentAdventurer]);
 
-	if (!address || !provider || !mountedRef.current) return null;
+	if (!address || !provider) return null;
 
 	return (
 		<section className={'max-w-full'}>
