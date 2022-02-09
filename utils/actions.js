@@ -11,6 +11,7 @@ import	toast				from	'react-hot-toast';
 import	CLASSES				from	'utils/codex/classes';
 import  {newEthCallProvider, bigNumber} from 'utils';
 import  {parsePlots, parseSkinBase64} from 'utils/scarcity-functions';
+import {GTOKEN} from 'utils/constants';
 
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';
 import  SGV_TOKEN_ABI from 'utils/abi/sgvToken.abi';
@@ -1166,7 +1167,7 @@ export const getSGVBalance = async (provider, address, callback) => {
 };
 
 export const stakeSgvTokens = async (provider, mapContractAddress, mapAbi, value, maxValue) => {
-	let _toast = toast.loading(`1/2 - Approving ${value} $SGV staking...`);
+	let _toast = toast.loading(`1/2 - Approving ${value} ${GTOKEN} staking...`);
 	const sgvContractAddress = process.env.SGV_TOKEN_ADDR;
 	const signer = provider.getSigner();
 	const valueToStake = ethers.utils.parseEther(value);
@@ -1178,7 +1179,7 @@ export const stakeSgvTokens = async (provider, mapContractAddress, mapAbi, value
 	// TODO(???): add same logic for approve as for gold
 	try {
 		if (bigNumber.from(valueToStake).gte(maxStake)) {
-			onErrorToast(_toast, `You can't stake more than ${maxValue} $SGV`);
+			onErrorToast(_toast, `You can't stake more than ${maxValue} ${GTOKEN}`);
 			return;
 		}
 		const transaction = await sgvContract.approve(mapContractAddress, valueToStake);
@@ -1196,7 +1197,7 @@ export const stakeSgvTokens = async (provider, mapContractAddress, mapAbi, value
 		const transaction = await gameContract.stake(valueToStake);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			onSuccessToast(_toast, `${value} $SGV Tokens staked!`);
+			onSuccessToast(_toast, `${value} ${GTOKEN} Tokens staked!`);
 			return;
 		}
 	} catch (e) {
@@ -1206,7 +1207,7 @@ export const stakeSgvTokens = async (provider, mapContractAddress, mapAbi, value
 };
 
 export const unstakeSgvTokens = async (provider, contractAddress, abi, stakedValue) => {
-	const _toast = toast.loading('Unstake $SGV Tokens');
+	const _toast = toast.loading(`Unstake ${GTOKEN} Tokens`);
 	const signer = provider.getSigner();
 	const gameContract = new ethers.Contract(contractAddress, abi, signer);
 	if (stakedValue === 0) {
@@ -1418,7 +1419,7 @@ export const getSkinInfo = async (provider, address, skinContractAddr, abi, inde
 		const {skinKey, assignation} = await getManagerSkinInfo(provider, skinContractAddr, skinId.toString());
 		const {skinJson, skinImgUri} = parseSkinBase64(skinBase64);
 		
-		return callback({skinId: skinId?.toString(), skinJson, skinImgUri, skinClass: skinClass.toString(), skinKey: skinKey?.[0], assignation});
+		return callback({skinId: skinId?.toString(), skinJson, skinImgUri, skinClass: skinClass.toString(), skinKey: skinKey?.[0], assignation: assignation?.toString()});
 	} catch (e) {
 		console.log(e);
 	}
@@ -1443,14 +1444,14 @@ export const dressSummoner = async (provider, skinName, skinId, summonerId) => {
 };
 
 export const claimAllSgv = async (provider) => {
-	let _toast = toast.loading('Claiming $SGV...');
+	let _toast = toast.loading(`Claiming ${GTOKEN}...`);
 	const signer = provider.getSigner();
 	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
 	try {
 		const transaction = await managerContract.claimAll();
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			onSuccessToast(_toast, '$SGV successfully claimed');
+			onSuccessToast(_toast, `${GTOKEN} successfully claimed`);
 			return;
 		}
 	} catch (e) {
@@ -1461,14 +1462,14 @@ export const claimAllSgv = async (provider) => {
 };
 
 export const claimSgv = async (provider, tokenId) => {
-	let _toast = toast.loading('Claiming $SGV...');
+	let _toast = toast.loading(`Claiming ${GTOKEN}...`);
 	const signer = provider.getSigner();
 	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
 	try {
 		const transaction = await managerContract.claim(tokenId);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			onSuccessToast(_toast, '$SGV successfully claimed');
+			onSuccessToast(_toast, `${GTOKEN} successfully claimed`);
 			return;
 		}
 	} catch (e) {

@@ -5,13 +5,14 @@
 **	@Filename:				SectionNoAdventurer.js
 ******************************************************************************/
 
-import	React, {useState}				from	'react';
+import {useState}				from	'react';
 import	Image							from	'next/image';
 import	useWeb3							from	'contexts/useWeb3';
 import	useUI							from	'contexts/useUI';
 import	useRarity						from	'contexts/useRarity';
 import	Typer							from	'components/Typer';
 import	SectionRecruit					from	'sections/SectionRecruit';
+import {GAME_NAME, USER} from 'utils/constants';
 
 function	FacuHeadline() {
 	const	[facuTextIndex, set_facuTextIndex] = useState(0);
@@ -20,7 +21,7 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{'WELCOME TO SCARCITY GAMEVERSE. I AM'}
+					{`WELCOME TO ${GAME_NAME}. I AM`}
 				</Typer>&nbsp;
 				<span className={'text-tag-info'}><Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 1}>
 					{'VIGO'}
@@ -34,7 +35,7 @@ function	FacuHeadline() {
 				</Typer>&nbsp;
 				<div className={'my-2'}/>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 4}>
-					{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURER ARE YOU ?'}
+					{` YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ${USER} ARE YOU ?`}
 				</Typer>
 			</>
 		);

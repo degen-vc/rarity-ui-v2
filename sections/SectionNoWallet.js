@@ -5,12 +5,13 @@
 **	@Filename:				SectionNoAdventurer.js
 ******************************************************************************/
 
-import	React, {useState}				from	'react';
+import	{useState}				from	'react';
 import	Image							from	'next/image';
 import	useUI							from	'contexts/useUI';
 import	Typer							from	'components/Typer';
 import	DialogBox						from	'components/DialogBox';
 import	ModalLogin						from	'components/ModalLogin';
+import {GAME_NAME} from 'utils/constants';
 
 function	FacuHeadline() {
 	const	[facuTextIndex, set_facuTextIndex] = useState(0);
@@ -29,7 +30,7 @@ function	FacuHeadline() {
 				</Typer>&nbsp;
 				<div />
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 3}>
-					{'CONNECT YOUR WALLET TO ENTER THE SCARCITY GAMEVERSE.'}
+					{`CONNECT YOUR WALLET TO ENTER THE ${GAME_NAME}.`}
 				</Typer>
 			</>
 		);

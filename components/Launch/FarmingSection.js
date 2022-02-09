@@ -2,10 +2,11 @@ import {useEffect, useState} from 'react';
 import FarmingInfoBox from 'components/Launch/FarmingInfoBox';
 import AdvFarmingInfoBox from 'components/Launch/AdvFarmingInfoBox';
 import {getSGVBalance, getUserManagerSkinInfo} from 'utils/actions';
+import {GTOKEN} from 'utils/constants';
 
-const amountToSgvString = (amount, currency = 'SGV') => {
+const amountToSgvString = (amount, currency = GTOKEN) => {
 	if (!amount) return '-';
-	return `${Math.round(parseInt((amount / 1e16).toString()))/100} $${currency}`;
+	return `${Math.round(parseInt((amount / 1e16).toString()))/100} ${currency}`;
 };
 
 const FarmingSection = ({provider, address, currentAdventurer}) => {
@@ -34,8 +35,8 @@ const FarmingSection = ({provider, address, currentAdventurer}) => {
 		<section className={'m:flex mt-12'}>
 			<FarmingInfoBox
 				provider={provider}
-				sgvTotal={sgvTotalBalance ? `${Number(sgvTotalBalance).toFixed(2)} $SGV` : '-'}
-				sgvBalance={sgvBalance ? `${Number(sgvBalance).toFixed(2)} $SGV` : '-'}
+				sgvTotal={sgvTotalBalance ? `${Number(sgvTotalBalance).toFixed(2)} ${GTOKEN}` : '-'}
+				sgvBalance={sgvBalance ? `${Number(sgvBalance).toFixed(2)} ${GTOKEN}` : '-'}
 				sgvYield={amountToSgvString(managerSkinInfo?.sgvYield?.[0])}
 				sgvRogueYield={amountToSgvString(managerSkinInfo?.sgvRogueYield?.[0])}
 				sgvAvailable={amountToSgvString(managerSkinInfo?.sgvAvailable)} />

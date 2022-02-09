@@ -9,11 +9,11 @@ import BoxWithTitle from 'components/BoxWithTitle';
 import {validateDigits} from 'utils/scarcity-functions';
 import {getSkinInfo, dressSummoner} from 'utils/actions';
 import SUMMOER_SKINS_ABI from 'utils/abi/summonerSkins.abi';
-import {CLASSES} from 'utils/constants';
+import {CLASSES, USER} from 'utils/constants';
 
-const checkAvailableSummoners = (rarities, skinId) => 
+const checkAvailableSummoners = (rarities, skinId, assignation) => 
 	Object.values(rarities).reduce((all, summ) => {
-		if (`${summ?.class}` === skinId) all.push(summ?.tokenID);
+		if (`${summ?.class}` === skinId && summ?.tokenID !== assignation) all.push(summ?.tokenID);
 		return all;
 	}, []);
 
@@ -27,13 +27,13 @@ const Skin = ({index}) => {
 	
 	const validate = (skin) => {
 		if (!skin) return;
-		if (skin === skinInfo?.assignation?.toString()) return 'You\'ve already assign this costume to selected adventurer';
-		if (!availableSummoners.includes(skin)) return 'You can assign this costume only to your adventurer with appropriate class';
+		if (skin === skinInfo?.assignation) return `You've already assign this costume to selected ${USER}`;
+		if (!availableSummoners.includes(skin)) return `You can assign this costume only to your ${USER} with appropriate class`;
 		return;
 	};
 
 	const onDressAdventurer = () => {
-		if (!assignedSkin || assignedSkin === skinInfo?.assignation?.toString()) return;
+		if (!assignedSkin || assignedSkin === skinInfo?.assignation) return;
 		dressSummoner(provider, skinInfo?.skinJson?.name, skinInfo?.skinId, assignedSkin);
 	};
 
@@ -44,9 +44,9 @@ const Skin = ({index}) => {
 
 	useEffect(() => {
 		if (!skinInfo?.skinClass) return;
-		const availableSumList = checkAvailableSummoners(rarities, skinInfo?.skinClass);
+		const availableSumList = checkAvailableSummoners(rarities, skinInfo?.skinClass, skinInfo?.assignation);
 		if (availableSumList.length) return setAvailableSummoners(availableSumList);
-	}, [skinInfo?.skinClass, rarities]);
+	}, [skinInfo?.skinClass, skinInfo?.assignation, rarities]);
 
 	if (!skinInfo || !rarities) return null;
 
@@ -63,21 +63,21 @@ const Skin = ({index}) => {
 					<p className={'my-4'}>{CLASSES[skinInfo?.skinClass - 1]}</p>
 					<p className={'text-xs mb-4'}>
 						<span className={'text-blackLight'}>{'status: '}</span>
-						{skinInfo?.assignation == 0
+						{skinInfo?.assignation === '0'
 							? <span className={'text-tag-warning'}>{'unassigned'}</span> 
-							: <span className={'text-tag-info'}>{`assigned to ${skinInfo?.assignation?.toString()}`}</span>
+							: <span className={'text-tag-info'}>{`assigned to ${skinInfo?.assignation}`}</span>
 						}
 					</p>
 					{availableSummoners.length ? <>
-						<p className={'text-megaxs mb-2'}>{'Adventurer IDs available: '}</p>
-						<p>{availableSummoners?.join(', ')}</p>
+						<p className={'text-megaxs mb-2'}>{`${USER} IDs available: `}</p>
+						<p className={'text-center'}>{availableSummoners?.join(', ')}</p>
 						<Input
 							className={'w-full my-4'}
 							validateOnChange={validateDigits}
 							validateOnBlur={validate}
 							setValue={setAssignedSkin}
 							defaultValue={assignedSkin}
-							placeholder={'Adventurer ID'} />
+							placeholder={`${USER} ID`} />
 						<Button
 							className={'inline-block cursor-pointer hover:bg-white focus:bg-white dark:hover:bg-dark-600 dark:focus:bg-dark-600 bg-gray-principal dark:bg-dark-400 text-center'}
 							backgroundColor={'bg-gray-principal dark:bg-dark-400'}
@@ -85,9 +85,12 @@ const Skin = ({index}) => {
 							{'DRESS'}
 						</Button>
 					</> : <>
-						<p className={'text-megaxs text-center text-tag-withdraw'}>{'Seems like you don\'t have appropriate adventurer to dress this costume'}</p>
+						{skinInfo?.assignation === '0'
+							? <p className={'text-megaxs text-center text-tag-withdraw'}>{`Seems like you don't have appropriate ${USER} to dress this costume`}</p>
+							: <p className={'text-megaxs text-center text-tag-new'}>{`You have only one appropriate ${USER} for this costume and it's already dressed`}</p>
+						}
 						<Link href={'/town/tavern?tab=recruit'}>
-							<span className={'text-sm mt-8 cursor-pointer opacity-60 hover:opacity-100'}>{'recruit adventurer >'}</span>
+							<span className={'text-sm mt-8 cursor-pointer opacity-60 hover:opacity-100'}>{`recruit ${USER} >`}</span>
 						</Link>
 					</>}
 				</BoxWithTitle>

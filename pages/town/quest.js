@@ -16,6 +16,7 @@ import	DialogBox						from	'components/DialogBox';
 import	SectionDungeonTheCellar			from	'sections/SectionDungeonTheCellar';
 import	SectionDungeonTheForest			from	'sections/SectionDungeonTheForest';
 import	CLASSES							from	'utils/codex/classes';
+import {USER, USERS} from 'utils/constants';
 
 import {dungeonTypes, isDungeonAvailable} from 'utils/scarcity-functions';
 
@@ -53,7 +54,7 @@ function	DialogChoices({router, adventurersCount}) {
 							),
 							onClick: () => router.push(`/dungeons/the-cellar?adventurer=${currentAdventurer?.tokenID}`)
 						},
-						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
+						{label: `SELECT ANOTHER ${USER}`, onClick: () => openCurrentAventurerModal()},
 						{label: 'CANCEL', onClick: () => router.push('/town/quest')},
 					]} />
 			</>
@@ -92,7 +93,7 @@ function	DialogChoices({router, adventurersCount}) {
 									openCurrentAventurerModal();
 							}
 						},
-						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
+						{label: `SELECT ANOTHER ${USER}`, onClick: () => openCurrentAventurerModal()},
 						{label: 'CANCEL', onClick: () => router.push('/town/quest')},
 					]} />
 			</>
@@ -101,15 +102,15 @@ function	DialogChoices({router, adventurersCount}) {
 	if (router?.query?.tab === 'battle-royale') {
 		return (
 			<>
-				<Box className='mb-9 p-6 h-96'>
+				<Box className={'mb-9 p-6 h-96'}>
 					<Image
 						src={'/quests/battle-royale-placeholder.jpeg'}
 						quality={100}
-						layout='fill'
+						layout={'fill'}
 					/>
 				</Box>
-				<Box className='mb-9 p-6'>
-					Battle Royale, much wow! (Placeholder text)
+				<Box className={'mb-9 p-6'}>
+					{'Battle Royale, much wow! (Placeholder text)'}
 				</Box>
 				<DialogBox
 					selectedOption={selectedOption}
@@ -198,7 +199,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 						{'QUEST OFFICE'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 4}>
-						{'. WE ONLY WORK WITH TRUE ADVENTURERS. CONNECT YOUR WALLET FIRST.'}
+						{`. WE ONLY WORK WITH TRUE ${USERS}. CONNECT YOUR WALLET FIRST.`}
 					</Typer>
 				</>
 			);
@@ -219,7 +220,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 						{'QUEST OFFICE'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 4}>
-						{'. YOU NEED AN ADVENTURER TO START HERE. GO TO THE TAVERN TO RECRUIT ONE.'}
+						{`. YOU NEED AN ${USERS} TO START HERE. GO TO THE TAVERN TO RECRUIT ONE.`}
 					</Typer>
 				</>
 			);
@@ -228,7 +229,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 			if (hadTheCellarMessage) {
 				return (
 					<>
-						{'UNIMAGINABLE QUESTS AND ADVENTURES ARE COMING. '}
+						{`UNIMAGINABLE QUESTS AND ${USERS} ARE COMING. `}
 						{/* <span className={'text-tag-info'}>{'VIGO'}</span> */}
 						{' BUT YOU NEED TO PREPARE! '}
 						{/* <span className={'text-tag-info'}>{'DODGE AND HIT HARD'}</span> */}
@@ -239,7 +240,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 			return (
 				<>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-						{'UNIMAGINABLE QUESTS AND ADVENTURES ARE COMING. '}
+						{`UNIMAGINABLE QUESTS AND ${USERS} ARE COMING. `}
 					</Typer>
 					{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 						{'VIGO'}
@@ -301,7 +302,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 		if (hadInitialMessage) {
 			return (
 				<>
-					{'MY INN AND TAVERN ARE A REFUGE AND MAELSTROM FOR ADVENTURERS. '}
+					{`MY INN AND TAVERN ARE A REFUGE AND MAELSTROM FOR ${USERS}. `}
 					{/* <span className={'text-tag-info'}>{'LARA'}</span> */}
 					{' BUT QUESTS AWAIT. '}
 					{/* <span className={'text-tag-info'}>{'QUEST OFFICE'}</span> */}
@@ -313,7 +314,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 		return (
 			<>
 				<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-					{'MY INN AND TAVERN ARE A REFUGE AND MAELSTROM FOR ADVENTURERS. '}
+					{`MY INN AND TAVERN ARE A REFUGE AND MAELSTROM FOR ${USERS}. `}
 				</Typer>
 				{/* <span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 					{'LARA'}

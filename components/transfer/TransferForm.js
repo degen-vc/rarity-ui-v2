@@ -8,6 +8,7 @@ import  TRANSFER_GOLD_ABI      from 'utils/abi/transferGold.abi';
 import  TRANSFER_MATERIALS_ABI from 'utils/abi/transferMaterials.abi';
 import	ITEMS						       from	'utils/codex/items';
 import  {transfer} 		         from	'utils/actions';
+import {USERS} from 'utils/constants';
 
 const transferOptions = [
 	{name: 'GOLD', value: 'gold'},
@@ -96,7 +97,7 @@ const TransferForm = () => {
 						onChange={e => onChangeSender(e?.target?.value || '', setSender)}
 						onBlur={checkSenderId}
 						className={'border-4 border-black dark:border-dark-100 bg-white dark:bg-dark-600 border-solid h-10 w-full text-xs px-2 focus:outline-none text-black dark:text-white'}
-						placeholder={'Adventurer ID'}
+						placeholder={`${USERS} ID`}
 						value={sender}
 					/>
 					{senderError && <p className={'text-megaxs text-tag-withdraw pt-2'}>{senderError}</p>}
@@ -106,7 +107,7 @@ const TransferForm = () => {
 					<input
 						onChange={e => onChangeRecipient(e?.target?.value || '')}
 						className={'border-4 border-black dark:border-dark-100 bg-white dark:bg-dark-600 border-solid h-10 w-full text-xs px-2 focus:outline-none text-black dark:text-white'}
-						placeholder={'Adventurer ID'}
+						placeholder={`${USERS} ID`}
 						value={recipient}
 					/>
 				</div>

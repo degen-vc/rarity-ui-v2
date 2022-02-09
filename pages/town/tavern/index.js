@@ -5,7 +5,7 @@
 **	@Filename:				tavern.js
 ******************************************************************************/
 
-import	React, {useState, useEffect}	from	'react';
+import	{useState, useEffect}	from	'react';
 import	Image							from	'next/image';
 import	dayjs							from	'dayjs';
 import	relativeTime					from	'dayjs/plugin/relativeTime';
@@ -18,8 +18,9 @@ import	Typer							from	'components/Typer';
 import	Box								from	'components/Box';
 import	SectionRecruit					from	'sections/SectionRecruit';
 import	SectionDungeonTheCellar			from	'sections/SectionDungeonTheCellar';
-import	TAVERN_NEWS						from	'utils/codex/tavernNews.json';
+import	TAVERN_NEWS						from	'utils/codex/tavernNews';
 import	CLASSES							from	'utils/codex/classes';
+import {GAME_NAME, USERS, USER} from 'utils/constants';
 
 dayjs.extend(relativeTime);
 
@@ -34,7 +35,7 @@ function	NewsTab({shouldDisplay}) {
 					{'LATEST GOSSIP FROM THE TAVERN'}
 				</i>
 				<div className={'divide-y-2 divide-black dark:divide-white dark:divide-opacity-60'}>
-					{[...TAVERN_NEWS].map((news, i) => (
+					{TAVERN_NEWS.map((news, i) => (
 						<div className={'mt-10 pt-10'} key={i}>
 							<p className={'text-xs md:text-base mb-2 md:mb-0 leading-4 md:leading-6'}>{`> ${news.headline}`}</p>
 							<p className={'text-megaxs md:text-xs leading-4 md:leading-6 text-gray-darker dark:text-white dark:text-opacity-60'}>{news.text}</p>
@@ -64,7 +65,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			return (
 				<>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-						{'WELCOME, ADVENTURER! I AM '}
+						{`WELCOME, ${USER}! I AM `}
 					</Typer>&nbsp;
 					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 						{'VIGO'}
@@ -74,7 +75,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 					</Typer>&nbsp;
 					<div />
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 3}>
-						{'CONNECT YOUR WALLET TO ENTER THE SCARCITY GAMEVERSE.'}
+						{`CONNECT YOUR WALLET TO ENTER THE ${GAME_NAME}.`}
 					</Typer>
 				</>
 			);
@@ -119,20 +120,20 @@ function	NPCHeadline({router, active, adventurersCount}) {
 				if (hadRecruitMessage) {
 					return (
 						<>
-							{'WELCOME TO SCARCITY GAMEVERSE. I AM '}
+							{`WELCOME TO ${GAME_NAME}. I AM `}
 							<span className={'text-tag-info'}>{'VIGO'}</span>
 							{', THE INNKEEPER'}
 							<div />
 							{'THE JOURNEY YOU ARE ABOUT TO TAKE REQUIRE GOLD, GOODS, WEAPONS AND ARMOR. '}
 							<div className={'my-2'}/>
-							{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURER ARE YOU ?'}
+							{` YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ${USERS} ARE YOU ?`}
 						</>		
 					);
 				}
 				return (
 					<>
 						<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-							{'WELCOME TO SCARCITY GAMEVERSE. I AM'}
+							{`WELCOME TO ${GAME_NAME}. I AM`}
 						</Typer>&nbsp;
 						<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 							{'VIGO'}
@@ -151,7 +152,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 								set_hadRecruitMessage(true);
 							}}
 							shouldStart={npcTextIndex === 4}>
-							{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURER ARE YOU ?'}
+							{` YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ${USER} ARE YOU ?`}
 						</Typer>
 					</>
 				);
@@ -253,7 +254,7 @@ function	DialogChoices({router, onWalletConnect, active}) {
 							else
 								openCurrentAventurerModal();
 						}},
-						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
+						{label: `SELECT ANOTHER ${USER}`, onClick: () => openCurrentAventurerModal()},
 						{label: 'CANCEL', onClick: () => router.push('/town/tavern')},
 					]} />
 			</>
@@ -266,7 +267,7 @@ function	DialogChoices({router, onWalletConnect, active}) {
 			nonce={dialogNonce}
 			options={[
 				{label: 'What\'s new ?', onClick: () => router.push('/town/tavern')},
-				{label: 'Recruit a new adventurer', onClick: () => router.push('/town/tavern?tab=recruit')},
+				{label: `Recruit a new ${USER}`, onClick: () => router.push('/town/tavern?tab=recruit')},
 				{label: 'About the rat ...', onClick: () => router.push('/town/tavern?tab=the-cellar')}
 			]} />
 	);

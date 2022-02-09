@@ -25,3 +25,10 @@ export const DIGIT_DOTS_REGEX = /^[0-9]*\.?[0-9]*$/;
 
 export const CLASSES = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Wizard'];
 
+export const GAME = 'SCARCITY';
+export const GAME_NAME = 'SCARCITY GAMEVERSE';
+export const GAME_NAME_SHORT = 'SG';
+export const GTOKEN = '$SGV';
+export const USER = 'adventurer';
+export const USERS = 'adventurers';
+export const BLOCKCHAIN = 'Polygon';

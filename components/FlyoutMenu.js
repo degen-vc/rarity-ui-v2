@@ -5,11 +5,12 @@
 **	@Filename:				FlyoutMenu.js
 ******************************************************************************/
 
-import	React, {Fragment, useRef, useState, useEffect}	from	'react';
+import	{Fragment, useRef, useState, useEffect}	from	'react';
 import	Link											from	'next/link';
 import	Image											from	'next/image';
 import	{useRouter}										from	'next/router';
 import	{Popover, Transition}							from	'@headlessui/react';
+import {USERS} from 'utils/constants';
 
 function FlyoutMenu() {
 	const	router = useRouter();
@@ -110,7 +111,7 @@ function FlyoutMenu() {
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Recruit Adventurers. Hear the latest gossip.'}
+															{`Recruit ${USERS}. Hear the latest gossip.`}
 														</p>
 													</div>
 												</div>
@@ -220,7 +221,7 @@ function FlyoutMenu() {
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Keep your Adventurers moving. Abundance awaits!'}
+															{`Keep your ${USERS} moving. Abundance awaits!`}
 														</p>
 													</div>
 												</div>

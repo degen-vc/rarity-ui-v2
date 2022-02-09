@@ -5,15 +5,15 @@
 **	@Filename:				Navbar.js
 ******************************************************************************/
 
-import	React, {useState, useEffect}	from	'react';
+import	{useState, useEffect}	from	'react';
 import	Link							from	'next/link';
 import	useWeb3							from	'contexts/useWeb3';
 import	ModalLogin						from	'components/ModalLogin';
 import	FlyoutMenu						from	'components/FlyoutMenu';
 import	AdventurerModalMenu				from	'components/AdventurerModalMenu';
-import	{Provider, Contract}									from	'ethcall';
+import	{Contract}									from	'ethcall';
 import 	WRAPPED_GOLD_ABI 														from 'utils/abi/wrappedGold.abi';
-
+import {GAME_NAME, GAME_NAME_SHORT, USERS} from 'utils/constants';
 
 
 function	Navbar({router}) {
@@ -28,10 +28,6 @@ function	Navbar({router}) {
 		console.log(`WGOLD - ${JSON.stringify(wGoldOnAcc)}`);
 		return `${wGoldOnAcc}`;
 	}
-
-
-	// wGoldGet().then(data => console.log(data));
-
 
 	useEffect(() => {
 		// wGoldGet().then(data => console.log(data));
@@ -65,10 +61,10 @@ function	Navbar({router}) {
 			<div className={'items-center justify-start flex flex-row whitespace-normal md:whitespace-nowrap text-lg'}>
 				<div className={'w-full'}>
 					<Link href={'/'}>
-						<p className={'block md:hidden'}>{'SG'}</p>
+						<p className={'block md:hidden'}>{GAME_NAME_SHORT}</p>
 					</Link>
 					<Link href={'/'}>
-						<p className={'hidden md:block'}>{'Scarcity Gameverse'}</p>
+						<p className={'hidden md:block'}>{GAME_NAME}</p>
 					</Link>
 				</div>
 				<div className={'items-center justify-end flex-row flex md:hidden w-full'}>
@@ -81,7 +77,7 @@ function	Navbar({router}) {
 					<span>
 						<span className={`cursor-pointer inline mb-1 mr-2 group-hover:opacity-100 text-xs md:text-sm ${router.pathname === '/' ? 'opacity-100' : 'opacity-5'}`}>{'>'}</span>
 						<span className={'text-sm cursor-pointer'}>
-							<span className={'text-xs hidden md:inline cursor-pointer'}>{'Adventurers'}</span>
+							<span className={'text-xs hidden md:inline cursor-pointer'}>{USERS}</span>
 							<span className={'text-xs inline md:hidden cursor-pointer'}>{'Adv'}</span>
 						</span>
 					</span>

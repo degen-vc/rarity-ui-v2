@@ -13,6 +13,7 @@ import	useRarity						from	'contexts/useRarity';
 import	{levelUpTreasureTheForest}		from	'utils/actions';
 import	{xpRequired}					from	'utils/libs/rarity';
 import	THE_FOREST_LOOT					from	'utils/codex/items_dungeon_theForest.json';
+import {USER} from 'utils/constants';
 
 function	Artifact({img, name, cost, onClick, children, noHover}) {
 	return (
@@ -96,7 +97,7 @@ function	SectionArtifactsTheForest({shouldDisplay, adventurers, router, adventur
 						</div> :
 					<div> 
 						<p className={'text-xs'}>
-							{'> You first need to recruit an adventurer !'}
+							{`> You first need to recruit ${USER} !`}
 						</p>
 					</div>
 				}
