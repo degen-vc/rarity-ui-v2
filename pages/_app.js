@@ -19,12 +19,10 @@ import	Navbar							from	'components/Navbar';
 import	Footer							from	'components/Footer';
 import	SectionNoWallet					from	'sections/SectionNoWallet';
 import	useWindowInFocus				from	'hook/useWindowInFocus';
-
-
+import {GAME_NAME} from 'utils/constants';
 
 import	'tailwindcss/tailwind.css';
 import	'style/Default.css';
-
 
 function	GameWrapper({Component, pageProps, element, router}) {
 	const	{switchChain, active, chainID} = useWeb3();
@@ -81,11 +79,11 @@ function	AppWrapper(props) {
 	return (
 		<>
 			<Head>
-				<title>{'Scarcity Gameverse'}</title>
+				<title>{GAME_NAME}</title>
 				<link rel={'icon'} href={'/og.ico'} />
 				<meta httpEquiv={'X-UA-Compatible'} content={'IE=edge'} />
 				<meta name={'viewport'} content={'width=device-width, initial-scale=1'} />
-				<meta name={'description'} content={'Scarcity Gameverse'} />
+				<meta name={'description'} content={GAME_NAME} />
 				<meta name={'msapplication-TileColor'} content={'#9fcc2e'} />
 				<meta name={'theme-color'} content={'#ffffff'} />
 				<meta charSet={'utf-8'} />
@@ -99,15 +97,15 @@ function	AppWrapper(props) {
 				<script defer data-domain={'rarityextended.com'} src={'https://plausible.io/js/plausible.js'} />
 			</Head>
 			<DefaultSeo
-				title={'Scarcity Gameverse'}
-				defaultTitle={'Scarcity Gameverse'}
+				title={GAME_NAME}
+				defaultTitle={GAME_NAME}
 				description={'An On-Chain Adventure'}
 				openGraph={{
 					type: 'website',
 					locale: 'en_US',
 					url: process.env.WEBSITE_URI,
-					site_name: 'Scarcity Gameverse',
-					title: 'Scarcity Gameverse',
+					site_name: GAME_NAME,
+					title: GAME_NAME,
 					description: 'An On-Chain Adventure',
 					images: [
 						{

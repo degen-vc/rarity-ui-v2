@@ -11,6 +11,7 @@ import	useUI							from	'contexts/useUI';
 import	Typer							from	'components/Typer';
 import	DialogBox						from	'components/DialogBox';
 import	Box								from	'components/Box';
+import {GAME_NAME} from 'utils/constants';
 
 function	FacuHeadline() {
 	const	[facuTextIndex, set_facuTextIndex] = useState(0);
@@ -19,7 +20,7 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{'SGOLD IS THE CURRENCY OF THE SCARCITY GAMEVERSE. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.'}
+					{`SGOLD IS THE CURRENCY OF THE ${GAME_NAME}. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.`}
 				</Typer>&nbsp;
 			</>
 		);
@@ -31,7 +32,7 @@ function	FacuHeadline() {
 	);
 }
 
-function	Index({router}) {
+function	Index() {
 	const	{theme} = useUI();
 
 	return (

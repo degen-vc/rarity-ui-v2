@@ -3,6 +3,7 @@ import	Image							     from	'next/image';
 import	useUI							     from	'contexts/useUI';
 import	Box								     from	'components/Box';
 import	Typer							     from	'components/Typer';
+import {USERS} from 'utils/constants';
 
 const TransferHeader = () => {
 	const	{theme} = useUI();
@@ -21,7 +22,7 @@ const TransferHeader = () => {
 			<Box className={'p-4'}>
 				<h1 className={'text-xs md:text-xs leading-normal md:leading-8'}>
 					<Typer onDone={() => setTextIndex(i => i + 1)} shouldStart={textIndex === 0}>
-						{'Easily transfer SGOLD and Craft (I) Materials between your Adventurers so you can optimise your crafting success.'}
+						{`Easily transfer SGOLD and Craft (I) Materials between your ${USERS} so you can optimise your crafting success.`}
 					</Typer>&nbsp;
 				</h1>
 			</Box>

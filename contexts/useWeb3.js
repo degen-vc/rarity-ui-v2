@@ -5,7 +5,7 @@
 **	@Filename:				useWeb3.js
 ******************************************************************************/
 
-import	React, {useState, useEffect, useContext, createContext, useCallback}	from	'react';
+import	{useState, useEffect, useContext, createContext, useCallback}	from	'react';
 import	{ethers}																from	'ethers';
 import	QRCodeModal																from	'@walletconnect/qrcode-modal';
 import	{useWeb3React}															from	'@web3-react-fork/core';

@@ -2,6 +2,7 @@ import {useState} from 'react';
 import Button	from 'components/Button';
 import BoxWithTitle from 'components/BoxWithTitle';
 import InfoBlock from 'components/InfoBlock';
+import {GTOKEN} from 'utils/constants';
 
 const VALID_AMOUNT_RGX = /^[0-9]*\.?[0-9]*$/;
 
@@ -23,7 +24,7 @@ const StakeForm = ({
 	const updateStakeAmpunt = (value) => {
 		if (!value.trim().match(VALID_AMOUNT_RGX)) return;
 		if (Number(value.trim()) > Number(sgvBalance)) {
-			setStakeAmountError("You don't have enough $SGV to stake");
+			setStakeAmountError(`You don't have enough ${GTOKEN} to stake`);
 		} else if (stakeAmountError) {
 			setStakeAmountError('');
 		}
@@ -37,7 +38,7 @@ const StakeForm = ({
 					<div className={'xs:flex w-full justify-around m:justify-between'}>
 						<InfoBlock
 							className={'mb-4 m:mb-2'}
-							name={'Your $SGV'}
+							name={`Your ${GTOKEN}`}
 							value={sgvBalance} />
 						<InfoBlock
 							className={'mb-4 m:mb-2'}
@@ -62,7 +63,7 @@ const StakeForm = ({
 							{'STAKE'}
 						</Button>
 					</InfoBlock>
-					<InfoBlock className={'mt-4 m:mt-0 m:ml-6 text-center'} name={'Staked $SGV'} value={staked}>
+					<InfoBlock className={'mt-4 m:mt-0 m:ml-6 text-center'} name={`Staked ${GTOKEN}`} value={staked}>
 						<Button
 							className={'mt-2 inline-block cursor-pointer hover:bg-white focus:bg-white dark:hover:bg-dark-600 dark:focus:bg-dark-600 bg-gray-principal dark:bg-dark-400 text-center'}
 							backgroundColor={'bg-gray-principal dark:bg-dark-400'}

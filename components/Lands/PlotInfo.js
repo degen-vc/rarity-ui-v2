@@ -1,6 +1,7 @@
 import Button	from 'components/Button';
 import BoxWithTitle from 'components/BoxWithTitle';
 import InfoBlock from 'components/InfoBlock';
+import {GTOKEN} from 'utils/constants';
 
 const PlotInfo = ({plot, buyPlot, staked, points, rewardNeeded, canBuy, sgvBalance}) => {
 	const renderPlotActions = () => {
@@ -26,9 +27,9 @@ const PlotInfo = ({plot, buyPlot, staked, points, rewardNeeded, canBuy, sgvBalan
 				</>
 			);
 		} else if (points === 0 && sgvBalance) {
-			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{'Stake $SGV tokens to earn points'}</p>;
+			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{`Stake ${GTOKEN} tokens to earn points`}</p>;
 		} else if (points < rewardNeeded && !sgvBalance) {
-			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{'$SGV tokens are needed to buy plot'}</p>;
+			return <p className={'text-center w-3/4 m:w-full mx-auto'}>{`${GTOKEN} tokens are needed to buy plot`}</p>;
 		} return null;
 	};
 
