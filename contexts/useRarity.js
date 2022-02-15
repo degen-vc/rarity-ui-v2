@@ -44,7 +44,6 @@ const	prepareAdventurer = (tokenID) => {
 	const	rarityDungeonCellar = new Contract(process.env.DUNGEON_THE_CELLAR_ADDR, THE_CELLAR_ABI);
 	const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
 	const	rarityFeats = new Contract(process.env.RARITY_FEATS_ADDR, RARITY_FEATS_ABI);
-
 	return [
 		rarity.ownerOf(tokenID),
 		rarity.summoner(tokenID),
@@ -71,39 +70,41 @@ const prepareAdventurerInventory = (tokenID) => {
 // TODO: check if it works
 const	prepareSharedInventory = (result, callback) => {
 	const getValuesByType = (type) => type === 1 ? MANIFEST_GOODS : type === 2 ? MANIFEST_ARMORS : MANIFEST_WEAPONS;
-	result.forEach((item) => callback((prev) => ({...prev, [item.item_id]: {
+	result.forEach((item) => callback((prev) => ({...prev, [item.crafted]: {
 		crafter: item.crafter.toString(),
 		...Object.values(getValuesByType(item.base_type)).find(e => e.id === item.item_type),
 	}})));
 };
 
-const createItem = (tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats = [], dungeons, inventoryCallResult) => ({
-	tokenID: tokenID,
-	owner: owner,
-	xp: ethers.utils.formatEther(adventurer['_xp']),
-	class: Number(adventurer['_class']),
-	level: Number(adventurer['_level']),
-	log: Number(adventurer['_log']),
-	name,
-	gold: {
-		balance: ethers.utils.formatEther(balanceOfGold),
-		claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
-	},
-	attributes: {
-		isInit: initialAttributes,
-		remainingPoints: initialAttributes ? -1 : 32,
-		strength: initialAttributes ? abilityScores['strength'] : 8,
-		dexterity: initialAttributes ? abilityScores['dexterity'] : 8,
-		constitution: initialAttributes ? abilityScores['constitution'] : 8,
-		intelligence: initialAttributes ? abilityScores['intelligence'] : 8,
-		wisdom: initialAttributes ? abilityScores['wisdom'] : 8,
-		charisma: initialAttributes ? abilityScores['charisma'] : 8,
-	},
-	skills: skills,
-	feats:  feats.map(f => Number(f)),
-	dungeons,
-	inventory: inventoryCallResult
-});
+const createItem = (tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats = [], dungeons, inventoryCallResult, isRar) => {
+	return ({
+		tokenID: tokenID,
+		owner: owner,
+		xp: ethers.utils.formatEther(adventurer['_xp']),
+		class: Number(adventurer['_class']),
+		level: Number(adventurer['_level']),
+		log: Number(adventurer['_log']),
+		name,
+		gold: {
+			balance: ethers.utils.formatEther(balanceOfGold),
+			claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
+		},
+		attributes: {
+			isInit: initialAttributes,
+			remainingPoints: initialAttributes ? -1 : 32,
+			strength: initialAttributes ? abilityScores['strength'] : 8,
+			dexterity: initialAttributes ? abilityScores['dexterity'] : 8,
+			constitution: initialAttributes ? abilityScores['constitution'] : 8,
+			intelligence: initialAttributes ? abilityScores['intelligence'] : 8,
+			wisdom: initialAttributes ? abilityScores['wisdom'] : 8,
+			charisma: initialAttributes ? abilityScores['charisma'] : 8,
+		},
+		skills: skills,
+		feats:  feats.map(f => Number(f)),
+		dungeons,
+		inventory: inventoryCallResult
+	});
+};
 
 // FETCHERS
 const fetchRarity = async (address, callback) => {
@@ -130,7 +131,7 @@ const fetchAdventurerInventory = async (provider, calls) => {
 
 const fetchAdventurerExtra = async (calls) => {
 	const	results = await Promise.all(calls.map(p => p.catch(() => ethers.BigNumber.from(0))));
-	return	results.map(result =>  (result instanceof Error) ? undefined : result);
+	return results.map(result =>  (result instanceof Error) ? undefined : result);
 };
 
 // CONTEXT COMPONENT
@@ -167,20 +168,21 @@ export const RarityContextApp = ({children}) => {
 				canAdventure: forestResearch?.discovered === true || Number(forestResearch?.timeInDays) === 0
 			};
 		}
-		if (toAddress(owner) !== toAddress(address)) {
-			return;
-		}
+		if (toAddress(owner) !== toAddress(address)) return;
+
 		if (!currentAdventurer || (currentAdventurer && tokenID === currentAdventurer.tokenID)) {
 			set_currentAdventurer(p => (!p || (p && tokenID === p.tokenID))
 				? createItem(tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats, dungeons, inventoryCallResult)
 				: p);
 		}
-		set_rarities((prev) => ({
-			...prev,
-			[tokenID]: createItem(tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats, dungeons, inventoryCallResult)
-		}));
+		set_rarities((prev) => {
+			return ({
+				...prev,
+				[tokenID]: createItem(tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats, dungeons, inventoryCallResult, '++++')
+			});
+		});
 		set_rNonce(prev => prev + 1);
-	}
+	};
 
 	const updateRarities = async (elements) => {
 		if (isUpdatingRarities) return;
@@ -212,7 +214,7 @@ export const RarityContextApp = ({children}) => {
 		}
 
 		const	callResults = await fetchAdventurer(provider, preparedCalls);
-		const	chunkedCallResult = chunk(callResults, 9 + numberOfDungeonsAvailable);
+		const	chunkedCallResult = chunk(callResults, 9);
 		const	extraCallResults = await fetchAdventurerExtra(preparedExtraCalls);
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
 		const	inventoryCallResult = await fetchAdventurerInventory(provider, preparedInventoryCalls);
