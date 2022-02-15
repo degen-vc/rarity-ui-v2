@@ -1,10 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 5th 2021
-**	@Filename:				useWeb3.js
-******************************************************************************/
-
 import	{useState, useEffect, useContext, createContext, useCallback}	from	'react';
 import	{ethers}																from	'ethers';
 import	QRCodeModal																from	'@walletconnect/qrcode-modal';
@@ -90,16 +83,24 @@ export const Web3ContextApp = ({children}) => {
 	}, [account, chainId, connector, library, onDeactivate, onUpdate]);
 
 	const switchChain = useCallback(() => {
-		if (Number(chainID) === process.env.CHAIN_ID) {
+		if (Number(chainID) === 250) {
 			return;
 		}
 		if (!provider || !active) {
 			console.error('Not initialized');
 			return;
 		}
-
-		const addEthChainParam = JSON.parse(process.env.ADD_ETH_CHAIN_PARAM);
-		provider.send('wallet_addEthereumChain', [addEthChainParam, address]).catch((error) => console.error(error));
+		provider.send('wallet_addEthereumChain', [{
+			'chainId': '0xFA',
+			'blockExplorerUrls': ['https://ftmscan.com'],
+			'chainName': 'Fantom Opera',
+			'rpcUrls': ['https://rpc.ftm.tools'],
+			'nativeCurrency': {
+				'name': 'Fantom',
+				'symbol': 'FTM',
+				'decimals': 18
+			}
+		}, address]).catch((error) => console.error(error));
 	}, [active, address, chainID, provider]);
 
 	/**************************************************************************
@@ -133,7 +134,6 @@ export const Web3ContextApp = ({children}) => {
 			const walletconnect = new WalletConnectConnector({
 				rpc: {
 					1: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-					137: 'https://polygonscan.com',
 					250: 'https://rpc.ftm.tools',
 				},
 				chainId: process.env.CHAIN_ID,

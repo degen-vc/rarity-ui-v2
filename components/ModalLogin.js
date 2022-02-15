@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Tuesday August 31st 2021
-**	@Filename:				ModalLogin.js
-******************************************************************************/
-
-import	React, {Fragment, useRef}		from	'react';
+import	{Fragment, useRef}		from	'react';
 import	{Dialog, Transition}			from	'@headlessui/react';
 import	useWeb3							from	'contexts/useWeb3';
 
