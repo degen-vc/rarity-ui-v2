@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NETWORK=polygon next dev",
+    "dev": "cross-env NETWORK=ftm next dev",
     "dev:ftm": "cross-env NETWORK=ftm next dev",
     "open-browser": "open http://localhost:3000",
     "build": "next build",

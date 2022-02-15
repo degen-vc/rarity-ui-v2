@@ -1,67 +1,60 @@
-/******************************************************************************
-**	@Author:				The Ape Community
-**	@Twitter:				@ape_tax
-**	@Date:					Wednesday August 11th 2021
-**	@Filename:				next.config.js
-******************************************************************************/
-
 const Dotenv = require('dotenv-webpack');
 
 const networkVars = {
-	polygon: {
-		NETWORK_NAME: 'Polygon',
-		NETWORK_KEY: 'DTV5YPK2WGU2HNC9P3XEKFF6ZYQZPVPRAP', //process.env.POLYGON_KEY,
-		CHAIN_ID: 137,
-		NETWORK_API_URL: 'https://api.polygonscan.com/api',
+	fantom: {
+		NETWORK_NAME: 'Fantom',
+		NETWORK_KEY: 'UUKDHMGTYBXWXMWEDV7YEE5K4RCB8DBUIJ',
+		CHAIN_ID: 250,
+		NETWORK_API_URL: 'https://api.ftmscan.com/api',
 		MULTICALL2_ADDRESS: '0x557fD25F9169247000F9D866704b4Bc12680CE5f',
-
-		ADD_ETH_CHAIN_PARAM: JSON.stringify({
-			'chainId': '0x89',
-			'blockExplorerUrls': ['https://polygonscan.com/'],
-			'chainName': 'Polygon',
-			'rpcUrls': ['https://rpc-mainnet.matic.network/'],
-			'nativeCurrency': {
-				'name': 'Polygon',
-				'symbol': 'MATIC',
-				'decimals': 18
-			}
-		}),
-
 		// Contracts
-		RARITY_ADDR: '0x2a8ac1b2fCB475C7646f93b6E69930d1eB67c053',
-		RARITY_ATTR_ADDR: '0x4Cd9F4a466356201EF815014C16fd0E001594D91',
-		RARITY_GOLD_ADDR: '0xEf08998190aAeC378AE1972b7A6d90B7F1Ce6b95',
-		SXGV_TOKEN: '0xa6e91fe4fcbdb2747628d6d6972b0374382896a3',
-		RARITY_SKILLS_ADDR: '0x0Cb0F5bcdBe1D90C5AEC0b0A4a6a004455Ee0D71',
-
-		RARITY_FEATS_ADDR: '0x441307912B7818f2cBfF049390D908902d9f7D93',
-		RARITY_FEATS_ABI: require('./utils/abi/rarityFeats.abi.json'),
+		RARITY_ADDR: '0xcDd13d641e61fe628F8aBEEabd31A17E04Ee4F98',
+		// RARITY_ABI: require('./utils/abi/rarity.abi.js'),
 		
-		RARITY_CRAFTING_ADDR: '0xf919BAbE92EE19af2922F2EdE9185Ff32562D9D3',
-		RARITY_LIBRARY_ADDR: '0x569AfD875DB7542A019E0c96eB04f9090C8dC527',	// Polygon only
+		RARITY_ATTR_ADDR: '0xF46756807c2DF32D9daa6C007C5081B9Ff4541f5',
+		// RARITY_ATTR_ABI: require('./utils/abi/rarityAttr.abi.js'),
 
-		RARITY_NAMES_ADDR: '0x181746D67F9a459181910F262739802b89071f06',
-		USDC_ADDR: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
-		USDC_PROXY_ADDR: '0xDD9185DB084f5C4fFf3b4f70E7bA62123b812226',
-		WRAPPED_GOLD: '0xAfeDb81EE72EDe29c08AE350c5a7AF60D4Eb7162',
-		SCARCITY_GOLD: '0x49Cc4B94DDA8F3b0C9904944199C6eA8A134B3bd',
-		SGV_TOKEN_ADDR: '0xa6E91Fe4FcbDB2747628d6D6972B0374382896a3',
+		RARITY_GOLD_ADDR: '0xFE7FAE6182C2E93f45D867D5De63aF15802E994a',
+		// RARITY_GOLD_ABI: require('./utils/abi/rarityGold.abi.js'),
 
+		RARITY_SKILLS_ADDR: '0x71FC6e16C23De00A3097DCF63319341733C05c85',
+		// RARITY_SKILLS_ABI: require('./utils/abi/Skills.abi.js'),
 
+		RARITY_FEATS_ADDR: '0xA42D6081DA80ae2725E99427A7765c8833c4203B',
+		// RARITY_FEATS_ABI: require('./utils/abi/rarityFeats.abi.json'),
+		
+		RARITY_CRAFTING_ADDR: '0xC0100a03DB246c55BfE639Aa15e534Cc4576E815',
+		// RARITY_CRAFTING_ABI: require('./utils/abi/rarityCrafting.abi.js'),
 
+		RARITY_LIBRARY_ADDR: '0x6055890534024312edd95c2B1b6D52c245E536a3',
+		// RARITY_LIBRARY_ABI: require('./utils/abi/rarityLibrary.abi.js'),
+
+		RARITY_NAMES_ADDR: '0x83Ee793BC3FC02305E32c846285C4dE1BC42933f',
+		// RARITY_NAMES_ABI: require('./utils/abi/rarityNames.abi.js'),
+		
 		// Dungeon
-		DUNGEON_THE_CELLAR_ADDR: '0xE3662B67cfbc7aE238e50480C9fA61cB9A28aD96',
+		DUNGEON_THE_CELLAR_ADDR: '0xeC274c17d400bFE704751251683f804EDe91183b',
+		// DUNGEON_THE_CELLAR_ABI: require('./utils/abi/dungeonTheCellar.abi.js'),
 
-		// Transfer
-		TRANSFER_GOLD_ADDR: '0xEf08998190aAeC378AE1972b7A6d90B7F1Ce6b95',
-		TRANSFER_MATERIALS_ADDR: '0xe3662b67cfbc7ae238e50480c9fa61cb9a28ad96',
+		// Transfer (TODO: remove this)
+		TRANSFER_GOLD_ADDR: '0xFE7FAE6182C2E93f45D867D5De63aF15802E994a',
+		// TRANSFER_GOLD_ABI: require('./utils/abi/rarityGold.abi.js'),
+		TRANSFER_MATERIALS_ADDR: '0xeC274c17d400bFE704751251683f804EDe91183b',
+		// TRANSFER_MATERIALS_ABI: require('./utils/abi/dungeonTheCellar.abi.js'),
+
+		// WTF(??)
+		USDC_ADDR: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', // ????
+		SXGV_TOKEN: '0xa6e91fe4fcbdb2747628d6d6972b0374382896a3', // ????
+		USDC_PROXY_ADDR: '0xDD9185DB084f5C4fFf3b4f70E7bA62123b812226', // ????
+		WRAPPED_GOLD: '0x0f51d4841F9A8C85583bC644C0b809d455C71199', // ????
+		SCARCITY_GOLD: '0x49Cc4B94DDA8F3b0C9904944199C6eA8A134B3bd', // ????
+		SGV_TOKEN_ADDR: '0xa6E91Fe4FcbDB2747628d6D6972B0374382896a3', // ????
 
 		// Lands
-		LANDS_GAME_ADDR: '0xFf602571Dd73B7557a180b4917d334773A5c94e9',
-
+		// LANDS_GAME_ADDR: '0xFf602571Dd73B7557a180b4917d334773A5c94e9',
 		// Launch
-		MANAGER_SKIN_ADDR: '0x781394c4878e217A02CD66248df86dc4dC427738',
-		COMMON_SKIN_ADDR: '0x2AF8F4B4F82051e3Ae985422AC71f591c428decC'
+		// MANAGER_SKIN_ADDR: '0x781394c4878e217A02CD66248df86dc4dC427738',
+		// COMMON_SKIN_ADDR: '0x2AF8F4B4F82051e3Ae985422AC71f591c428decC'
 	},
 };
 
@@ -73,9 +66,9 @@ module.exports = ({
 		new Dotenv()
 	],
 	env: {
-		...networkVars['polygon'],
+		...networkVars['fantom'],
 
-		NETWORK: 'polygon',
+		NETWORK: 'fantom',
 		WEBSITE_URI: process.env.WEBSITE_URI || 'https://adventure.major.tax/',
 		
 		RARITY_CRAFTING_ID: '1758709',
@@ -100,8 +93,6 @@ module.exports = ({
 		return config;
 	},
 	webpackDevMiddleware: (config) => {
-		// Perform customizations to webpack dev middleware config
-		// Important: return the modified config
 		return config;
 	},
 });

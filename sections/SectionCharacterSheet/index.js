@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 19th 2021
-**	@Filename:				index.js
-******************************************************************************/
-
-import	{useState, useEffect}	from	'react';
+import	{useState}	from	'react';
 import	toast				from	'react-hot-toast';
 import	AutowidthInput		from	'react-autowidth-input';
 
@@ -18,79 +11,41 @@ import	Attributes			from	'sections/SectionCharacterSheet/Attributes';
 import	Balloon				from	'sections/SectionCharacterSheet/Balloon';	
 import	Skills				from	'sections/SectionCharacterSheet/Skills';
 import	Feats				from	'sections/SectionCharacterSheet/Feats';	
+import  {newEthCallProvider} from 'utils';
 
 import	Inventory			from	'sections/SectionCharacterSheet/Inventory';
 import	{classMappingImg}	from	'utils/constants';
 import  {ethers} from	'ethers';
-import	{Provider, Contract}				from	'ethcall';
+import	{Contract}				from	'ethcall';
 import	UseWeb3								from	'contexts/useWeb3';
 
 import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 import	useWeb3							from	'contexts/useWeb3';
-
-import 	USDC_ABI from 'utils/abi/USDC.abi';
-import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 import  SCARCITY_GOLD_ABI from 'utils/abi/gold.abi';
 
 
-
-
-
-
-async function newEthCallProvider(provider, devMode) {
-
-	const	ethcallProvider = new Provider();
-	if (devMode) {
-		await	ethcallProvider.init(new ethers.providers.JsonRpcProvider('http://localhost:8545'));
-		ethcallProvider.multicallAddress = process.env.MULTICALL_ADDRESS;
-		ethcallProvider.multicall2Address = process.env.MULTICALL2_ADDRESS;
-		return ethcallProvider;
-	}
-	await	ethcallProvider.init(provider);
-	return	ethcallProvider;
-}
-
 async function	fetchAdventurer(calls) {
-	const	{chainID, provider} = UseWeb3();
+	const	{provider} = UseWeb3();
 
-	const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
+	const	ethcallProvider = await newEthCallProvider(provider);
 	const	callResult = await ethcallProvider.all(calls);
 	return (callResult);
 }
 
 async function checkNamePrice() {
-
-
 	const namesContract = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
-
 	const [buyTokenPrice] = await fetchAdventurer([namesContract.buyTokenPrice()]);
-	console.log(`buyTokenPrice - ${buyTokenPrice}`);
 	return +`${buyTokenPrice}`;
 }
 
-async function checkUSDCallowance(address) {
-
-
-	const usdc = new Contract(process.env.USDC_ADDR, USDC_ABI);
-
-	const [allowance] = await fetchAdventurer([usdc.allowance(address, process.env.RARITY_NAMES_ADDR)]);
-	console.log(` GOLD allowance - ${allowance}`);
-	return +`${allowance}`;
-}
-
 async function checkGoldAllowance(id) {
-
-
 	const gold = new Contract(process.env.SCARCITY_GOLD, SCARCITY_GOLD_ABI);
-
 	const [allowance] = await fetchAdventurer([gold.allowance(id, 238)]);
-	console.log(` USDC allowance - ${allowance}`);
 	return +`${allowance}`;
 }
 
 async function claimName(name, id, active, address, chainID, provider, callback) {
 	const	_toast = toast.loading(`Claiming name ${name}...`);
-
 	const signer = provider.getSigner();
 
 	const claimName = new ethers.Contract(
@@ -127,56 +82,6 @@ async function claimName(name, id, active, address, chainID, provider, callback)
 		toast.error('Something went wrong, please try again later.');
 		callback({error, data: name});
 	}
-
-	// const rarityName = await claimName.claim(name, id);
-
-	// console.log(`${rarityName}`);
-}
-
-async function getUSDCallowance(provider, amount, callback) {
-	const	_toast = toast.loading('Approving USDC use');
-
-	const signer = provider.getSigner();
-
-	const claimName = new ethers.Contract(
-		process.env.USDC_ADDR, 
-		['function approve(address spender, uint256 amount) external returns (bool)'],
-		signer
-	);
-
-	try {
-		await claimName.callStatic.approve(process.env.RARITY_NAMES_ADDR, amount * 1000);
-	} catch (error) {
-		toast.dismiss(_toast);
-		toast.error('Impossible to submit transaction');
-		callback({error, data: undefined});
-		return;
-	}
-
-	try {
-		const	transaction = await claimName.approve(process.env.RARITY_NAMES_ADDR, amount * 100);
-		const	transactionResult = await transaction.wait();
-		if (transactionResult.status == 1) {
-			callback({error: false, data: 'id'});
-			toast.dismiss(_toast);
-			toast.success('Transaction successful');
-		} else {
-			console.log(transactionResult.status);
-			toast.dismiss(_toast);
-			toast.error('Transaction reverted');
-			callback({error: true, data: undefined});
-		}
-	} catch (error) {
-		console.error(error);
-		toast.dismiss(_toast);
-		toast.error('Something went wrong, please try again later.');
-		callback({error, data: 'id'});
-	}
-
-	// const allowance = await claimName.approve(process.env.RARITY_NAMES_ADDR, 10000);
-
-	// console.log(`${allowance}`,);
-	// return allowance;
 }
 
 async function getGOLDapprove(provider, amount, id, callback) {
@@ -218,22 +123,11 @@ async function getGOLDapprove(provider, amount, id, callback) {
 		toast.error('Something went wrong, please try again later.');
 		callback({error, data: 'id'});
 	}
-
-	// const allowance = await claimName.approve(process.env.RARITY_NAMES_ADDR, 10000);
-
-	// console.log(`${allowance}`,);
-	// return allowance;
 }
 
-
-
-
 function	AdventurerTab({adventurer, updateRarity, provider}) {
-
 	const	[selectedTab, set_selectedTab] = useState(0);
-	
 
-	// namesGet();
 	return (
 		<Box className={'flex flex-col w-full mt-2'}>
 			<div className={'flex flex-col md:flex-row w-full space-x-0 md:-space-x-1'}>
@@ -262,62 +156,17 @@ function	AdventurerTab({adventurer, updateRarity, provider}) {
 }
 
 const	Info = ({adventurer, updateRarity, provider}) => {
-	// const	{provider2, chainID} = useWeb3();
-	const	{active, address, chainID, provider2} = useWeb3();
-	const [allowance, setAllawance] = useState(0);
+	const	{active, address, chainID} = useWeb3();
 	const [GoldAllowance, setGoldAllawance] = useState(0);
 
-
-	checkUSDCallowance(address).then(data => setAllawance(data));
+	// TODO: UPDATE CHECK ALLOEANCE ON NAMES CONTRACT!!!!
+	// checkUSDCallowance(address).then(data => setAllawance(data));
 	checkGoldAllowance(adventurer.tokenID).then(data => setGoldAllawance(data));
 	checkNamePrice().then(data => setNamePrice(data));
 	const [namePrice, setNamePrice] = useState(0);
 	const	[name, set_name] = useState(adventurer.name || adventurer.tokenID);
 	
-
-	const [input, setInput] = useState('');
-	
-
-	console.log(allowance, namePrice);
-
-	// checkUSDCallowance(active, address, chainID, provider).then(data => {
-	// 	setAllawance(data);
-	// });
-	// async function getUSDCallowanceInner() {
-	// 	let allow = await checkUSDCallowance(active, address, chainID, provider).then(data => data);
-	// 	return allow;
-	// }
-
-	// checkUSDCallowance(address).then(data => setAllawance(data));
-
-
-	// checkGoldAllowance(active, address, chainID, provider).then(data => {
-	// 	setAllawance(data);
-	// });
-	// async function getUSDCallowanceInner() {
-	// 	let allow = await checkUSDCallowance(active, address, chainID, provider).then(data => data);
-	// 	return allow;
-	// }
-
-	// checkGoldAllowance(address).then(data => setAllawance(data));
-
-
-	useEffect(() => {
-		// let hello = '';
-		
-		// checkUSDCallowance(address).then(data => hello = data);
-	
-		// checkUSDCallowance(address).then(data => setAllawance(data));
-
-		// console.log(hello);
-	}, []);
-
-	let handleChange = (event) => {
-		setInput(event.target.value);
-	};
-
 	let handleSubmit = () => {
-		// event.preventDefault();
 		claimName(name, adventurer.tokenID, active, address, chainID, provider, ({error, data}) => {
 			if (error) {
 				return console.error(error);
@@ -326,16 +175,15 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 		}); 
 	};
 
-
-	let handleSubmitAllowance = (event)=> {
-		event.preventDefault();
-		getUSDCallowance(provider, namePrice, adventurer.tokenID, ({error, data}) => {
-			if (error) {
-				return console.error(error);
-			}
-			updateRarity(adventurer.tokenID);
-		});
-	};
+	// let handleSubmitAllowance = (event)=> {
+	// 	event.preventDefault();
+	// 	getUSDCallowance(provider, namePrice, adventurer.tokenID, ({error, data}) => {
+	// 		if (error) {
+	// 			return console.error(error);
+	// 		}
+	// 		updateRarity(adventurer.tokenID);
+	// 	});
+	// };
 
 	let handleApproveGold = (event)=> {
 		event.preventDefault();
@@ -353,7 +201,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 	return (
 		<Box className={'nes-container pt-6 px-4 with-title w-full md:w-2/3'}>
 			<p className={'title bg-white dark:bg-dark-600 z-50 relative ' + `${adventurer.usdcAllw >= namePrice && !adventurer.name ? 'invisible' : ' '}`} style={{paddingTop: 2}}>{adventurer.usdcAllw >= namePrice ? adventurer.name : adventurer.tokenID}</p>
-			<p className={'title bg-white dark:bg-dark-600 z-50 relative cursor-pointer group  ' + `${adventurer.usdcAllw >= namePrice && !adventurer.name ? '' : 'invisible'}`} style={{paddingTop: 20}}>
+			<div className={'title bg-white dark:bg-dark-600 z-50 relative cursor-pointer group  ' + `${adventurer.usdcAllw >= namePrice && !adventurer.name ? '' : 'invisible'}`} style={{paddingTop: 20}}>
 				<div className={'flex flex-row items-center'}>
 					<AutowidthInput
 						value={name}
@@ -385,7 +233,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 						}
 					</div>
 				</div>
-			</p>
+			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
 				<div className={'opacity-80 text-xs md:text-sm w-48'}>{'ID:'}</div>
 				<div className={'w-full text-right md:text-left pr-4 md:pr-0'}>
@@ -406,14 +254,13 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
 				<div className={'opacity-80 text-xs md:text-sm w-48'}>{adventurer.usdcAllw >= namePrice  ? 'GOLD:' : 'NAME:'}</div>
-				<form className={adventurer.usdcAllw >= namePrice  ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= namePrice ? handleSubmit : handleSubmitAllowance}>
+				{/* <form className={adventurer.usdcAllw >= namePrice  ? 'd-none' : ''} onSubmit={adventurer.usdcAllw >= namePrice ? handleSubmit : handleSubmitAllowance}>
 					{adventurer.usdcAllw >= namePrice ? (<input className={`border border-dark`} onChange={handleChange}></input>) : (<button >Only named Adventurers can claim gold. Names cost 30 USDC. You must first <p style={{textDecoration: 'underline'}}>allow USDC</p></button>)}
 					
-				</form>
+				</form> */}
 				<div className={adventurer.usdcAllw >= namePrice  ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
 					<p>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p> 
-					<button className={GoldAllowance >= 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn  ? 'd-none' : ''} onClick={handleApproveGold}>Approve</button>
-					
+					<button className={GoldAllowance >= 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn  ? 'd-none' : ''} onClick={handleApproveGold}>{'Approve'}</button>
 				</div>
 			</div>
 			<div className={'flex flex-row items-center w-full py-2 relative'}>
@@ -447,7 +294,7 @@ const	Info = ({adventurer, updateRarity, provider}) => {
 			</div>
 		</Box>
 	);
-}
+};
 
 function	Adventurer({rarity, provider, updateRarity, router, chainTime}) {
 	return (

@@ -18,6 +18,7 @@ import  SGV_TOKEN_ABI from 'utils/abi/sgvToken.abi';
 import  MANAGER_SKINS_ABI from 'utils/abi/managerSkins.abi';
 import  SUMMOER_SKINS_ABI from 'utils/abi/summonerSkins.abi';
 import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
+import RARITY_FEATS_ABI from 'utils/abi/rarityFeats.abi';
 
 export const onSuccessToast = (_toast, msg) => {
 	toast.dismiss(_toast);
@@ -1264,7 +1265,7 @@ export async function	learnFeat({provider, tokenID, feat}, callback) {
 	const	signer = provider.getSigner();
 	const	rarity = new ethers.Contract(
 		process.env.RARITY_FEATS_ADDR,
-		process.env.RARITY_FEATS_ABI,
+		RARITY_FEATS_ABI,
 		signer
 	);
 

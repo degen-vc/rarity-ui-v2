@@ -1,62 +1,146 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 5th 2021
-**	@Filename:				useRarity.js
-******************************************************************************/
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import	{useState, useEffect, useContext, createContext}	from	'react';
 import	useWeb3													from	'contexts/useWeb3';
 import	{ethers}												from	'ethers';
-import	{Provider, Contract}									from	'ethcall';
+import	{Contract}									from	'ethcall';
 import	useSWR													from	'swr';
 import	ModalCurrentAdventurer									from	'components/ModalCurrentAdventurer';
-import	{chunk, fetcher, toAddress}					from	'utils';
+import	{chunk, fetcher, toAddress, newEthCallProvider}					from	'utils';
 import	ITEMS																from	'utils/codex/items';
 import	RARITY_ABI													from	'utils/abi/rarity.abi';
 import	RARITY_ATTR_ABI											from	'utils/abi/rarityAttr.abi';
 import	RARITY_GOLD_ABI											from	'utils/abi/rarityGold.abi';
-import 	RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
+import 	RARITY_NAMES_ABI  from 'utils/abi/rarityNames.abi';
 import	RARITY_SKILLS_ABI										from	'utils/abi/raritySkills.abi';
 import	RARITY_LIBRARY_ABI									from	'utils/abi/rarityLibrary.abi';
-import	RARITY_CRAFTING_HELPER_ABI					from	'utils/abi/rarityCraftingHelper.abi';
 import	THE_CELLAR_ABI											from	'utils/abi/dungeonTheCellar.abi';
-import	THE_FOREST_ABI											from	'utils/abi/dungeonTheForest.abi';
-
+import  RARITY_FEATS_ABI from 'utils/abi/rarityFeats.abi';
 import	MANIFEST_GOODS											from	'utils/codex/items_manifest_goods.json';
 import	MANIFEST_ARMORS											from	'utils/codex/items_manifest_armors.json';
 import	MANIFEST_WEAPONS										from	'utils/codex/items_manifest_weapons.json';
-import 	USDC_ABI 														from 'utils/abi/USDC.abi';
-
-
 import {dungeonTypes, isDungeonAvailable, numberOfDungeonsAvailable} from 'utils/scarcity-functions';
 
-const	RarityContext = createContext();
-let		isUpdatingRarities = false;
+// HELPERS
+const	getRaritiesRequestURI = (address) => `
+	${process.env.NETWORK_API_URL}
+	?module=account
+	&action=tokennfttx
+	&contractaddress=${process.env.RARITY_ADDR}
+	&address=${address}
+	&apikey=${process.env.NETWORK_KEY}
+`;
 
-async function newEthCallProvider(provider, devMode) {
-	const	ethcallProvider = new Provider();
-	if (devMode) {
-		await	ethcallProvider.init(new ethers.providers.JsonRpcProvider('http://localhost:8545'));
-		ethcallProvider.multicallAddress = process.env.MULTICALL_ADDRESS;
-		ethcallProvider.multicall2Address = process.env.MULTICALL2_ADDRESS;
-		return ethcallProvider;
-	}
-	await	ethcallProvider.init(provider);
-	return	ethcallProvider;
-}
+const sharedCalls = async (provider, address) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const	rarityLibrary = new Contract(process.env.RARITY_LIBRARY_ADDR, RARITY_LIBRARY_ABI);
+	const callResult = await ethcallProvider.all([rarityLibrary.items1(address)]);
+	return (callResult);
+};
 
-export const RarityContextApp = ({children}) => {
-	const	{active, address, chainID, provider} = useWeb3();
-	const	getRaritiesRequestURI = `
-		${process.env.NETWORK_API_URL}
+const	prepareAdventurer = (tokenID) => {
+	const	rarity = new Contract(process.env.RARITY_ADDR, RARITY_ABI);
+	const	rarityAttr = new Contract(process.env.RARITY_ATTR_ADDR, RARITY_ATTR_ABI);
+	const	rarityGold = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
+	const	raritySkills = new Contract(process.env.RARITY_SKILLS_ADDR, RARITY_SKILLS_ABI);
+	const	rarityDungeonCellar = new Contract(process.env.DUNGEON_THE_CELLAR_ADDR, THE_CELLAR_ABI);
+	const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
+	const	rarityFeats = new Contract(process.env.RARITY_FEATS_ADDR, RARITY_FEATS_ABI);
+	return [
+		rarity.ownerOf(tokenID),
+		rarity.summoner(tokenID),
+		rarityAttr.character_created(tokenID),
+		rarityAttr.ability_scores(tokenID),
+		rarityGold.balanceOf(tokenID),
+		raritySkills.get_skills(tokenID),
+		rarityNames.summoner_name(tokenID),
+		rarityFeats.get_feats_by_id(tokenID),
+		isDungeonAvailable(dungeonTypes.CELLAR) && rarityDungeonCellar.adventurers_log(tokenID),
+	].filter(x => Boolean(x));
+};
+
+const prepareAdventurerExtra = (provider, tokenID) => {
+	const signer = provider.getSigner();
+	const	rarityGold = new ethers.Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI, signer);
+	return rarityGold.claimable(tokenID);
+};
+
+const prepareAdventurerInventory = (tokenID) => {
+	return ITEMS.map(item => item.fetch(tokenID));
+};
+
+// TODO: check if it works
+const	prepareSharedInventory = (result, callback) => {
+	const getValuesByType = (type) => type === 1 ? MANIFEST_GOODS : type === 2 ? MANIFEST_ARMORS : MANIFEST_WEAPONS;
+	result.forEach((item) => callback((prev) => ({...prev, [item.crafted]: {
+		crafter: item.crafter.toString(),
+		...Object.values(getValuesByType(item.base_type)).find(e => e.id === item.item_type),
+	}})));
+};
+
+const createItem = (tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats = [], dungeons, inventoryCallResult, isRar) => {
+	return ({
+		tokenID: tokenID,
+		owner: owner,
+		xp: ethers.utils.formatEther(adventurer['_xp']),
+		class: Number(adventurer['_class']),
+		level: Number(adventurer['_level']),
+		log: Number(adventurer['_log']),
+		name,
+		gold: {
+			balance: ethers.utils.formatEther(balanceOfGold),
+			claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
+		},
+		attributes: {
+			isInit: initialAttributes,
+			remainingPoints: initialAttributes ? -1 : 32,
+			strength: initialAttributes ? abilityScores['strength'] : 8,
+			dexterity: initialAttributes ? abilityScores['dexterity'] : 8,
+			constitution: initialAttributes ? abilityScores['constitution'] : 8,
+			intelligence: initialAttributes ? abilityScores['intelligence'] : 8,
+			wisdom: initialAttributes ? abilityScores['wisdom'] : 8,
+			charisma: initialAttributes ? abilityScores['charisma'] : 8,
+		},
+		skills: skills,
+		feats:  feats.map(f => Number(f)),
+		dungeons,
+		inventory: inventoryCallResult
+	});
+};
+
+// FETCHERS
+const fetchRarity = async (address, callback) => {
+	const {result} = await fetcher(`${process.env.NETWORK_API_URL}
 		?module=account
 		&action=tokennfttx
 		&contractaddress=${process.env.RARITY_ADDR}
 		&address=${address}
-		&apikey=${process.env.NETWORK_KEY}`;
-	const	{data} = useSWR(active && address ? getRaritiesRequestURI : null, fetcher);
+		&apikey=${process.env.NETWORK_KEY}`);
+	await callback(result);
+};
+
+const fetchAdventurer = async (provider, calls) => {
+	const	ethcallProvider = await newEthCallProvider(provider);
+	const	callResult = await ethcallProvider.all(calls);
+	return (callResult);
+};
+
+const fetchAdventurerInventory = async (provider, calls) => {
+	const	ethcallProvider = await newEthCallProvider(provider);
+	const	callResult = await ethcallProvider.all(calls);
+	return (callResult);
+};
+
+const fetchAdventurerExtra = async (calls) => {
+	const	results = await Promise.all(calls.map(p => p.catch(() => ethers.BigNumber.from(0))));
+	return results.map(result =>  (result instanceof Error) ? undefined : result);
+};
+
+// CONTEXT COMPONENT
+const	RarityContext = createContext();
+let	isUpdatingRarities = false;
+
+export const RarityContextApp = ({children}) => {
+	const	{active, address, chainID, provider} = useWeb3();
+	const	{data} = useSWR(active && address ? getRaritiesRequestURI(address) : null, fetcher);
 
 	const	[currentAdventurer, set_currentAdventurer] = useState(null);
 	const	[rarities, set_rarities] = useState({});
@@ -65,171 +149,9 @@ export const RarityContextApp = ({children}) => {
 	const	[loaded, set_loaded] = useState(false);
 	const	[isModalOpen, set_isModalOpen] = useState(false);
 
-	/**************************************************************************
-	**	Reset the rarities when the chain changes, when the address changes or
-	**	when the web3 become inactive.
-	**************************************************************************/
-	useEffect(() => {
-		set_rarities({});
-		set_currentAdventurer(null);
-		set_rNonce(n => n + 1);
-		if (active && provider && address) {
-			set_loaded(false);
-			fetchRarity();
-		}
-		
-	}, [active, address, chainID, provider]);
-
-	async function	sharedCalls() {
-		const ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
-		let	callResult;
-
-		if (process.env.RARITY_CRAFTING_HELPER_ADDR) {
-			const	rarityCraftingHelper = new Contract(process.env.RARITY_CRAFTING_HELPER_ADDR, RARITY_CRAFTING_HELPER_ABI);
-			callResult = await ethcallProvider.all([
-				rarityCraftingHelper.getItemsByAddress(address)
-			]);
-		} else {
-			const	rarityLibrary = new Contract(process.env.RARITY_LIBRARY_ADDR, RARITY_LIBRARY_ABI);
-			callResult = await ethcallProvider.all([
-				rarityLibrary.items1(address)
-			]);
-		}
-		
-		return (callResult);
-	}
-
-	function	prepareSharedInventory(result) {
-		result.forEach((item) => {
-			if (item.base_type === 3) {
-				set_inventory((prev) => ({...prev, [item.item_id]: {
-					crafter: item.crafter.toString(),
-					...Object.values(MANIFEST_WEAPONS).find(e => e.id === item.item_type),
-				}}));
-			}
-			if (item.base_type === 2) {
-				set_inventory((prev) => ({...prev, [item.item_id]: {
-					crafter: item.crafter.toString(),
-					...Object.values(MANIFEST_ARMORS).find(e => e.id === item.item_type),
-				}}));
-			}
-			if (item.base_type === 1) {
-				set_inventory((prev) => ({...prev, [item.item_id]: {
-					crafter: item.crafter.toString(),
-					...Object.values(MANIFEST_GOODS).find(e => e.id === item.item_type),
-				}}));
-			}
-		});
-
-	}
-
-
-
-	/**************************************************************************
-	**	Prepare the multicall to get most of the data
-	**************************************************************************/
-	function		prepareAdventurer(tokenID) {
-		const	rarity = new Contract(process.env.RARITY_ADDR, RARITY_ABI);
-		const	rarityAttr = new Contract(process.env.RARITY_ATTR_ADDR, RARITY_ATTR_ABI);
-		const	rarityGold = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
-		const	raritySkills = new Contract(process.env.RARITY_SKILLS_ADDR, RARITY_SKILLS_ABI);
-		// const	rarityCrafting = new Contract(process.env.RARITY_CRAFTING_ADDR, RARITY_CRAFTING_ABI);
-		const	rarityDungeonCellar = new Contract(process.env.DUNGEON_THE_CELLAR_ADDR, THE_CELLAR_ABI);
-		const	rarityDungeonForest = new Contract(process.env.DUNGEON_THE_FOREST_ADDR, THE_FOREST_ABI);
-		// const	rarityCraftingHelper = new Contract(process.env.RARITY_CRAFTING_HELPER_ADDR, RARITY_CRAFTING_HELPER_ABI);
-		// RARITY_CRAFTING_HELPER_ADDR
-		const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
-		const usdcAllowance = new Contract(process.env.USDC_ADDR, USDC_ABI);
-		const	rarityFeats = new Contract(process.env.RARITY_FEATS_ADDR, process.env.RARITY_FEATS_ABI);
-
-
-		namesGet(tokenID);
-
-
-
-		// console.log(`hello `, rarityName);
-		
-		return [
-			rarity.ownerOf(tokenID),
-			rarity.summoner(tokenID),
-			rarityAttr.character_created(tokenID),
-			rarityAttr.ability_scores(tokenID),
-			rarityGold.balanceOf(tokenID),
-			raritySkills.get_skills(tokenID),
-			rarityNames.summoner_name(tokenID),
-			usdcAllowance.allowance(address, process.env.RARITY_NAMES_ADDR),
-			rarityFeats.get_feats_by_id(tokenID),
-			isDungeonAvailable(dungeonTypes.CELLAR) && rarityDungeonCellar.adventurers_log(tokenID),
-			isDungeonAvailable(dungeonTypes.FOREST) && rarityDungeonForest.getResearchBySummoner(tokenID),
-		].filter(x => Boolean(x));
-	}
-	/**************************************************************************
-	**	Fetch the data from the prepared multicall to get most of the data
-	**************************************************************************/
-	async function	fetchAdventurer(calls) {
-		const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
-		const	callResult = await ethcallProvider.all(calls);
-		return (callResult);
-	}
-
-	async function namesGet(id) {
-		const rarityNames = new Contract(process.env.RARITY_NAMES_ADDR, RARITY_NAMES_ABI);
-
-		const rarityName = await fetchAdventurer([rarityNames.summoner_name(id)]);
-		// console.log(`${rarityName}`);
-	}
-
-	/**************************************************************************
-	**	Prepare the multicall to get most of the data
-	**************************************************************************/
-	function		prepareAdventurerInventory(tokenID) {
-		return ITEMS.map(item => item.fetch(tokenID));
-	}
-
-	/**************************************************************************
-	**	Fetch all the items for the adventurer.
-	**************************************************************************/
-	async function	fetchAdventurerInventory(calls) {
-		if (Number(chainID) === 1337) {
-			const	ethcallProvider = await newEthCallProvider(new ethers.providers.JsonRpcProvider('http://localhost:8545'));
-			ethcallProvider.multicallAddress = process.env.MULTICALL_ADDRESS;
-			const	callResult = await ethcallProvider.all(calls);
-			return (callResult);
-		} else {
-			const	ethcallProvider = await newEthCallProvider(provider);
-			const	callResult = await ethcallProvider.all(calls);
-			return (callResult);
-		}
-	}
-
-	/**************************************************************************
-	**	Prepare some extra data that can not be fetched with a multicall
-	**	because of the msg.sender limitation
-	**************************************************************************/
-	function		prepareAdventurerExtra(tokenID) {
-		const	rarityGold = new ethers.Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI, provider).connect(provider.getSigner());
-		return [
-			rarityGold.claimable(tokenID)
-		];
-		
-	}
-	/**************************************************************************
-	**	Fetch the data from the prepared extra call
-	**************************************************************************/
-	async function	fetchAdventurerExtra(calls) {
-		const	results = await Promise.all(calls.map(p => p.catch(() => ethers.BigNumber.from(0))));
-		return	results.map(result => (result instanceof Error) ? undefined : result);
-		
-	}
-
-	/**************************************************************************
-	**	Actually update the state based on the data fetched
-	**************************************************************************/
-	function		setRarity(tokenID, multicallResult, callResult, inventoryCallResult) {
-		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name, usdcAllw, feats] = multicallResult.slice(0, 9);
-		// console.log('name - ', name);
-		// console.log('multicallResult - ', multicallResult);
-		const	[claimableGold] = callResult;
+	const setRarity = async (tokenID, multicallResult = [], callResult, inventoryCallResult) => {
+		const	[owner, adventurer, initialAttributes, abilityScores, balanceOfGold, skills, name, feats] = await multicallResult.slice(0, 9);
+		const	[claimableGold] = await callResult;
 
 		// Sets up dungeons based on available ones (the order that dungeons are checked here is important!)
 		const dungeonResults = multicallResult.slice(9);
@@ -246,79 +168,25 @@ export const RarityContextApp = ({children}) => {
 				canAdventure: forestResearch?.discovered === true || Number(forestResearch?.timeInDays) === 0
 			};
 		}
-		if (toAddress(owner) !== toAddress(address)) {
-			return;
-		}
+		if (toAddress(owner) !== toAddress(address)) return;
+
 		if (!currentAdventurer || (currentAdventurer && tokenID === currentAdventurer.tokenID)) {
-			set_currentAdventurer(p => (!p || (p && tokenID === p.tokenID)) ? {
-				tokenID: tokenID,
-				owner: owner,
-				xp: ethers.utils.formatEther(adventurer['_xp']),
-				class: Number(adventurer['_class']),
-				level: Number(adventurer['_level']),
-				log: Number(adventurer['_log']),
-				name: name,
-				usdcAllw: usdcAllw,
-				gold: {
-					balance: ethers.utils.formatEther(balanceOfGold),
-					claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
-				},
-				attributes: {
-					isInit: initialAttributes,
-					remainingPoints: initialAttributes ? -1 : 32,
-					strength: initialAttributes ? abilityScores['strength'] : 8,
-					dexterity: initialAttributes ? abilityScores['dexterity'] : 8,
-					constitution: initialAttributes ? abilityScores['constitution'] : 8,
-					intelligence: initialAttributes ? abilityScores['intelligence'] : 8,
-					wisdom: initialAttributes ? abilityScores['wisdom'] : 8,
-					charisma: initialAttributes ? abilityScores['charisma'] : 8,
-				},
-				skills: skills,
-				feats: (feats || []).map(f => Number(f)),
-
-				dungeons,
-				inventory: inventoryCallResult
-			} : p);
+			set_currentAdventurer(p => (!p || (p && tokenID === p.tokenID))
+				? createItem(tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats, dungeons, inventoryCallResult)
+				: p);
 		}
-		set_rarities((prev) => ({...prev, [tokenID]: {
-			tokenID: tokenID,
-			owner: owner,
-			xp: ethers.utils.formatEther(adventurer['_xp']),
-			class: Number(adventurer['_class']),
-			level: Number(adventurer['_level']),
-			log: Number(adventurer['_log']),
-			name: name,
-			usdcAllw: usdcAllw,
-			gold: {
-				balance: ethers.utils.formatEther(balanceOfGold),
-				claimable: claimableGold ? ethers.utils.formatEther(claimableGold) : '0'
-			},
-			attributes: {
-				isInit: initialAttributes,
-				remainingPoints: initialAttributes ? -1 : 32,
-				strength: initialAttributes ? abilityScores['strength'] : 8,
-				dexterity: initialAttributes ? abilityScores['dexterity'] : 8,
-				constitution: initialAttributes ? abilityScores['constitution'] : 8,
-				intelligence: initialAttributes ? abilityScores['intelligence'] : 8,
-				wisdom: initialAttributes ? abilityScores['wisdom'] : 8,
-				charisma: initialAttributes ? abilityScores['charisma'] : 8,
-			},
-			skills: skills,
-			feats: (feats || []).map(f => Number(f)),
-
-			dungeons,
-			inventory: inventoryCallResult
-		}}));
+		set_rarities((prev) => {
+			return ({
+				...prev,
+				[tokenID]: createItem(tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats, dungeons, inventoryCallResult, '++++')
+			});
+		});
 		set_rNonce(prev => prev + 1);
-	}
+	};
 
-	/**************************************************************************
-	**	Prepare the rarities update from ftmscan result
-	**************************************************************************/
-	async function	updateRarities(elements) {
-		if (isUpdatingRarities) {
-			return;
-		}
+	const updateRarities = async (elements) => {
+		if (isUpdatingRarities) return;
+
 		isUpdatingRarities = true;
 		const	preparedCalls = [];
 		const	preparedExtraCalls = [];
@@ -334,72 +202,54 @@ export const RarityContextApp = ({children}) => {
 				uniqueElements.push(element);
 			}
 		}
-
-		// In case elements from query is not an array, try-catch prevents the application from breaking
 		try {
 			uniqueElements?.forEach((token) => {
 				preparedCalls.push(...prepareAdventurer(token.tokenID));
-				preparedExtraCalls.push(...prepareAdventurerExtra(token.tokenID));
+				preparedExtraCalls.push(prepareAdventurerExtra(provider, token.tokenID));
 				preparedInventoryCalls.push(...prepareAdventurerInventory(token.tokenID));
 				tokensIDs.push(token.tokenID);
 			});
 		} catch(e) {
-			console.error(elements);		// Error message expected
+			console.error(elements);
 		}
 
-		const	callResults = await fetchAdventurer(preparedCalls);
-		const	chunkedCallResult = chunk(callResults, 9 + numberOfDungeonsAvailable);
+		const	callResults = await fetchAdventurer(provider, preparedCalls);
+		const	chunkedCallResult = chunk(callResults, 9);
 		const	extraCallResults = await fetchAdventurerExtra(preparedExtraCalls);
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
-		const	inventoryCallResult = await fetchAdventurerInventory(preparedInventoryCalls);
+		const	inventoryCallResult = await fetchAdventurerInventory(provider, preparedInventoryCalls);
 		const	chunkedinventoryCallResult = chunk(inventoryCallResult, ITEMS.length);
 		tokensIDs?.forEach((tokenID, i) => {
 			setRarity(tokenID, chunkedCallResult[i], chunkedExtraCallResult[i], chunkedinventoryCallResult[i]);
 		});
-		sharedCalls().then(result => prepareSharedInventory(result[0]));
-
-		// console.log(`chunkedinventoryCallResult - `, chunkedinventoryCallResult);
-
-
+		sharedCalls(provider, address).then(result => prepareSharedInventory(result[0], set_inventory));
 		set_loaded(true);
 		isUpdatingRarities = false;
-	}
+	};
 
-	/**************************************************************************
-	**	Prepare the rarities update from in-app update
-	**************************************************************************/
-	async function	updateRarity(tokenID) {
-		const	callResults = await fetchAdventurer(prepareAdventurer(tokenID));
-		
+	const updateRarity = async (tokenID) => {
+		const	callResults = await fetchAdventurer(provider, prepareAdventurer(tokenID));
 		const	chunkedCallResult = chunk(callResults, 8 + numberOfDungeonsAvailable);
-		const	extraCallResults = await fetchAdventurerExtra(prepareAdventurerExtra(tokenID));
+		const	extraCallResults = await fetchAdventurerExtra(prepareAdventurerExtra(provider, tokenID));
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
-		const	inventoryCallResult = await fetchAdventurerInventory(prepareAdventurerInventory(tokenID));
+		const	inventoryCallResult = await fetchAdventurerInventory(provider, prepareAdventurerInventory(tokenID));
 		const	chunkedinventoryCallResult = chunk(inventoryCallResult, ITEMS.length);
 		setRarity(tokenID, chunkedCallResult[0], chunkedExtraCallResult[0], chunkedinventoryCallResult[0]);
-	}
+	};
 
-	/**************************************************************************
-	**	Trigger a re-fetch of the rarities from an in-app update
-	**************************************************************************/
-	async function	fetchRarity() {
-		const {result} = await fetcher(`${process.env.NETWORK_API_URL}
-			?module=account
-			&action=tokennfttx
-			&contractaddress=${process.env.RARITY_ADDR}
-			&address=${address}
-			&apikey=${process.env.NETWORK_KEY}`);
-		await updateRarities(result);
-	}
+	useEffect(() => {
+		set_rarities({});
+		set_currentAdventurer(null);
+		set_rNonce(n => n + 1);
+		if (active && provider && address) {
+			set_loaded(false);
+			fetchRarity(address, updateRarities);
+		}
+	}, [active, address, chainID, provider]);
 
-	/**************************************************************************
-	**	Once we got data from FTMScan, try to build the rarities
-	**************************************************************************/
 	useEffect(() => {
 		if (data?.result && provider) {
-			if (data?.status === 0) {
-				return setTimeout(() => fetchRarity(), 100);
-			}
+			if (data?.status === 0) return setTimeout(() => fetchRarity(address, updateRarities), 100);
 			updateRarities(data?.result);
 		}
 	}, [data, provider]);

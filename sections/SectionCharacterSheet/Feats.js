@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 19th 2021
-**	@Filename:				Feats.js
-******************************************************************************/
-
-import	React, {Fragment, useState}						from	'react';
+import	{useState}						from	'react';
 import	ModalFeats										from 	'components/ModalFeats';
 import	{featsPerClass, initialFeatsPerClass}			from	'utils/libs/rarityFeats';
 import	FEATS											from	'utils/codex/feats.json';

@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 19th 2021
-**	@Filename:				Skills.js
-******************************************************************************/
-
-import	React, {useState}								from	'react';
+import {useState}								from	'react';
 import	Image											from	'next/image';
 import	ModalSkills										from	'components/ModalSkills';
 import	{availableSkillPoints, calculatePointsForSet}	from	'utils/libs/raritySkills';
