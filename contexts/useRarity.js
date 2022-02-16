@@ -13,6 +13,7 @@ import 	RARITY_NAMES_ABI  from 'utils/abi/rarityNames.abi';
 import	RARITY_SKILLS_ABI										from	'utils/abi/raritySkills.abi';
 import	RARITY_LIBRARY_ABI									from	'utils/abi/rarityLibrary.abi';
 import	THE_CELLAR_ABI											from	'utils/abi/dungeonTheCellar.abi';
+import  GOVERNANCE_TOKEN_ABI from 'utils/abi/governanceToken.abi';
 import  RARITY_FEATS_ABI from 'utils/abi/rarityFeats.abi';
 import	MANIFEST_GOODS											from	'utils/codex/items_manifest_goods.json';
 import	MANIFEST_ARMORS											from	'utils/codex/items_manifest_armors.json';
@@ -134,6 +135,17 @@ const fetchAdventurerExtra = async (calls) => {
 	return results.map(result =>  (result instanceof Error) ? undefined : result);
 };
 
+const fetchGovernanceToken = async (provider, address, callback) => {
+	const	ethcallProvider = await newEthCallProvider(provider);
+	const tokenContract = new Contract(process.env.GOVERNANCE_TOKEN_ADDR, GOVERNANCE_TOKEN_ABI);
+	const calls = [
+		tokenContract.balanceOf(address),
+		tokenContract.allowance(address, process.env.RARITY_NAMES_ADDR),
+	];
+	const [balance = 0, nameAllowance = 0] = await ethcallProvider.all(calls);
+	return callback({balance: ethers.utils.formatEther(balance), nameAllowance: `${nameAllowance}`});
+};
+
 // CONTEXT COMPONENT
 const	RarityContext = createContext();
 let	isUpdatingRarities = false;
@@ -142,6 +154,7 @@ export const RarityContextApp = ({children}) => {
 	const	{active, address, chainID, provider} = useWeb3();
 	const	{data} = useSWR(active && address ? getRaritiesRequestURI(address) : null, fetcher);
 
+	const [governanceToken, setGovernanceToken] = useState(0);
 	const	[currentAdventurer, set_currentAdventurer] = useState(null);
 	const	[rarities, set_rarities] = useState({});
 	const	[inventory, set_inventory] = useState({});
@@ -244,6 +257,7 @@ export const RarityContextApp = ({children}) => {
 		if (active && provider && address) {
 			set_loaded(false);
 			fetchRarity(address, updateRarities);
+			fetchGovernanceToken(provider, address, setGovernanceToken);
 		}
 	}, [active, address, chainID, provider]);
 
@@ -270,7 +284,8 @@ export const RarityContextApp = ({children}) => {
 				updateRarity,
 				fetchRarity,
 				rNonce,
-				openCurrentAventurerModal: () => set_isModalOpen(true)
+				openCurrentAventurerModal: () => set_isModalOpen(true),
+				governanceToken
 			}}>
 			{children}
 			<ModalCurrentAdventurer isOpen={isModalOpen} closeModal={() => set_isModalOpen(false)} />

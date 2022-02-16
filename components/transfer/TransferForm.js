@@ -4,11 +4,11 @@ import	useRarity						   from	'contexts/useRarity';
 import	ListBox						     from	'components/ListBox';
 import	Box								     from	'components/Box';
 import	Button						     from	'components/Button';
-import  TRANSFER_GOLD_ABI      from 'utils/abi/transferGold.abi';
-import  TRANSFER_MATERIALS_ABI from 'utils/abi/transferMaterials.abi';
+import	RARITY_GOLD_ABI											from	'utils/abi/rarityGold.abi';
+import	THE_CELLAR_ABI											from	'utils/abi/dungeonTheCellar.abi';
 import	ITEMS						       from	'utils/codex/items';
 import  {transfer} 		         from	'utils/actions';
-import {USERS} from 'utils/constants';
+import  {USERS} from 'utils/constants';
 
 const transferOptions = [
 	{name: 'GOLD', value: 'gold'},
@@ -36,8 +36,8 @@ const TransferForm = () => {
 	const onTransfer = () => {
 		if (!sender || !recipient || !amount || senderError || amountError) return;
 		const isGold = transferType.name === transferOptions[0].name;
-		const contractAddress = isGold ? process.env.TRANSFER_GOLD_ADDR : process.env.TRANSFER_MATERIALS_ADDR;
-		const contractABI = isGold ? TRANSFER_GOLD_ABI : TRANSFER_MATERIALS_ABI;
+		const contractAddress = isGold ? process.env.RARITY_GOLD_ADDR : process.env.DUNGEON_THE_CELLAR_ADDR;
+		const contractABI = isGold ? RARITY_GOLD_ABI : THE_CELLAR_ABI;
 		transfer(provider, contractAddress, contractABI, sender, recipient, amount, isGold);
 	};
 
