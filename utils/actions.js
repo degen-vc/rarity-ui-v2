@@ -15,6 +15,7 @@ import {GTOKEN} from 'utils/constants';
 
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';
 import  SGV_TOKEN_ABI from 'utils/abi/sgvToken.abi';
+import  GOVERNANCE_TOKEN_ABI from 'utils/abi/governanceToken.abi';
 import  MANAGER_SKINS_ABI from 'utils/abi/managerSkins.abi';
 import  SUMMOER_SKINS_ABI from 'utils/abi/summonerSkins.abi';
 import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
@@ -1158,10 +1159,9 @@ export const buyPlot = async (provider, contractAddress, abi, x, y) => {
 **	SGV TOKEN Actions
 **********************************************************************/
 export const getSGVBalance = async (provider, address, callback) => {
-	const signer = provider.getSigner();
-	const ethcallProvider = await newEthCallProvider(provider, signer);
-	const sgvContract = new Contract(process.env.SGV_TOKEN_ADDR, SGV_TOKEN_ABI, signer);
-	const sgvBalanceCall = sgvContract.balanceOf(address, signer); 
+	const ethcallProvider = await newEthCallProvider(provider);
+	const sgvContract = new Contract(process.env.SGV_TOKEN_ADDR, SGV_TOKEN_ABI);
+	const sgvBalanceCall = sgvContract.balanceOf(address); 
 	const [sgvBalance] = await ethcallProvider.all([sgvBalanceCall]);
 	
 	callback(ethers.utils.formatEther(sgvBalance));
@@ -1481,10 +1481,10 @@ export const claimSgv = async (provider, tokenId) => {
 	}
 };
 
-export const allowSgv = async (provider) => {
+export const allowRTY = async (provider) => {
 	let _toast = toast.loading(`Approving ${GTOKEN}...`);
 	const signer = provider.getSigner();
-	const managerContract = new ethers.Contract(process.env.SGV_TOKEN_ADDR, SGV_TOKEN_ABI, signer); 
+	const managerContract = new ethers.Contract(process.env.GOVERNANCE_TOKEN_ADDR, GOVERNANCE_TOKEN_ABI, signer); 
 	try {
 		const transaction = await managerContract.approve(process.env.RARITY_NAMES_ADDR, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
 		const	transactionResult = await transaction.wait();
@@ -1497,4 +1497,13 @@ export const allowSgv = async (provider) => {
 		onErrorToast(_toast);
 		return;
 	}
+};
+
+export const getRTYBalance = async (provider, address, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const sgvContract = new Contract(process.env.GOVERNANCE_TOKEN_ADDR, GOVERNANCE_TOKEN_ABI);
+	const sgvBalanceCall = sgvContract.balanceOf(address); 
+	const [sgvBalance] = await ethcallProvider.all([sgvBalanceCall]);
+	
+	callback(ethers.utils.formatEther(sgvBalance));
 };
