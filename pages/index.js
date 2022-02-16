@@ -14,20 +14,17 @@ function	Index({router}) {
 
 	return (
 		<section className={'mt-24 md:mt-12'}>
-		<RTYBalance></RTYBalance><br/><br/>
+			<RTYBalance></RTYBalance><br/><br/>
 			<div className={'flex flex-col space-y-36 max-w-screen-lg w-full mx-auto'}>
 				{
 					adventurers?.map((rarity) => (
-						<>
-							
-							<SectionCharacterSheet
-								key={rarity.tokenID}
-								rarity={rarity}
-								provider={provider}
-								updateRarity={updateRarity}
-								chainTime={chainTime}
-								router={router} />
-						</>
+						<SectionCharacterSheet
+							key={rarity.tokenID}
+							rarity={rarity}
+							provider={provider}
+							updateRarity={updateRarity}
+							chainTime={chainTime}
+							router={router} />
 					))
 				}
 			</div>

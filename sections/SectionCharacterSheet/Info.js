@@ -41,6 +41,8 @@ const	Info = ({adventurer, updateRarity, namePrice}) => {
 	const	{provider} = useWeb3();
 	const {governanceToken} = useRarity();
 	const	[name, setName] = useState(adventurer.name || adventurer.tokenID);
+
+	console.log(adventurer)
 	
 	const	canLevelUp = adventurer.xp >= (xpRequired(adventurer.level));
 
@@ -52,8 +54,7 @@ const	Info = ({adventurer, updateRarity, namePrice}) => {
 
 	const handleApproveRTY = (e) => {
 		e.preventDefault();
-		allowSgv(provider).then(updateRarity(adventurer.tokenID));
-		
+		allowSgv(provider);
 	};
 
 	const handleLevelUp = () => {
@@ -119,6 +120,7 @@ const	Info = ({adventurer, updateRarity, namePrice}) => {
 				<div className={'w-full text-right md:text-left pr-4 md:pr-0'}>
 					{governanceToken?.nameAllowance >= namePrice  ? (<p>You can buy a name!</p>) : (<p>You should <a className={'cursor-pointer underline'} onClick={handleApproveRTY}>{'allow'}</a> $RTY first!</p>)}
 				</div>
+				
 			</div>
 			<div className={'flex flex-row items-center w-full py-2 relative'}>
 				<div className={'opacity-80 text-sm w-48'}>{'XP:'}</div>

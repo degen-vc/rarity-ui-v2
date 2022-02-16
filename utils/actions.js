@@ -1158,10 +1158,10 @@ export const buyPlot = async (provider, contractAddress, abi, x, y) => {
 **	SGV TOKEN Actions
 **********************************************************************/
 export const getSGVBalance = async (provider, address, callback) => {
-	const contractAddress = process.env.SGV_TOKEN_ADDR;
-	const ethcallProvider = await newEthCallProvider(provider);
-	const sgvContract = new Contract(contractAddress, SGV_TOKEN_ABI);
-	const sgvBalanceCall = sgvContract.balanceOf(address); 
+	const signer = provider.getSigner();
+	const ethcallProvider = await newEthCallProvider(provider, signer);
+	const sgvContract = new Contract(process.env.SGV_TOKEN_ADDR, SGV_TOKEN_ABI, signer);
+	const sgvBalanceCall = sgvContract.balanceOf(address, signer); 
 	const [sgvBalance] = await ethcallProvider.all([sgvBalanceCall]);
 	
 	callback(ethers.utils.formatEther(sgvBalance));
@@ -1311,9 +1311,10 @@ export async function	learnFeat({provider, tokenID, feat}, callback) {
 export const getWGoldBalance = async (provider, address, allowanceAddress, callback) => {
 	const ethcallProvider = await newEthCallProvider(provider);
 	const contract = new Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI);
+	const signer = provider.getSigner();
 	const calls = [
-		contract.balanceOf(address),
-		contract.allowance(address, allowanceAddress)
+		contract.balanceOf(address, signer),
+		contract.allowance(address, allowanceAddress,signer)
 	];
 	const [wGold = 0, allowance = 0]  = await ethcallProvider.all(calls);
 	return callback({balance: ethers.utils.formatEther(`${wGold}`), allowance: Number(allowance)});
@@ -1489,7 +1490,7 @@ export const allowSgv = async (provider) => {
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
 			onSuccessToast(_toast, `${GTOKEN} approved`);
-			return true;
+			return;
 		}
 	} catch (e) {
 		console.log(e);
@@ -1497,4 +1498,3 @@ export const allowSgv = async (provider) => {
 		return;
 	}
 };
-
