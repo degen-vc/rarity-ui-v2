@@ -6,7 +6,7 @@ import	Box					from	'components/Box';
 import	useWeb3							from	'contexts/useWeb3';
 import useRarity from 'contexts/useRarity';
 import	CLASSES				from	'utils/codex/classes';
-import	{levelUp}			from	'utils/actions';
+import	{levelUp, allowSgv}			from	'utils/actions';
 import	{xpRequired}		from	'utils/libs/rarity';
 import RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 
@@ -48,6 +48,12 @@ const	Info = ({adventurer, updateRarity, namePrice}) => {
 		if (name && (name !== (adventurer.name || adventurer.tokenID))) {
 			return claimName(name, adventurer.tokenID, provider, updateRarity);
 		}
+	};
+
+	const handleApproveRTY = (e) => {
+		e.preventDefault();
+		allowSgv(provider).then(updateRarity(adventurer.tokenID));
+		
 	};
 
 	const handleLevelUp = () => {
@@ -111,7 +117,7 @@ const	Info = ({adventurer, updateRarity, namePrice}) => {
 			<div className={'flex flex-row items-center w-full py-2'}>
 				<div className={'opacity-80 text-xs md:text-sm w-48'}>{'NAME:'}</div>
 				<div className={'w-full text-right md:text-left pr-4 md:pr-0'}>
-					{governanceToken?.nameAllowance >= namePrice  ? 'You can buy a name!' : 'You should allow $RTY first!'}
+					{governanceToken?.nameAllowance >= namePrice  ? (<p>You can buy a name!</p>) : (<p>You should <a className={'cursor-pointer underline'} onClick={handleApproveRTY}>{'allow'}</a> $RTY first!</p>)}
 				</div>
 			</div>
 			<div className={'flex flex-row items-center w-full py-2 relative'}>

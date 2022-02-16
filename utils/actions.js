@@ -1480,3 +1480,21 @@ export const claimSgv = async (provider, tokenId) => {
 	}
 };
 
+export const allowSgv = async (provider) => {
+	let _toast = toast.loading(`Approving ${GTOKEN}...`);
+	const signer = provider.getSigner();
+	const managerContract = new ethers.Contract(process.env.SGV_TOKEN_ADDR, SGV_TOKEN_ABI, signer); 
+	try {
+		const transaction = await managerContract.approve(process.env.RARITY_NAMES_ADDR, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, `${GTOKEN} approved`);
+			return true;
+		}
+	} catch (e) {
+		console.log(e);
+		onErrorToast(_toast);
+		return;
+	}
+};
+
