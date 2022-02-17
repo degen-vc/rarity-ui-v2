@@ -79,7 +79,7 @@ export async function	lootDungeonTheCellar({provider, contractAddress, tokenID},
 	_adventure('Looting the Big Ugly Rat...', {provider, contractAddress, tokenID}, callback);
 }
 
-export async function	levelUp({provider, contractAddress, tokenID}, callback) {
+export async function	levelUp({provider, contractAddress, tokenID}) {
 	const	_toast = toast.loading(`Level-up ${tokenID}...`);
 	const	signer = provider.getSigner();
 	const	rarity = new ethers.Contract(
@@ -97,7 +97,7 @@ export async function	levelUp({provider, contractAddress, tokenID}, callback) {
 	} catch (error) {
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
-		callback({error, data: undefined});
+		// callback({error, data: undefined});
 		return;
 	}
 
@@ -108,19 +108,19 @@ export async function	levelUp({provider, contractAddress, tokenID}, callback) {
 		const	transaction = await rarity.level_up(tokenID);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			callback({error: false, data: tokenID});
+			// callback({error: false, data: tokenID});
 			toast.dismiss(_toast);
 			toast.success('Transaction successful');
 		} else {
 			toast.dismiss(_toast);
 			toast.error('Transaction reverted');
-			callback({error: true, data: undefined});
+			// callback({error: true, data: undefined});
 		}
 	} catch (error) {
 		console.error(error);
 		toast.dismiss(_toast);
 		toast.error('Something went wrong, please try again later.');
-		callback({error, data: undefined});
+		// callback({error, data: undefined});
 	}
 }
 
