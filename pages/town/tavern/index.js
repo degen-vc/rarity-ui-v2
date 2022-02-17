@@ -1,10 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Tuesday September 7th 2021
-**	@Filename:				tavern.js
-******************************************************************************/
-
 import	{useState, useEffect}	from	'react';
 import	Image							from	'next/image';
 import	dayjs							from	'dayjs';
@@ -20,7 +13,7 @@ import	SectionRecruit					from	'sections/SectionRecruit';
 import	SectionDungeonTheCellar			from	'sections/SectionDungeonTheCellar';
 import	TAVERN_NEWS						from	'utils/codex/tavernNews';
 import	CLASSES							from	'utils/codex/classes';
-import {GAME_NAME, USERS, USER} from 'utils/constants';
+import {GAME_NAME} from 'utils/constants';
 
 dayjs.extend(relativeTime);
 
@@ -65,7 +58,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 			return (
 				<>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 0}>
-						{`WELCOME, ${USER}! I AM `}
+						{'WELCOME, ADVENTURER! I AM '}
 					</Typer>&nbsp;
 					<span className={'text-tag-info'}><Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 1}>
 						{'VIGO'}
@@ -126,7 +119,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 							<div />
 							{'THE JOURNEY YOU ARE ABOUT TO TAKE REQUIRE GOLD, GOODS, WEAPONS AND ARMOR. '}
 							<div className={'my-2'}/>
-							{` YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ${USERS} ARE YOU ?`}
+							{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURERS ARE YOU ?'}
 						</>		
 					);
 				}
@@ -152,7 +145,7 @@ function	NPCHeadline({router, active, adventurersCount}) {
 								set_hadRecruitMessage(true);
 							}}
 							shouldStart={npcTextIndex === 4}>
-							{` YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ${USER} ARE YOU ?`}
+							{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURER ARE YOU ?'}
 						</Typer>
 					</>
 				);
@@ -254,7 +247,7 @@ function	DialogChoices({router, onWalletConnect, active}) {
 							else
 								openCurrentAventurerModal();
 						}},
-						{label: `SELECT ANOTHER ${USER}`, onClick: () => openCurrentAventurerModal()},
+						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
 						{label: 'CANCEL', onClick: () => router.push('/town/tavern')},
 					]} />
 			</>
@@ -267,7 +260,7 @@ function	DialogChoices({router, onWalletConnect, active}) {
 			nonce={dialogNonce}
 			options={[
 				{label: 'What\'s new ?', onClick: () => router.push('/town/tavern')},
-				{label: `Recruit a new ${USER}`, onClick: () => router.push('/town/tavern?tab=recruit')},
+				{label: 'Recruit a new Adventurer', onClick: () => router.push('/town/tavern?tab=recruit')},
 				{label: 'About the rat ...', onClick: () => router.push('/town/tavern?tab=the-cellar')}
 			]} />
 	);

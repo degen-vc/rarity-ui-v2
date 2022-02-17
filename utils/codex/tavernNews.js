@@ -1,4 +1,4 @@
-import {GTOKEN, GAME, USER, USERS, BLOCKCHAIN} from 'utils/constants';
+import {GTOKEN, GAME, BLOCKCHAIN} from 'utils/constants';
 
 const TAVERN_NEWS = [
 	{
@@ -11,7 +11,7 @@ const TAVERN_NEWS = [
 	},
 	{
 		headline: 'Information site updated',
-		text: `${GAME}.gold information site is now completely up to date with game expansions information and every howto ${USER} could hope for.`
+		text: `${GAME}.gold information site is now completely up to date with game expansions information and every howto Adventurer could hope for.`
 	},
 	{
 		headline: 'Dune dashboard',
@@ -23,11 +23,11 @@ const TAVERN_NEWS = [
 	},
 	{
 		headline: `${GAME} is live on ${BLOCKCHAIN}`,
-		text: `Let the games begin! By the way, all the metadata for ${GAME}'s NFTs (${USERS} and Items) are fully interoperable with Open Sea, the leading NFT marketplace.`
+		text: `Let the games begin! By the way, all the metadata for ${GAME}'s NFTs (Adventurers and Items) are fully interoperable with Open Sea, the leading NFT marketplace.`
 	},
 	{
 		headline: `${GAME} v2 conceived`,
-		text: `After a month of work on Rarity contracts, the team has decided on community governed algorithmic gold supply, gold can only be claimed by named ${USERS} and there will be a fee for naming ${USERS}, and code will make it easy for game developers to exclude purchased ${USERS} and Items if they want only authentic non pay to play players to take part.`
+		text: 'After a month of work on Rarity contracts, the team has decided on community governed algorithmic gold supply, gold can only be claimed by named Adventurers and there will be a fee for naming Adventurers, and code will make it easy for game developers to exclude purchased Adventurers and Items if they want only authentic non pay to play players to take part.'
 	},
 	{
 		headline: 'Rarity forked',

@@ -14,6 +14,7 @@ import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 import RARITY_FEATS_ABI from 'utils/abi/rarityFeats.abi';
 import RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 import RARITY_GOLD_ABI from	'utils/abi/rarityGold.abi';
+import	RARITY_ATTR_ABI											from	'utils/abi/rarityAttr.abi';
 import  GOVERNANCE_TOKEN_ABI from 'utils/abi/governanceToken.abi';
 
 export const onSuccessToast = (_toast, msg) => {
@@ -296,22 +297,22 @@ export async function	setAttributes({provider, contractAddress, _summoner, _str,
 	const	signer = provider.getSigner();
 	const	rarity = new ethers.Contract(
 		contractAddress,
-		['function point_buy(uint _summoner, uint32 _str, uint32 _dex, uint32 _const, uint32 _int, uint32 _wis, uint32 _cha) public'],
+		RARITY_ATTR_ABI,
 		signer
 	);
 
-	/**********************************************************************
-	**	In order to avoid dumb error, let's first check if the TX would
-	**	be successful with a static call
-	**********************************************************************/
-	try {
-		await rarity.callStatic.point_buy(_summoner, _str, _dex, _const, _int, _wis, _cha);
-	} catch (error) {
-		toast.dismiss(_toast);
-		toast.error('Impossible to submit transaction');
-		callback({error, data: undefined});
-		return;
-	}
+	// /**********************************************************************
+	// **	In order to avoid dumb error, let's first check if the TX would
+	// **	be successful with a static call
+	// **********************************************************************/
+	// try {
+	// 	await rarity.callStatic.point_buy(_summoner, _str, _dex, _const, _int, _wis, _cha);
+	// } catch (error) {
+	// 	toast.dismiss(_toast);
+	// 	toast.error('Impossible to submit transaction');
+	// 	// callback({error, data: undefined});
+	// 	return;
+	// }
 
 	/**********************************************************************
 	**	If the call is successful, try to perform the actual TX
@@ -326,13 +327,13 @@ export async function	setAttributes({provider, contractAddress, _summoner, _str,
 		} else {
 			toast.dismiss(_toast);
 			toast.error('Transaction reverted');
-			callback({error: true, data: undefined});
+			// callback({error: true, data: undefined});
 		}
 	} catch (error) {
 		console.error(error);
 		toast.dismiss(_toast);
 		toast.error('Something went wrong, please try again later.');
-		callback({error, data: undefined});
+		// callback({error, data: undefined});
 	}
 }
 

@@ -106,7 +106,8 @@ function	Attributes({adventurer, updateRarity, provider}) {
 					...u,
 					remainingPoints: -1
 				}));
-				updateRarity(data._summoner);
+				// TODO: fix updateRarity
+				// updateRarity(data._summoner);
 			});
 		}
 	}

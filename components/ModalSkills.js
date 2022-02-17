@@ -1,16 +1,9 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 26th 2021
-**	@Filename:				ModalSkills.js
-******************************************************************************/
-
-import	React, {Fragment, useState, useEffect}			from	'react';
+import	{Fragment, useState, useEffect}			from	'react';
 import	Image											from	'next/image';
 import	{Dialog, Transition}							from	'@headlessui/react';
 import	Chevron											from	'components/Chevron';
 import	useWeb3											from	'contexts/useWeb3';
-import	useRarity										from	'contexts/useRarity';
+// import	useRarity										from	'contexts/useRarity';
 import	{learnSkills}									from	'utils/actions';
 import	{availableSkillPoints, calculatePointsForSet}	from	'utils/libs/raritySkills';
 import	CLASSES											from	'utils/codex/classes';
@@ -19,7 +12,7 @@ import	SKILLS											from	'utils/codex/skills.json';
 function	Skills({adventurer, isOpen, closeModal = () => null, updateSkills,
 	set_updateSkills = () => null}) {
 	const	{provider} = useWeb3();
-	const	{updateRarity} = useRarity();
+	// const	{updateRarity} = useRarity();
 
 	const	_adventurerClass = Object.values(CLASSES).find((e) => e.id === adventurer.class);
 	const	[classTab, set_classTab] = useState(0);
@@ -67,11 +60,12 @@ function	Skills({adventurer, isOpen, closeModal = () => null, updateSkills,
 			contractAddress: process.env.RARITY_SKILLS_ADDR,
 			tokenID: adventurer.tokenID,
 			skills: _skills,
-		}, ({error, data}) => {
+		}, ({error}) => {
 			if (error) {
 				return console.error(error);
 			}
-			updateRarity(data);
+			// TODO: fix updateRarity
+			// updateRarity(data);
 			closeModal();
 		});
 	}
