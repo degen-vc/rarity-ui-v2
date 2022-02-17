@@ -514,7 +514,11 @@ function	NCPHeadline({router, approveStatus, adventurerCanCraft, adventurerHasXp
 
 function	Index({rarities, router}) {
 	const	{provider, chainID} = useWeb3();
-	const	{currentAdventurer} = useRarity();
+	let	{currentAdventurer} = useRarity();
+
+	if (currentAdventurer == null) {
+		return (<></>);
+	}
 	const	[category, set_category] = useState(0);
 	const	[isModalSkillsOpen, set_isModalSkillsOpen] = useState(false);
 	const	[approveStatus, set_approveStatus] = useState({approvedGold: false, approvedCraftingMaterials: false});
@@ -524,15 +528,24 @@ function	Index({rarities, router}) {
 		const	rarity = new Contract(process.env.RARITY_ADDR, RARITY_ABI);
 		const	rarityGold = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
 		const	rarityDungeonCellar = new Contract(process.env.DUNGEON_THE_CELLAR_ADDR, THE_CELLAR_ABI);
+
+		// console.log(currentAdventurer.isLoaded, process.env.RARITY_CRAFTING_ID)
 		const calls = [
 			rarity.getApproved(currentAdventurer?.tokenID),
 			rarityGold.allowance(currentAdventurer?.tokenID, process.env.RARITY_CRAFTING_ID),
 			rarityDungeonCellar.allowance(currentAdventurer?.tokenID, process.env.RARITY_CRAFTING_ID),
 		];
+		
 
 		const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
-		const	callResult = await ethcallProvider.all(calls);
-		const	[rarityApprovedAddr, goldAllowance, craftingMaterialsAllowance] = callResult;
+		// console.log(calls);
+		const	callResult = await ethcallProvider.all(calls).catch(console.error);
+		let	rarityApprovedAddr= 0, goldAllowance= 0, craftingMaterialsAllowance= 0
+		if (callResult != undefined) {
+			[rarityApprovedAddr, goldAllowance, craftingMaterialsAllowance] = callResult;
+		} 
+		// console.log(rarityApprovedAddr, goldAllowance, craftingMaterialsAllowance)
+
 		set_approveStatus({
 			approvedAdventurer: rarityApprovedAddr === process.env.RARITY_CRAFTING_ADDR,
 			approvedGold: !ethers.BigNumber.from(goldAllowance).isZero(),

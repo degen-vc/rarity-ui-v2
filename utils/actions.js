@@ -44,7 +44,7 @@ async function	_adventure(loader, {provider, contractAddress, tokenID}, callback
 		await rarity.callStatic.adventure(tokenID);
 	} catch (error) {
 		toast.dismiss(_toast);
-		toast.error('Impossible to submit transaction');
+		toast.error('You already gathered loot today, came tommorow');
 		callback({error, data: undefined});
 		return;
 	}
