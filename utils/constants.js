@@ -26,7 +26,7 @@ export const DIGIT_DOTS_REGEX = /^[0-9]*\.?[0-9]*$/;
 export const CLASSES = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Wizard'];
 
 export const GAME = 'RARITY';
-export const GAME_NAME = 'RARITY 2 GAME';
+export const GAME_NAME = 'RARITY II GAME';
 export const GAME_NAME_SHORT = 'R2G';
 export const GTOKEN = '$RTY';
 export const USER = 'adventurer';

@@ -1,62 +1,66 @@
-import	{useState}	from	'react';
-import  {ethers} from	'ethers';
-import	toast				from	'react-hot-toast';
+import	{useState, useEffect}	from	'react';
 import	AutowidthInput		from	'react-autowidth-input';
 import	Box					from	'components/Box';
 import	useWeb3							from	'contexts/useWeb3';
 import useRarity from 'contexts/useRarity';
 import	CLASSES				from	'utils/codex/classes';
-import	{levelUp}			from	'utils/actions';
+import	{levelUp, checkGoldAllowance, getGOLDapprove, allowGTokens, claimName}			from	'utils/actions';
 import	{xpRequired}		from	'utils/libs/rarity';
-import RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
 
-const claimName = async (name, id, provider, callback) => {
-	const	_toast = toast.loading(`Claiming name ${name}...`);
-	const signer = provider.getSigner();
-	const nameContract = new ethers.Contract(
-		process.env.RARITY_NAMES_ADDR, 
-		RARITY_NAMES_ABI,
-		signer
-	);
-	try {
-		const	transaction = await nameContract.claim(name, id);
-		const	transactionResult = await transaction.wait();
-		if (transactionResult.status == 1) {
-			toast.dismiss(_toast);
-			toast.success('Transaction successful');
-			return callback(id);
-		} else {
-			console.log(transactionResult.status);
-			toast.dismiss(_toast);
-			toast.error('Transaction reverted');
-		}
-	} catch (error) {
-		console.error(error);
-		toast.dismiss(_toast);
-		toast.error('Something went wrong, please try again later.');
-	}
-};
 
-const	Info = ({adventurer, updateRarity, namePrice}) => {
+const	Info = ({adventurer, /*updateRarity*/ namePrice}) => {
 	const	{provider} = useWeb3();
 	const {governanceToken} = useRarity();
+
 	const	[name, setName] = useState(adventurer.name || adventurer.tokenID);
+	const [goldAllowance, setGoldAllowance] = useState(0);
 	
 	const	canLevelUp = adventurer.xp >= (xpRequired(adventurer.level));
 
-	const handleSubmit = () => {
+	const handleClaimName = () => {
 		if (name && (name !== (adventurer.name || adventurer.tokenID))) {
-			return claimName(name, adventurer.tokenID, provider, updateRarity);
+			return claimName(name, adventurer.tokenID, provider);
 		}
 	};
 
 	const handleLevelUp = () => {
 		if (!canLevelUp) return;
-		return levelUp({provider, contractAddress: process.env.RARITY_ADDR, tokenID: adventurer.tokenID}, ({error, data}) => {
-			if (error) return console.error(error);
-			return updateRarity(data);
-		});
+		levelUp({provider, contractAddress: process.env.RARITY_ADDR, tokenID: adventurer.tokenID});
+		// TODO: fix updateRarity
+		// return levelUp({provider, contractAddress: process.env.RARITY_ADDR, tokenID: adventurer.tokenID}, ({error, data}) => {
+		// 	if (error) return console.error(error);
+		// 	return updateRarity(data);
+		// });
 	};
+
+	const handleApproveTokens = () => allowGTokens(provider);
+
+	const handleApproveGold = () => getGOLDapprove(provider, adventurer.tokenID);
+
+	const renderGoldSection = () => {
+		if (!adventurer?.name && Number(adventurer?.gold?.balance) === 0) {
+			return (
+				<div className={'text-center normal-case'}>
+					{'Only named Adventurers can claim gold.'}
+					{governanceToken?.nameAllowance <= namePrice && 
+						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RG'}</button>
+					}
+				</div>
+			);
+		} else {
+			return (
+				<div className={governanceToken?.nameAllowance >= namePrice ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
+					<p className={(goldAllowance >= 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn || Number(adventurer?.gold?.balance) > 0)  ? '' : 'd-none'}>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p> 
+					<button className={goldAllowance >= 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn  ? 'd-none' : ''} onClick={handleApproveGold}>{'Approve'}</button>
+				</div> 
+			);
+		}
+	};
+
+	useEffect(() => {
+		if (!provider || !adventurer.tokenID) return;
+		checkGoldAllowance(provider, adventurer.tokenID, setGoldAllowance);
+	}, [provider, adventurer.tokenID]);
 
 	return (
 		<Box className={'nes-container pt-6 px-4 with-title w-full md:w-2/3'}>
@@ -70,7 +74,7 @@ const	Info = ({adventurer, updateRarity, namePrice}) => {
 						placeholder={adventurer.name || adventurer.tokenID}
 						className={'bg-opacity-0 bg-white focus:outline-none pl-1 relative uppercase '} />
 					<div
-						onClick={handleSubmit}
+						onClick={handleClaimName}
 						className={`ml-1 p-1 -m-1 transition-all opacity-0 ${name && (name !== (adventurer.name || adventurer.tokenID)) ? 'w-7 opacity-100 cursor-pointer' : 'w-0 group-hover:opacity-100 group-hover:w-7 cursor-default'}`}>
 						{name && (name !== (adventurer.name || adventurer.tokenID)) ?
 							<svg width={'20'} height={'20'} viewBox={'0 0 24 24'} fill={'none'} xmlns={'http://www.w3.org/2000/svg'}>
@@ -109,10 +113,8 @@ const	Info = ({adventurer, updateRarity, namePrice}) => {
 				</div>
 			</div>
 			<div className={'flex flex-row items-center w-full py-2'}>
-				<div className={'opacity-80 text-xs md:text-sm w-48'}>{'NAME:'}</div>
-				<div className={'w-full text-right md:text-left pr-4 md:pr-0'}>
-					{governanceToken?.nameAllowance >= namePrice  ? 'You can buy a name!' : 'You should allow $RTY first!'}
-				</div>
+				<div className={'opacity-80 text-xs md:text-sm w-48'}>{'GOLD:'}</div>
+				{renderGoldSection()}
 			</div>
 			<div className={'flex flex-row items-center w-full py-2 relative'}>
 				<div className={'opacity-80 text-sm w-48'}>{'XP:'}</div>
