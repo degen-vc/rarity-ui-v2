@@ -1,10 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Saturday September 11th 2021
-**	@Filename:				SectionNoAdventurer.js
-******************************************************************************/
-
 import {useState}				from	'react';
 import	Image							from	'next/image';
 import	useWeb3							from	'contexts/useWeb3';
@@ -12,7 +5,7 @@ import	useUI							from	'contexts/useUI';
 import	useRarity						from	'contexts/useRarity';
 import	Typer							from	'components/Typer';
 import	SectionRecruit					from	'sections/SectionRecruit';
-import {GAME_NAME, USER} from 'utils/constants';
+import {GAME_NAME} from 'utils/constants';
 
 function	FacuHeadline() {
 	const	[facuTextIndex, set_facuTextIndex] = useState(0);
@@ -35,7 +28,7 @@ function	FacuHeadline() {
 				</Typer>&nbsp;
 				<div className={'my-2'}/>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 4}>
-					{` YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ${USER} ARE YOU ?`}
+					{' YOUR SKILLS WILL BE TESTED TO THE LIMITS. BUT FIRST THINGS FIRST. WHAT KIND OF ADVENTURER ARE YOU ?'}
 				</Typer>
 			</>
 		);

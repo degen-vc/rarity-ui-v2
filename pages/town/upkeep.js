@@ -1,20 +1,12 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Saturday September 11th 2021
-**	@Filename:				guild-house.js
-******************************************************************************/
-
 import	dayjs							from	'dayjs';
 import	relativeTime					from	'dayjs/plugin/relativeTime';
-import	React, {useState}				from	'react';
+import	{useState}				from	'react';
 import	Image							from	'next/image';
 import	useWeb3							from	'contexts/useWeb3';
 import	Typer							from	'components/Typer';
 import	DialogBox						from	'components/DialogBox';
 import	Box								from	'components/Box';
 import	{goAdventure, claimGold}		from	'utils/actions';
-import {USERS} from 'utils/constants';
 
 dayjs.extend(relativeTime);
 
@@ -25,7 +17,7 @@ function	NCPHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_NPCTextIndex(i => i + 1)} shouldStart={NPCTextIndex === 0}>
-					{`REMEMBER TO UPKEEP YOUR ${USERS}. `}
+					{'REMEMBER TO UPKEEP YOUR ADVENTURERS. '}
 				</Typer>
 				<Typer onDone={() => set_NPCTextIndex(i => i + 1)} shouldStart={NPCTextIndex === 1}>
 					{' GREAT CHALLENGES AND QUESTS LAY AHEAD. '}
@@ -101,7 +93,7 @@ function	Index({rarities, updateRarity}) {
 				</div>
 				<DialogBox
 					options={[
-						canAdventureRarities.length ? {label: `Send everyone (${canAdventureRarities.length}) to ${USERS}`, onClick: () => handleGoAdventure(canAdventureRarities, provider, updateRarity)} : {label: nextAdventureTime ? `Next adventure ready ${nextAdventureTime}` : `No ${USERS} available`, onClick: () => {}},
+						canAdventureRarities.length ? {label: `Send everyone (${canAdventureRarities.length}) to adventures`, onClick: () => handleGoAdventure(canAdventureRarities, provider, updateRarity)} : {label: nextAdventureTime ? `Next adventure ready ${nextAdventureTime}` : 'No Adventurer available', onClick: () => {}},
 						canGoldRarities.length ? {label: `Claim gold for ${canGoldRarities.length} heroes`, onClick: () => handleClaimGold(canGoldRarities, provider, updateRarity)} : {label: 'No gold to claim!', onClick: () => {}},
 					]} />
 			</div>

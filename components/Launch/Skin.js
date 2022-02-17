@@ -9,7 +9,7 @@ import BoxWithTitle from 'components/BoxWithTitle';
 import {validateDigits} from 'utils/scarcity-functions';
 import {getSkinInfo, dressSummoner} from 'utils/actions';
 import SUMMOER_SKINS_ABI from 'utils/abi/summonerSkins.abi';
-import {CLASSES, USER} from 'utils/constants';
+import {CLASSES} from 'utils/constants';
 
 const checkAvailableSummoners = (rarities, skinId, assignation) => 
 	Object.values(rarities).reduce((all, summ) => {
@@ -27,8 +27,8 @@ const Skin = ({index}) => {
 	
 	const validate = (skin) => {
 		if (!skin) return;
-		if (skin === skinInfo?.assignation) return `You've already assign this costume to selected ${USER}`;
-		if (!availableSummoners.includes(skin)) return `You can assign this costume only to your ${USER} with appropriate class`;
+		if (skin === skinInfo?.assignation) return 'You\'ve already assign this costume to selected Adventurer';
+		if (!availableSummoners.includes(skin)) return 'You can assign this costume only to your Adventurer with appropriate class';
 		return;
 	};
 
@@ -69,7 +69,7 @@ const Skin = ({index}) => {
 						}
 					</p>
 					{availableSummoners.length ? <>
-						<p className={'text-megaxs mb-2'}>{`${USER} IDs available: `}</p>
+						<p className={'text-megaxs mb-2'}>{'Adventurer IDs available: '}</p>
 						<p className={'text-center'}>{availableSummoners?.join(', ')}</p>
 						<Input
 							className={'w-full my-4'}
@@ -77,7 +77,7 @@ const Skin = ({index}) => {
 							validateOnBlur={validate}
 							setValue={setAssignedSkin}
 							defaultValue={assignedSkin}
-							placeholder={`${USER} ID`} />
+							placeholder={'Adventurer ID'} />
 						<Button
 							className={'inline-block cursor-pointer hover:bg-white focus:bg-white dark:hover:bg-dark-600 dark:focus:bg-dark-600 bg-gray-principal dark:bg-dark-400 text-center'}
 							backgroundColor={'bg-gray-principal dark:bg-dark-400'}
@@ -86,11 +86,11 @@ const Skin = ({index}) => {
 						</Button>
 					</> : <>
 						{skinInfo?.assignation === '0'
-							? <p className={'text-megaxs text-center text-tag-withdraw'}>{`Seems like you don't have appropriate ${USER} to dress this costume`}</p>
-							: <p className={'text-megaxs text-center text-tag-new'}>{`You have only one appropriate ${USER} for this costume and it's already dressed`}</p>
+							? <p className={'text-megaxs text-center text-tag-withdraw'}>{'Seems like you don\'t have appropriate Adventurer to dress this costume'}</p>
+							: <p className={'text-megaxs text-center text-tag-new'}>{'You have only one appropriate Adventurer for this costume and it\'s already dressed'}</p>
 						}
 						<Link href={'/town/tavern?tab=recruit'}>
-							<span className={'text-sm mt-8 cursor-pointer opacity-60 hover:opacity-100'}>{`recruit ${USER} >`}</span>
+							<span className={'text-sm mt-8 cursor-pointer opacity-60 hover:opacity-100'}>{'recruit Adventurer >'}</span>
 						</Link>
 					</>}
 				</BoxWithTitle>

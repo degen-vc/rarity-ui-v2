@@ -59,8 +59,7 @@ const	prepareAdventurer = (tokenID) => {
 };
 
 const prepareAdventurerExtra = (provider, tokenID) => {
-	const signer = provider.getSigner();
-	const	rarityGold = new ethers.Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI, signer);
+	const	rarityGold = new ethers.Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI, provider).connect(provider.getSigner());
 	return rarityGold.claimable(tokenID);
 };
 
@@ -131,8 +130,8 @@ const fetchAdventurerInventory = async (provider, calls) => {
 };
 
 const fetchAdventurerExtra = async (calls) => {
-	const	results = await Promise.all(calls.map(p => p.catch(() => ethers.BigNumber.from(0))));
-	return results.map(result =>  (result instanceof Error) ? undefined : result);
+	const	results = await Promise.all(calls.map(p => p?.catch(() => ethers.BigNumber.from(0))));
+	return results.map(result => (result instanceof Error) ? undefined : result);
 };
 
 const fetchGovernanceToken = async (provider, address, callback) => {

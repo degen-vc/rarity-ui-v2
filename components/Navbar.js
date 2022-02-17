@@ -1,10 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Monday September 6th 2021
-**	@Filename:				Navbar.js
-******************************************************************************/
-
 import	{useState, useEffect}	from	'react';
 import	Link							from	'next/link';
 import	useWeb3							from	'contexts/useWeb3';
@@ -13,7 +6,7 @@ import	FlyoutMenu						from	'components/FlyoutMenu';
 import	AdventurerModalMenu				from	'components/AdventurerModalMenu';
 import	{Contract}									from	'ethcall';
 import 	WRAPPED_GOLD_ABI 														from 'utils/abi/wrappedGold.abi';
-import {GAME_NAME, GAME_NAME_SHORT, USERS} from 'utils/constants';
+import {GAME_NAME, GAME_NAME_SHORT} from 'utils/constants';
 
 
 function	Navbar({router}) {
@@ -77,7 +70,7 @@ function	Navbar({router}) {
 					<span>
 						<span className={`cursor-pointer inline mb-1 mr-2 group-hover:opacity-100 text-xs md:text-sm ${router.pathname === '/' ? 'opacity-100' : 'opacity-5'}`}>{'>'}</span>
 						<span className={'text-sm cursor-pointer'}>
-							<span className={'text-xs hidden md:inline cursor-pointer'}>{USERS}</span>
+							<span className={'text-xs hidden md:inline cursor-pointer'}>{'Adventurers'}</span>
 							<span className={'text-xs inline md:hidden cursor-pointer'}>{'Adv'}</span>
 						</span>
 					</span>

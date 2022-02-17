@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from 'react';
+import {useEffect, useState} from 'react';
 import useWeb3 from	'contexts/useWeb3';
 import useRarity from	'contexts/useRarity';
 import Skin from 'components/Launch/Skin';

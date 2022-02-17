@@ -1,10 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Tuesday August 31st 2021
-**	@Filename:				actions.js
-******************************************************************************/
-
 import	{ethers}			from	'ethers';
 import	{Contract}			from	'ethcall';
 import	toast				from	'react-hot-toast';
@@ -19,6 +12,10 @@ import  MANAGER_SKINS_ABI from 'utils/abi/managerSkins.abi';
 import  SUMMOER_SKINS_ABI from 'utils/abi/summonerSkins.abi';
 import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 import RARITY_FEATS_ABI from 'utils/abi/rarityFeats.abi';
+import RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
+import RARITY_GOLD_ABI from	'utils/abi/rarityGold.abi';
+import	RARITY_ATTR_ABI											from	'utils/abi/rarityAttr.abi';
+import  GOVERNANCE_TOKEN_ABI from 'utils/abi/governanceToken.abi';
 
 export const onSuccessToast = (_toast, msg) => {
 	toast.dismiss(_toast);
@@ -127,6 +124,84 @@ export async function	levelUp({provider, contractAddress, tokenID}, callback) {
 	}
 }
 
+export const claimName = async (name, id, provider) => {
+	const	_toast = toast.loading(`Claiming name ${name}...`);
+	const signer = provider.getSigner();
+	const nameContract = new ethers.Contract(
+		process.env.RARITY_NAMES_ADDR, 
+		RARITY_NAMES_ABI,
+		signer
+	);
+	try {
+		const	transaction = await nameContract.claim(name, id);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status == 1) {
+			toast.dismiss(_toast);
+			toast.success('Transaction successful');
+		} else {
+			console.log(transactionResult.status);
+			toast.dismiss(_toast);
+			toast.error('Transaction reverted');
+		}
+	} catch (error) {
+		console.error(error);
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+	}
+};
+
+export const checkGoldAllowance = async (provider, id, callback) => {
+	const	ethcallProvider = await newEthCallProvider(provider);
+	const goldContract = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
+	const goldAllowanceCall = goldContract.allowance(id, 238);
+	const goldAllowance = await ethcallProvider.all([goldAllowanceCall]);
+	return callback(+`${goldAllowance}`);
+};
+
+export const getGOLDapprove = async (provider, id) => {
+	const	_toast = toast.loading('Allow Gold to be wrapped to $WSGOLD');
+	const signer = provider.getSigner();
+	const approveGold = new ethers.Contract(
+		process.env.RARITY_GOLD_ADDR, 
+		RARITY_GOLD_ABI,
+		signer
+	);
+	try {
+		const	transaction = await approveGold.approve(id, 238, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status == 1) {
+			toast.dismiss(_toast);
+			toast.success('Transaction successful');
+		} else {
+			console.log(transactionResult.status);
+			toast.dismiss(_toast);
+			toast.error('Transaction reverted');
+		}
+	} catch (error) {
+		console.error(error);
+		toast.dismiss(_toast);
+		toast.error('Something went wrong, please try again later.');
+	}
+};
+
+export const allowGTokens = async (provider) => {
+	let _toast = toast.loading(`Approving ${GTOKEN}...`);
+	const signer = provider.getSigner();
+	const managerContract = new ethers.Contract(process.env.GOVERNANCE_TOKEN_ADDR, GOVERNANCE_TOKEN_ABI, signer); 
+	try {
+		const transaction = await managerContract.approve(process.env.RARITY_NAMES_ADDR, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+		const	transactionResult = await transaction.wait();
+		if (transactionResult.status === 1) {
+			onSuccessToast(_toast, `${GTOKEN} successfully approved`);
+			return;
+		}
+	} catch (e) {
+		console.log(e);
+		onErrorToast(_toast);
+		return;
+	}
+};
+
 export async function	learnSkills({provider, contractAddress, tokenID, skills}, callback) {
 	const	_toast = toast.loading('Learning new skills...');
 	const	signer = provider.getSigner();
@@ -222,22 +297,22 @@ export async function	setAttributes({provider, contractAddress, _summoner, _str,
 	const	signer = provider.getSigner();
 	const	rarity = new ethers.Contract(
 		contractAddress,
-		['function point_buy(uint _summoner, uint32 _str, uint32 _dex, uint32 _const, uint32 _int, uint32 _wis, uint32 _cha) public'],
+		RARITY_ATTR_ABI,
 		signer
 	);
 
-	/**********************************************************************
-	**	In order to avoid dumb error, let's first check if the TX would
-	**	be successful with a static call
-	**********************************************************************/
-	try {
-		await rarity.callStatic.point_buy(_summoner, _str, _dex, _const, _int, _wis, _cha);
-	} catch (error) {
-		toast.dismiss(_toast);
-		toast.error('Impossible to submit transaction');
-		callback({error, data: undefined});
-		return;
-	}
+	// /**********************************************************************
+	// **	In order to avoid dumb error, let's first check if the TX would
+	// **	be successful with a static call
+	// **********************************************************************/
+	// try {
+	// 	await rarity.callStatic.point_buy(_summoner, _str, _dex, _const, _int, _wis, _cha);
+	// } catch (error) {
+	// 	toast.dismiss(_toast);
+	// 	toast.error('Impossible to submit transaction');
+	// 	// callback({error, data: undefined});
+	// 	return;
+	// }
 
 	/**********************************************************************
 	**	If the call is successful, try to perform the actual TX
@@ -252,13 +327,13 @@ export async function	setAttributes({provider, contractAddress, _summoner, _str,
 		} else {
 			toast.dismiss(_toast);
 			toast.error('Transaction reverted');
-			callback({error: true, data: undefined});
+			// callback({error: true, data: undefined});
 		}
 	} catch (error) {
 		console.error(error);
 		toast.dismiss(_toast);
 		toast.error('Something went wrong, please try again later.');
-		callback({error, data: undefined});
+		// callback({error, data: undefined});
 	}
 }
 
@@ -1479,4 +1554,3 @@ export const claimSgv = async (provider, tokenId) => {
 		return;
 	}
 };
-
