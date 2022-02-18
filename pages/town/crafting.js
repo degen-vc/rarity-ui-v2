@@ -526,8 +526,8 @@ function	Index({rarities, router}) {
 		const	rarityDungeonCellar = new Contract(process.env.DUNGEON_THE_CELLAR_ADDR, THE_CELLAR_ABI);
 		const calls = [
 			rarity.getApproved(currentAdventurer?.tokenID),
-			rarityGold.allowance(currentAdventurer?.tokenID, process.env.RARITY_CRAFTING_ID),
-			rarityDungeonCellar.allowance(currentAdventurer?.tokenID, process.env.RARITY_CRAFTING_ID),
+			rarityGold.allowance(currentAdventurer?.tokenID, '0'),
+			rarityDungeonCellar.allowance(currentAdventurer?.tokenID, '0'),
 		];
 
 		const	ethcallProvider = await newEthCallProvider(provider, Number(chainID) === 1337);
@@ -545,7 +545,7 @@ function	Index({rarities, router}) {
 		approveERC20({
 			provider,
 			contractAddress: process.env.RARITY_GOLD_ADDR,
-			spender: process.env.RARITY_CRAFTING_ID,
+			spender: 0,
 			adventurerID: currentAdventurer.tokenID,
 			amount: ethers.constants.MaxUint256,
 			name: 'gold'
@@ -559,7 +559,7 @@ function	Index({rarities, router}) {
 		approveERC20({
 			provider,
 			contractAddress: process.env.DUNGEON_THE_CELLAR_ADDR,
-			spender: process.env.RARITY_CRAFTING_ID,
+			spender: 0,
 			adventurerID: currentAdventurer.tokenID,
 			amount: ethers.constants.MaxUint256,
 			name: 'Rat Skins'
@@ -571,9 +571,9 @@ function	Index({rarities, router}) {
 	}
 
 	useEffect(() => {
-		if (!provider) return;
+		if (!provider || !currentAdventurer) return;
 		checkCraftingStatus();
-	}, [checkCraftingStatus, provider]);
+	}, [checkCraftingStatus, currentAdventurer, provider]);
 
 	return (
 		<section className={'max-w-full'}>

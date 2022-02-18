@@ -44,7 +44,7 @@ module.exports = ({
 		NETWORK: 'fantom',
 		WEBSITE_URI: process.env.WEBSITE_URI || 'https://adventure.major.tax/',
 		
-		RARITY_CRAFTING_ID: '1758709',
+		RARITY_CRAFTING_ID: '0',
 
 		ZAP_VAULT_ADDR: '0xfCE6CbeF3867102da383465cc237B49fF4B9d48F',
 		FTM_VAULT_ADDR: '0x0dec85e74a92c52b7f708c4b10207d9560cefaf0',
