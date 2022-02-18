@@ -49,7 +49,7 @@ function	SectionArtifactsTheForest({shouldDisplay, adventurers, router, adventur
 									return console.error(error);
 								}
 								updateRarity(adventurer.tokenID);
-								router.push('/town/crafting?tab=restore');
+								router.push('/world/crafting?tab=restore');
 							});
 						}}
 						noHover={Number(adventurer.xp) < xpRequired(item.level)}

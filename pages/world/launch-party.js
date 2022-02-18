@@ -58,7 +58,7 @@ const Launch = ({router}) => {
 							provider={provider}
 							currentPrice={commonInfo?.price} /> </>
 					: <DialogBox options={[
-						{label: 'recruit an adventurer to attend the launch party', onClick: () => router.push('/town/tavern?tab=recruit')},
+						{label: 'recruit an adventurer to attend the launch party', onClick: () => router.push('/world/tavern?tab=recruit')},
 						{label: 'Nevermind', onClick: () => router.push('/')}
 					]} />
 				}

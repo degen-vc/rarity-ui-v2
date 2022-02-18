@@ -25,7 +25,7 @@ function	DialogChoices({router, adventurersCount}) {
 		return (
 			<DialogBox
 				options={[
-					{label: 'GO TO THE TAVERN', onClick: () => router.push('/town/tavern?tab=recruit')},
+					{label: 'GO TO THE TAVERN', onClick: () => router.push('/world/tavern?tab=recruit')},
 				]} />
 		);
 	}
@@ -46,7 +46,7 @@ function	DialogChoices({router, adventurersCount}) {
 							onClick: () => router.push(`/dungeons/the-cellar?adventurer=${currentAdventurer?.tokenID}`)
 						},
 						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
-						{label: 'CANCEL', onClick: () => router.push('/town/quest')},
+						{label: 'CANCEL', onClick: () => router.push('/world/quest')},
 					]} />
 			</>
 		);
@@ -85,7 +85,7 @@ function	DialogChoices({router, adventurersCount}) {
 							}
 						},
 						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
-						{label: 'CANCEL', onClick: () => router.push('/town/quest')},
+						{label: 'CANCEL', onClick: () => router.push('/world/quest')},
 					]} />
 			</>
 		);
@@ -118,7 +118,7 @@ function	DialogChoices({router, adventurersCount}) {
 						},
 						{label: 'TAUNT', onClick: () => console.log('taunt')},
 						{label: 'CHECK RESULTS FEED', onClick: () => console.log('check results feed')},
-						{label: 'NO, JUST HEAD BACK TO TOWN', onClick: () => router.push('/town/quest')},
+						{label: 'NO, JUST HEAD BACK TO TOWN', onClick: () => router.push('/world/quest')},
 					]} />
 			</>
 		);
@@ -136,7 +136,7 @@ function	DialogChoices({router, adventurersCount}) {
 							<span className={'text-tag-info'}>{'THE CELLAR'}</span>
 						</>
 					),
-					onClick: () => router.push('/town/quest?tab=the-cellar')
+					onClick: () => router.push('/world/quest?tab=the-cellar')
 				},
 				isDungeonAvailable(dungeonTypes.FOREST) && {
 					label: (
@@ -145,7 +145,7 @@ function	DialogChoices({router, adventurersCount}) {
 							<span className={'text-tag-info'}>{'THE FOREST'}</span>
 						</>
 					),
-					onClick: () => router.push('/town/quest?tab=the-forest')
+					onClick: () => router.push('/world/quest?tab=the-forest')
 				},
 				// {
 				// 	label: (
@@ -154,7 +154,7 @@ function	DialogChoices({router, adventurersCount}) {
 				// 			<span className={'text-tag-info'}>{'BATTLE ROYALE'}</span>
 				// 		</>
 				// 	),
-				// 	onClick: () => router.push('/town/quest?tab=battle-royale')
+				// 	onClick: () => router.push('/world/quest?tab=battle-royale')
 				// }
 			].filter(o => Boolean(o))} />
 	);

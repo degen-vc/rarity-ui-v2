@@ -248,7 +248,7 @@ function	DialogChoices({router, onWalletConnect, active}) {
 								openCurrentAventurerModal();
 						}},
 						{label: 'SELECT ANOTHER ADVENTURER', onClick: () => openCurrentAventurerModal()},
-						{label: 'CANCEL', onClick: () => router.push('/town/tavern')},
+						{label: 'CANCEL', onClick: () => router.push('/world/tavern')},
 					]} />
 			</>
 		);
@@ -259,9 +259,9 @@ function	DialogChoices({router, onWalletConnect, active}) {
 			selectedOption={selectedOption}
 			nonce={dialogNonce}
 			options={[
-				{label: 'What\'s new ?', onClick: () => router.push('/town/tavern')},
-				{label: 'Recruit a new Adventurer', onClick: () => router.push('/town/tavern?tab=recruit')},
-				{label: 'About the rat ...', onClick: () => router.push('/town/tavern?tab=the-cellar')}
+				{label: 'What\'s new ?', onClick: () => router.push('/world/tavern')},
+				{label: 'Recruit a new Adventurer', onClick: () => router.push('/world/tavern?tab=recruit')},
+				{label: 'About the rat ...', onClick: () => router.push('/world/tavern?tab=the-cellar')}
 			]} />
 	);
 }

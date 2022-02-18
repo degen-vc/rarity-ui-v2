@@ -53,7 +53,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 				selectedOption={selectedOption}
 				nonce={dialogNonce}
 				options={[
-					{label: 'GO TO THE TAVERN', onClick: () => router.push('/town/tavern?tab=recruit')},
+					{label: 'GO TO THE TAVERN', onClick: () => router.push('/world/tavern?tab=recruit')},
 				]} />
 		);
 	}
@@ -66,7 +66,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 					<DialogBox
 						selectedOption={selectedOption}
 						nonce={dialogNonce}
-						options={[{label: 'Nevermind', onClick: () => router.push('/town/crafting')}]} />
+						options={[{label: 'Nevermind', onClick: () => router.push('/world/crafting')}]} />
 				);	
 			}
 			return (
@@ -78,7 +78,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 							label: (<>{'LEARN HOW TO '}<span className={'text-tag-info'}>{'CRAFT'}</span></>),
 							onClick: () => openModalSkills()
 						},
-						{label: 'Nevermind', onClick: () => router.push('/town/crafting')},
+						{label: 'Nevermind', onClick: () => router.push('/world/crafting')},
 					]} />
 			);
 		}
@@ -88,7 +88,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 					selectedOption={selectedOption}
 					nonce={dialogNonce}
 					options={[
-						{label: 'Nevermind', onClick: () => router.push('/town/crafting')},
+						{label: 'Nevermind', onClick: () => router.push('/world/crafting')},
 					]} />
 			);
 		}
@@ -105,7 +105,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 			});
 		}
 		if (options.length > 0) {
-			options.push({label: 'Nevermind', onClick: () => router.push('/town/crafting')});
+			options.push({label: 'Nevermind', onClick: () => router.push('/world/crafting')});
 			return (
 				<DialogBox
 					selectedOption={selectedOption}
@@ -131,7 +131,7 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 						label: (<>{'CRAFT SOME '}<span className={'text-tag-info'}>{'WEAPONS'}</span></>),
 						onClick: () => set_category(2)
 					},
-					{label: 'Nevermind', onClick: () => router.push('/town/crafting')},
+					{label: 'Nevermind', onClick: () => router.push('/world/crafting')},
 				]} />
 		);
 	}
@@ -140,10 +140,10 @@ function	DialogChoices({router, adventurersCount, set_category, approveStatus, a
 			selectedOption={selectedOption}
 			nonce={dialogNonce}
 			options={[
-				// {label: 'WELCOME', onClick: () => router.push('/town/crafting')},
-				{label: 'Start crafting', onClick: () => router.push('/town/crafting?tab=workshop')},
-				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Upgrade an Artifact', onClick: () => router.push('/town/crafting?tab=upgrade')},
-				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Restore an Artifact', onClick: () => router.push('/town/crafting?tab=restore')},
+				// {label: 'WELCOME', onClick: () => router.push('/world/crafting')},
+				{label: 'Start crafting', onClick: () => router.push('/world/crafting?tab=workshop')},
+				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Upgrade an Artifact', onClick: () => router.push('/world/crafting?tab=upgrade')},
+				isDungeonAvailable(dungeonTypes.FOREST) && {label: 'Restore an Artifact', onClick: () => router.push('/world/crafting?tab=restore')},
 			].filter(o => Boolean(o))} />
 	);
 }

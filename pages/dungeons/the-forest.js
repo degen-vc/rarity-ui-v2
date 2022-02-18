@@ -56,7 +56,7 @@ function	Index({dungeon, adventurer, router}) {
 			}
 			updateRarity(dungeon.tokenID);
 			if (router.pathname === '/dungeons/the-forest')
-				router.push('/town/quest?tab=the-forest');
+				router.push('/world/quest?tab=the-forest');
 		});
 	}
 
@@ -100,7 +100,7 @@ function	WithContext({rarities, router}) {
 	}
 	if (!rarities[router?.query?.adventurer]) {
 		if (typeof(window) !== 'undefined')
-			router.push('/town/quest?tab=the-forest');
+			router.push('/world/quest?tab=the-forest');
 		return null;
 	}
 	return (
