@@ -27,7 +27,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "pages/town/gold.js"  ],
   "exclude": [
     "node_modules"
   ],
