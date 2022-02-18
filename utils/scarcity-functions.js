@@ -34,9 +34,9 @@ export const parseSkinBase64 = (skinBase64) => {
 	let skinJson = decodeURI(skinBase64);
 	skinJson = skinJson.split('data:application/json;base64,').pop();
 	skinJson = JSON.parse(atob(skinJson));
-	const skinImgUri = skinJson.image;
+	const ticketImgUri = skinJson.image;
 
-	return {skinJson, skinImgUri};
+	return ticketImgUri;
 };
 
 export const validateDigits = (value, withDot = false) => {

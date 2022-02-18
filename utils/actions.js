@@ -1444,7 +1444,6 @@ export const getManagerTicketsInfo = async (provider, address, tokenID, callback
 		managerContract.summonerKey([process.env.LAUNCH_ADVENTURERS_ADDR, tokenID]),
 		managerContract.summonerKey([process.env.LAUNCH_SUMMONERS_ADDR, tokenID])
 	];
-	// console.log(managerContract);
 	const [myAdventurersYieldPerDay, mySummonersYieldPerDay, availableForClaimAll, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
 	try {
 		if (!summonerKey || !adventurerKey) return;
@@ -1509,17 +1508,15 @@ export const getTicketInfo = async (provider, address, ticketContractAddr, abi, 
 	try {
 		if (!ticketId) return;
 		// TODO: fix this
-		// const ticketCalls = [
-		// 	contract.tokenURI(ticketId.toString()),
-		// ];
-		// const	[ticketBase64 = {}, ticketClass = 0] = await ethcallProvider.all(ticketCalls);
+		const ticketCalls = [contract.tokenURI(ticketId.toString())];
+		const	ticketBase64 = await ethcallProvider.all(ticketCalls);
 		const {assignation} = await getManagerTiketInfo(provider, ticketId.toString());
-		// const {ticketJson, ticketImgUri} = parseSkinBase64(skinBase64);
+		const ticketImgUri= parseSkinBase64(ticketBase64);
 		const assignInfo = {
 			type: assignation?.toString().split(',')[0] === process.env.LAUNCH_ADVENTURERS_ADDR ? 'Adventurer' : 'Summoner',
 			id: assignation?.toString().split(',')[1]
 		};
-		return callback({ticketId: ticketId?.toString(), assignation: assignInfo});
+		return callback({ticketId: ticketId?.toString(), assignation: assignInfo, ticketImg:ticketImgUri});
 	} catch (e) {
 		console.log(e);
 	}

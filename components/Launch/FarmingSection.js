@@ -10,7 +10,7 @@ const amountToTokens = (amount, currency = GTOKEN) => {
 	return `${Math.round(parseInt((amount / 1e16).toString()))/100} ${currency}`;
 };
 
-const FarmingSection = ({provider, address, currentAdventurer, summoners}) => {
+const FarmingSection = ({provider, address, currentAdventurer, summoners, adventurers}) => {
 	const {governanceToken} = useRarity();
 	const [gTokenlBalance, setGTokenlBalance] = useState();
 	const [managerTicketInfo, setManagerTicketInfo] = useState(null);
@@ -40,9 +40,8 @@ const FarmingSection = ({provider, address, currentAdventurer, summoners}) => {
 				name={currentAdventurer?.name || `adventurer ${currentAdventurer?.tokenID || ''}`}
 				ticketId={`${managerTicketInfo?.adventurerTicketId}` || `${managerTicketInfo?.summonerTicketId}` || '0'}
 				adventurerTokensAvailable={amountToTokens(managerTicketInfo?.adventurerTokensAvailable)}
-				summonerTokensAvailable={amountToTokens(managerTicketInfo?.summonerTokensAvailable)}
-				mySummonersYieldPerDay={amountToTokens(managerTicketInfo?.mySummonersYieldPerDay[0])}
-				hasSummoners={summoners?.length} />
+				hasSummoners={summoners?.length}
+				hasAdventurers={adventurers?.length} />
 		</section>
 	);
 };
