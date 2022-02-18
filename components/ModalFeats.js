@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 26th 2021
-**	@Filename:				ModalSkills.js
-******************************************************************************/
-
-import	React, {Fragment, useState}						from	'react';
+import	{Fragment, useState}						from	'react';
 import	{Dialog, Transition}							from	'@headlessui/react';
 import	useWeb3											from	'contexts/useWeb3';
 import	useRarity										from	'contexts/useRarity';
@@ -15,7 +8,7 @@ import	FEATS											from	'utils/codex/feats.json';
 
 function	Feats({adventurer, isOpen, closeModal}) {
 	const	{provider} = useWeb3();
-	const	{updateRarity} = useRarity();
+	// const	{updateRarity} = useRarity();
 	const	_maxFeatsForAventurer = featsPerClass(adventurer.class, adventurer?.level);
 	const	_initialFeatsPerClass = initialFeatsPerClass(adventurer.class);
 	const	_adventurerFeats = adventurer.feats || [];
@@ -34,7 +27,8 @@ function	Feats({adventurer, isOpen, closeModal}) {
 			if (error) {
 				return console.error(error);
 			}
-			updateRarity(data);
+			// TODO: fix this
+			// updateRarity(data);
 			closeModal();
 		});
 	}

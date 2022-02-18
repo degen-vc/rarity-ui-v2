@@ -10,7 +10,7 @@ const LaunchInfoArticle = ({skinBalance = '0', currentAdventurer = ''}) => (
 			<p className={'pb-4'}>{'You could sell that costume on open-sea.'}</p>
 			<p className={'pb-4'}>{'You could mint an Adventurer to go along with that costume.'}</p>
 			{(currentAdventurer && (!skinBalance || Number(skinBalance) === 0)) &&
-				<div className={'py-2 text-center w-full text-tag-withdraw'}>{'You have no costumes yet...'}</div>
+				<div className={'py-2 text-center w-full text-tag-withdraw'}>{'You have no tickets yet...'}</div>
 			}
 			<div className={'text-center mt-6 opacity-60 hover:opacity-100'}>
 				<a href={'https://scarcity.gold'} target={'_blank'} rel={'noopener noreferrer'}>

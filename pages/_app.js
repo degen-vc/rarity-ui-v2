@@ -1,11 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Tuesday August 31st 2021
-**	@Filename:				_app.js
-******************************************************************************/
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import	React							from	'react';
 import	Head							from	'next/head';
 import	{DefaultSeo}					from	'next-seo';
@@ -134,6 +126,11 @@ function	AppWrapper(props) {
 const getLibrary = (provider) => {
 	return new ethers.providers.Web3Provider(provider, 'any');
 };
+
+// const client = new ApolloClient({
+// 	uri: 'https://api.thegraph.com/subgraphs/name/eirlis/rarity-2-test',
+// 	cache: new InMemoryCache()
+// });
 
 function	MyApp(props) {
 	const	{Component, pageProps} = props;

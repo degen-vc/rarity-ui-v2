@@ -8,8 +8,8 @@ import {GTOKEN} from 'utils/constants';
 
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';
 import  SGV_TOKEN_ABI from 'utils/abi/sgvToken.abi';
-import  MANAGER_SKINS_ABI from 'utils/abi/managerSkins.abi';
-import  SUMMOER_SKINS_ABI from 'utils/abi/summonerSkins.abi';
+import  LAUNCH_MANAGER_ABI from 'utils/abi/launchManager.abi';
+import  LAUNCH_TICKET_ABI from 'utils/abi/launchTicket.abi';
 import 	WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 import RARITY_FEATS_ABI from 'utils/abi/rarityFeats.abi';
 import RARITY_NAMES_ABI from 'utils/abi/rarityNames.abi';
@@ -159,7 +159,7 @@ export const checkGoldAllowance = async (provider, id, callback) => {
 };
 
 export const getGOLDapprove = async (provider, id) => {
-	const	_toast = toast.loading('Allow Gold to be wrapped to $WSGOLD');
+	const	_toast = toast.loading('Allow Gold to be wrapped to $WRGGOLD');
 	const signer = provider.getSigner();
 	const approveGold = new ethers.Contract(
 		process.env.RARITY_GOLD_ADDR, 
@@ -1230,8 +1230,17 @@ export const buyPlot = async (provider, contractAddress, abi, x, y) => {
 
 
 /**********************************************************************
-**	SGV TOKEN Actions
+**	TOKEN Actions
 **********************************************************************/
+export const getGTokenBalance = async (provider, address, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const tokenContract = new Contract(process.env.GOVERNANCE_TOKEN_ADDR, GOVERNANCE_TOKEN_ABI);
+	const tokenBalanceCall = tokenContract.balanceOf(address); 
+	const [tokenBalance] = await ethcallProvider.all([tokenBalanceCall]);
+	
+	callback(ethers.utils.formatEther(tokenBalance));
+};
+
 export const getSGVBalance = async (provider, address, callback) => {
 	const contractAddress = process.env.SGV_TOKEN_ADDR;
 	const ethcallProvider = await newEthCallProvider(provider);
@@ -1395,15 +1404,15 @@ export const getWGoldBalance = async (provider, address, allowanceAddress, callb
 };
 
 export const approveWGold = async (provider, callback) => {
-	let _toast = toast.loading('Approving $WSGold');
+	let _toast = toast.loading('Approving $WRGGOLD');
 	const signer = provider.getSigner();
 	const contract = new ethers.Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI, signer);
 	try {
-		const transaction = await contract.approve(process.env.COMMON_SKIN_ADDR, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+		const transaction = await contract.approve(process.env.LAUNCH_TICKET_ADDR, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
 			callback();
-			onSuccessToast(_toast, '$WSGold successfully approved');
+			onSuccessToast(_toast, '$WRGGOLD successfully approved');
 		}
 	} catch (e) {
 		onErrorToast(_toast);
@@ -1414,7 +1423,7 @@ export const approveWGold = async (provider, callback) => {
 export const mintRandomCostume = async (provider, amount) => {
 	let _toast = toast.loading(`Minting ${amount} costumes...`);
 	const signer = provider.getSigner();
-	const contract = new ethers.Contract(process.env.COMMON_SKIN_ADDR, SUMMOER_SKINS_ABI, signer);
+	const contract = new ethers.Contract(process.env.LAUNCH_TICKET_ADDR, LAUNCH_TICKET_ABI, signer);
 	try {
 		const transaction = await contract.mint(amount, {value: '0'});
 		const	transactionResult = await transaction.wait();
@@ -1432,97 +1441,120 @@ export const mintRandomCostume = async (provider, amount) => {
 /**********************************************************************
 	**	LAUNCH PARTY ACTIONS
 **********************************************************************/
-export const getUserManagerSkinInfo = async (provider, address, tokenID, callback) => {
+export const getManagerTicketsInfo = async (provider, address, tokenID, callback) => {
 	const ethcallProvider = await newEthCallProvider(provider);
-	const managerContract = new Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI);
+	const managerContract = new Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI);
 	const calls = [
 		managerContract.myAdventurersYieldPerDay(address),
-		managerContract.myRoguesYieldPerDay(address),
+		managerContract.mySummonersYieldPerDay(address),
 		managerContract.availableForClaimAll(address),
-		managerContract.skinOf(tokenID),
+		managerContract.summonerKey([process.env.LAUNCH_ADVENTURERS_ADDR, tokenID]),
+		managerContract.summonerKey([process.env.LAUNCH_SUMMONERS_ADDR, tokenID])
 	];
-	const [sgvYield = 0, sgvRogueYield = 0, sgvAvailable = 0, currentSkin = 0] = await ethcallProvider.all(calls);
-	
+	// console.log(managerContract);
+	const [myAdventurersYieldPerDay, mySummonersYieldPerDay, availableForClaimAll, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
 	try {
-		if (!currentSkin) return;
-		const currentSgvAvailableCall = managerContract.availableForClaim(currentSkin['tokenId']);
-		const currentSgvAvailable = await ethcallProvider.all([currentSgvAvailableCall]);
-		return callback({sgvYield, sgvRogueYield, sgvAvailable, currentSkin, currentSgvAvailable});
+		if (!summonerKey || !adventurerKey) return;
+		const ticketsCalls = [
+			managerContract.ticketOf(adventurerKey),
+			managerContract.ticketOf(summonerKey),
+		];
+		const [adventurerTicketId, summonerTicketId] = await ethcallProvider.all(ticketsCalls);
+		try {
+			if (!adventurerTicketId || !summonerTicketId) return;
+			const availableTokensCalls = [
+				managerContract.availableForClaim(+`${adventurerTicketId}`),
+				managerContract.availableForClaim(+`${summonerTicketId}`)
+			];
+			const [adventurerTokensAvailable, summonerTokensAvailable] = await ethcallProvider.all(availableTokensCalls);
+			return callback({
+				myAdventurersYieldPerDay,
+				mySummonersYieldPerDay,
+				adventurerTokensAvailable,
+				summonerTokensAvailable,
+				availableForClaimAll,
+				adventurerTicketId: +`${adventurerTicketId}`,
+				summonerTicketId: +`${summonerTicketId}`,
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const getManagerSkinInfo = async (provider, skinContractAddr, skinId) => {
+export const getCommonTicketsInfo = async (provider, address, callback) => {
 	const ethcallProvider = await newEthCallProvider(provider);
-	const managerContract = new Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI); 
-	const skinKeyCall = managerContract.skinKey([skinContractAddr, skinId]);
-	const skinKey = await ethcallProvider.all([skinKeyCall]);
-
-	try {
-		if (!skinKey) return;
-		const assignationCall = managerContract.summonerOf(skinKey[0]);
-		const assignation = await ethcallProvider.all([assignationCall]);
-		return {skinKey, assignation};
-	} catch (e) {
-		console.log(e);
-	}
-};
-
-export const getCommonSkinsInfo = async (provider, address, callback) => {
-	const ethcallProvider = await newEthCallProvider(provider);
-	const contract = new Contract(process.env.COMMON_SKIN_ADDR, SUMMOER_SKINS_ABI);
+	const contract = new Contract(process.env.LAUNCH_TICKET_ADDR, LAUNCH_TICKET_ABI);
 	const calls = [
 		contract.balanceOf(address),
 		contract.price()
 	];
 	const [balance = 0, price = 0] = await ethcallProvider.all(calls);
-	return callback({balance, price});
+	return callback({balance: `${balance}`, price: `${ethers.utils.formatEther(price)}`});
 };
 
-export const getSkinInfo = async (provider, address, skinContractAddr, abi, index, callback) => {
+export const getManagerTiketInfo = async (provider, ticketId) => {
 	const ethcallProvider = await newEthCallProvider(provider);
-	const contract = new Contract(skinContractAddr, abi);
-	const skinIdCall = contract.tokenOfOwnerByIndex(address, index);
-	const skinId = await ethcallProvider.all([skinIdCall]);
+	const managerContract = new Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI);
 	try {
-		if (!skinId) return;
-		const skinCalls = [
-			contract.tokenURI(skinId.toString()),
-			contract.class(skinId.toString()),
-		];
-		const	[skinBase64 = {}, skinClass = 0] = await ethcallProvider.all(skinCalls);
-		const {skinKey, assignation} = await getManagerSkinInfo(provider, skinContractAddr, skinId.toString());
-		const {skinJson, skinImgUri} = parseSkinBase64(skinBase64);
-		
-		return callback({skinId: skinId?.toString(), skinJson, skinImgUri, skinClass: skinClass.toString(), skinKey: skinKey?.[0], assignation: assignation?.toString()});
+		const assignationCall = managerContract.summonerOf(ticketId);
+		const assignation = await ethcallProvider.all([assignationCall]);
+		return {assignation};
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const dressSummoner = async (provider, skinName, skinId, summonerId) => {
-	let _toast = toast.loading(`Assign ${skinName} to ${summonerId} adventurer...`);
-	const signer = provider.getSigner();
-	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
+
+export const getTicketInfo = async (provider, address, ticketContractAddr, abi, index, callback) => {
+	const ethcallProvider = await newEthCallProvider(provider);
+	const contract = new Contract(ticketContractAddr, abi);
+	const ticketIdCall = contract.tokenOfOwnerByIndex(address, index);
+	const ticketId = await ethcallProvider.all([ticketIdCall]);
 	try {
-		const transaction = await managerContract.assignSkinToSummoner(process.env.COMMON_SKIN_ADDR, skinId, summonerId);
+		if (!ticketId) return;
+		// TODO: fix this
+		// const ticketCalls = [
+		// 	contract.tokenURI(ticketId.toString()),
+		// ];
+		// const	[ticketBase64 = {}, ticketClass = 0] = await ethcallProvider.all(ticketCalls);
+		const {assignation} = await getManagerTiketInfo(provider, ticketId.toString());
+		// const {ticketJson, ticketImgUri} = parseSkinBase64(skinBase64);
+		const assignInfo = {
+			type: assignation?.toString().split(',')[0] === process.env.LAUNCH_ADVENTURERS_ADDR ? 'Adventurer' : 'Summoner',
+			id: assignation?.toString().split(',')[1]
+		};
+		return callback({ticketId: ticketId?.toString(), assignation: assignInfo});
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const assignTicket = async (provider, ticketId, summonerId, address) => {
+	const isSummoner = address === process.env.LAUNCH_SUMMONERS_ADDR ? 'Summoner': 'Adventurer';
+	let _toast = toast.loading(`Assign ticket to ${isSummoner} ID ${summonerId} ...`);
+	const signer = provider.getSigner();
+	const managerContract = new ethers.Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI, signer);
+	
+	try {
+		const transaction = await managerContract.assignTicketToSummoner(ticketId, [address, summonerId]);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			onSuccessToast(_toast, `Summoner ${summonerId} successfully dressed on ${skinName}`);
+			onSuccessToast(_toast, 'Ticket is successfully assigned');
 			return;
 		}
 	} catch (e) {
-		console.log(e);
 		onErrorToast(_toast);
 		return;
 	}
 };
 
-export const claimAllSgv = async (provider) => {
+export const claimAllGTokens = async (provider) => {
 	let _toast = toast.loading(`Claiming ${GTOKEN}...`);
 	const signer = provider.getSigner();
-	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
+	const managerContract = new ethers.Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI, signer); 
 	try {
 		const transaction = await managerContract.claimAll();
 		const	transactionResult = await transaction.wait();
@@ -1531,25 +1563,23 @@ export const claimAllSgv = async (provider) => {
 			return;
 		}
 	} catch (e) {
-		console.log(e);
 		onErrorToast(_toast);
 		return;
 	}
 };
 
-export const claimSgv = async (provider, tokenId) => {
+export const claimGTokens = async (provider, ticketId) => {
 	let _toast = toast.loading(`Claiming ${GTOKEN}...`);
 	const signer = provider.getSigner();
-	const managerContract = new ethers.Contract(process.env.MANAGER_SKIN_ADDR, MANAGER_SKINS_ABI, signer); 
+	const managerContract = new ethers.Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI, signer); 
 	try {
-		const transaction = await managerContract.claim(tokenId);
+		const transaction = await managerContract.claim(ticketId);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
 			onSuccessToast(_toast, `${GTOKEN} successfully claimed`);
 			return;
 		}
 	} catch (e) {
-		console.log(e);
 		onErrorToast(_toast);
 		return;
 	}

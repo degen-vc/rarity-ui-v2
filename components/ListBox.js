@@ -11,7 +11,7 @@ import	Chevron									from	'components/Chevron';
 import	Box										from	'components/Box';
 import	useOnClickOutside						from	'hook/useOnClickOutside';
 
-function	Crafting({options, selected, set_selected, className}) {
+function	Crafting({options, selected, set_selected, className = ''}) {
 	const	[isOpen, set_isOpen] = useState(false);
 	const	ref = useRef();
 
@@ -21,7 +21,7 @@ function	Crafting({options, selected, set_selected, className}) {
 
 	return (
 		<Listbox value={selected} onChange={set_selected} onClick={() => set_isOpen(!isOpen)}>
-			<div className={'relative'} ref={ref}>
+			<div className={`relative ${className}`} ref={ref}>
 				<Listbox.Button
 					className={`flex flex-row items-center p-2 cursor-pointer text-black dark:text-white mr-4 dark:hover:bg-dark-400 hover:bg-gray-secondary text-megaxs border-none uppercase relative ${isOpen ? 'bg-gray-secondary dark:bg-dark-400' : 'bg-white focus:bg-gray-secondary dark:bg-dark-600 dark:focus:bg-dark-400'} ${className}`}>
 					<span className={'block truncate'}>{selected.name}</span>
