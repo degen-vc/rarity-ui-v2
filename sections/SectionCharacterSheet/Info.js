@@ -41,7 +41,7 @@ const	Info = ({adventurer, /*updateRarity*/ namePrice}) => {
 		if (!adventurer?.name && Number(adventurer?.gold?.balance) === 0) {
 			return (
 				<div className={'text-center normal-case'}>
-					{`Only named Adventurers can claim gold. Name price ${namePrice} $RG`}
+					{`Only named Adventurers can claim gold. Name price ${namePrice} $RGV`}
 					{governanceToken?.nameAllowance <= namePrice && 
 						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RG'}</button>
 					}

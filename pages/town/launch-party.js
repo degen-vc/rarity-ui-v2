@@ -10,7 +10,6 @@ import LaunchHeader from 'components/Launch/LaunchHeader';
 import FarmingSection from 'components/Launch/FarmingSection';
 import LaunchInfoArticle from 'components/Launch/LaunchInfoArticle';
 import PurchaseCostumeForm from 'components/Launch/PurchaseCostumeForm';
-// import AdventurerLaunch from 'pages/town/launch-party/adventurers-party';
 
 const rarity1client = new ApolloClient({
 	uri: 'https://api.thegraph.com/subgraphs/name/wslyvh/rarity',
@@ -52,7 +51,8 @@ const Launch = ({router}) => {
 							currentAdventurer={currentAdventurer}
 							address={address}
 							provider={provider}
-							summoners={formattedSummoners} />
+							summoners={formattedSummoners}
+							adventurers={formattedAdventurers} />
 						<PurchaseCostumeForm
 							address={address}
 							provider={provider}

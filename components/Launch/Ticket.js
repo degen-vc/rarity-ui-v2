@@ -14,7 +14,7 @@ const typeOptions = [
 	{name: 'Summoner', value: process.env.LAUNCH_SUMMONERS_ADDR}
 ];
 
-const transformArrToOptions = (array, type) => array.map(el => ({name: `${type} id ${el}`, value: el}));
+const transformArrToOptions = (array) => array.map(el => ({name: `id ${el}`, value: el}));
 
 const Ticket = ({index, adventurers, summoners, isLoading}) => {
 	const	{address, provider} = useWeb3();
@@ -23,8 +23,8 @@ const Ticket = ({index, adventurers, summoners, isLoading}) => {
 	const [selectedType, setSelectedType] = useState(typeOptions[0]);
 	const [selectedId, setSelectedId] = useState();
 
-	const adventurersAvailable = transformArrToOptions(adventurers, 'Adventurer');
-	const summonersAvailable = transformArrToOptions(summoners, 'Summoner');
+	const adventurersAvailable = transformArrToOptions(adventurers);
+	const summonersAvailable = transformArrToOptions(summoners);
 
 	const onAssignTicket = () => {
 		const address = selectedType?.value !== '' ? selectedType?.value : adventurers?.length
@@ -56,20 +56,22 @@ const Ticket = ({index, adventurers, summoners, isLoading}) => {
 					title={ticketInfo?.skinJson?.name || ''}
 					className={'h-full flex flex-col items-center px-2 py-6 relative'}
 				>
-					{ticketInfo?.skinImgUri &&
-						<Image src={ticketInfo?.skinImgUri} quality={100} width={'100%'} height={'100%'} />
+					{ticketInfo?.ticketImg &&
+						<Image src={ticketInfo?.ticketImg} quality={100} width={'100%'} height={'100%'} />
 					}
 					{ticketInfo?.assignation?.id === '0'
 						? (<>
-							<div className={'flex mb-4'}>
+							<div className={'flex items-end mt-2 mb-4'}>
 								{adventurers?.length && summoners?.length ?
 									<div style={{minWidth: 130, width: 130}}>
+										<p className={'text-megaxs ml-2 opacity-60'}>{'You are:'}</p>
 										<ListBox
 											options={typeOptions}
 											className={'w-full mr-2'}
 											set_selected={setSelectedType}
 											selected={selectedType} /> </div> : null}
 								<div style={{maxWidth: 180, width: 180}}>
+									<p className={'text-megaxs ml-2 opacity-60'}>{`select ${selectedType?.name}`}</p>
 									<ListBox
 										options={idOptions}
 										className={'w-full'}
@@ -84,7 +86,7 @@ const Ticket = ({index, adventurers, summoners, isLoading}) => {
 								{'ASSIGN TICKET'}
 							</Button>
 						</>) : (
-							<div>
+							<div className={'mt-6'}>
 								<p className={'text-xs text-center text-tag-new mb-2'}>{'assigned to:'}</p>
 								<p className={'text-center opacity-80'}>{`${ticketInfo?.assignation?.type} ID ${ticketInfo?.assignation?.id}`}</p>
 							</div>

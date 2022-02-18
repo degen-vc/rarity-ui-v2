@@ -21,5 +21,5 @@ export const CLASSES = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk
 export const GAME = 'RARITY';
 export const GAME_NAME = 'RARITY 2';
 export const GAME_NAME_SHORT = 'R2';
-export const GTOKEN = '$RG';
+export const GTOKEN = '$RGV';
 export const BLOCKCHAIN = 'Fantom';
