@@ -24,7 +24,7 @@ function	Crafting({options, selected, set_selected, className = ''}) {
 			<div className={`relative ${className}`} ref={ref}>
 				<Listbox.Button
 					className={`flex flex-row items-center p-2 cursor-pointer text-black dark:text-white mr-4 dark:hover:bg-dark-400 hover:bg-gray-secondary text-megaxs border-none uppercase relative ${isOpen ? 'bg-gray-secondary dark:bg-dark-400' : 'bg-white focus:bg-gray-secondary dark:bg-dark-600 dark:focus:bg-dark-400'} ${className}`}>
-					<span className={'block truncate'}>{selected.name}</span>
+					<span className={'block truncate'}>{selected?.name}</span>
 					<div className={'ml-auto pl-2'}>
 						<Chevron width={6} height={6} className={'select-none transform rotate-90 text-black dark:text-white'} />
 						<Chevron width={6} height={6} className={'select-none transform -rotate-90 text-black dark:text-white'} />
@@ -46,7 +46,7 @@ function	Crafting({options, selected, set_selected, className = ''}) {
 									className={({active}) => `${active ? 'bg-gray-secondary dark:bg-dark-400' : 'bg-white hover:bg-gray-secondary dark:bg-dark-600 dark:hover:bg-dark-400'} cursor-pointer select-none relative p-2`}
 									value={person}>
 									<span className={'block truncate'}>
-										{person.name}
+										{person?.name}
 									</span>
 								</Listbox.Option>
 							))}

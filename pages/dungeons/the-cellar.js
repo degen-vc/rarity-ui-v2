@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Tuesday September 7th 2021
-**	@Filename:				tavern.js
-******************************************************************************/
-
-import	React, {useState, useEffect}			from	'react';
+import	{useState, useEffect}			from	'react';
 import	Image									from	'next/image';
 import	Link									from	'next/link';
 import	useDungeon, {DungeonContextApp}			from	'contexts/useDungeon';
@@ -13,6 +6,7 @@ import	useWeb3									from	'contexts/useWeb3';
 import	useRarity								from	'contexts/useRarity';
 import	{lootDungeonTheCellar}					from	'utils/actions';
 import	DialogBox								from	'components/DialogBox';
+import	toast				from	'react-hot-toast';
 
 const	classMappingBackImg = [
 	'',
@@ -236,9 +230,10 @@ function	Index({dungeon, adventurer, router}) {
 							tokenID: dungeon.tokenID,
 						}, ({error}) => {
 							if (error) {
-								return console.error(error);
+								const _toast = 'You can loot the Rat Skins only once per day';
+								return toast.error(_toast);
 							}
-							updateRarity(dungeon.tokenID);
+							// updateRarity(dungeon.tokenID);
 							if (router.pathname === '/dungeons/the-cellar')						
 								router.push('/town/quest?tab=the-cellar');
 						});

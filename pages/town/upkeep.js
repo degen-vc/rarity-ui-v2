@@ -35,7 +35,7 @@ function	NCPHeadline() {
 	);
 }
 
-function	handleGoAdventure(rarities, provider, updateRarity) {
+function	handleGoAdventure(rarities, provider) {
 	rarities.forEach(rarity => {
 		const	isInTheForest = rarity.level >= 2 && !rarity?.dungeons?.forest?.canAdventure;
 		goAdventure({
@@ -47,22 +47,17 @@ function	handleGoAdventure(rarities, provider, updateRarity) {
 			if (error) {
 				return console.error(error);
 			}
-			updateRarity(data);
 		});
 	});
 }
 
-function	handleClaimGold(rarities, provider, updateRarity) {
+function	handleClaimGold(rarities, provider) {
+	console.log('++++++++++++++++');
 	rarities.forEach(rarity => {
 		claimGold({
 			provider,
 			contractAddress: process.env.RARITY_GOLD_ADDR,
 			tokenID: rarity.tokenID,
-		}, ({error, data}) => {
-			if (error) {
-				return console.error(error);
-			}
-			updateRarity(data);
 		});
 	});
 }
@@ -94,7 +89,7 @@ function	Index({rarities, updateRarity}) {
 				<DialogBox
 					options={[
 						canAdventureRarities.length ? {label: `Send everyone (${canAdventureRarities.length}) to adventures`, onClick: () => handleGoAdventure(canAdventureRarities, provider, updateRarity)} : {label: nextAdventureTime ? `Next adventure ready ${nextAdventureTime}` : 'No Adventurer available', onClick: () => {}},
-						canGoldRarities.length ? {label: `Claim gold for ${canGoldRarities.length} heroes`, onClick: () => handleClaimGold(canGoldRarities, provider, updateRarity)} : {label: 'No gold to claim!', onClick: () => {}},
+						canGoldRarities.length ? {label: `Claim gold for ${canGoldRarities.length} heroes`, onClick: () => handleClaimGold(canGoldRarities, provider)} : {label: 'No gold to claim!', onClick: () => {}},
 					]} />
 			</div>
 		</section>

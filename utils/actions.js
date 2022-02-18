@@ -30,24 +30,21 @@ export const onErrorToast = (_toast, msg = 'Something went wrong, please try aga
 async function	_adventure(loader, {provider, contractAddress, tokenID}, callback) {
 	const	_toast = toast.loading(loader);
 	const	signer = provider.getSigner();
-	const	rarity = new ethers.Contract(
-		contractAddress,
-		['function adventure(uint256 _summoner) public'],
-		signer
-	);
+	// const abi = contractABI ? contractABI : ['function adventure(uint256 _summoner) public'];
+	const	rarity = new ethers.Contract(contractAddress, ['function adventure(uint256 _summoner) public'], signer);
 
 	/**********************************************************************
 	**	In order to avoid dumb error, let's first check if the TX would
 	**	be successful with a static call
 	**********************************************************************/
-	try {
-		await rarity.callStatic.adventure(tokenID);
-	} catch (error) {
-		toast.dismiss(_toast);
-		toast.error('Impossible to submit transaction');
-		callback({error, data: undefined});
-		return;
-	}
+	// try {
+	// 	await rarity.callStatic.adventure(tokenID);
+	// } catch (error) {
+	// 	toast.dismiss(_toast);
+	// 	toast.error('Impossible to submit transaction');
+	// 	callback({error, data: undefined});
+	// 	return;
+	// }
 
 	/**********************************************************************
 	**	If the call is successful, try to perform the actual TX
@@ -337,49 +334,45 @@ export async function	setAttributes({provider, contractAddress, _summoner, _str,
 	}
 }
 
-export async function	claimGold({provider, contractAddress, tokenID}, callback) {
+export async function	claimGold({provider, contractAddress, tokenID}) {
 	const	_toast = toast.loading(`Claiming gold for ${tokenID}...`);
 	const	signer = provider.getSigner();
 	const	rarity = new ethers.Contract(
 		contractAddress,
-		['function claim(uint256 _summoner) public'],
+		RARITY_GOLD_ABI,
 		signer
 	);
 
-	/**********************************************************************
-	**	In order to avoid dumb error, let's first check if the TX would
-	**	be successful with a static call
-	**********************************************************************/
-	try {
-		await rarity.callStatic.claim(tokenID);
-	} catch (error) {
-		console.log(error);
-		toast.dismiss(_toast);
-		toast.error('Impossible to submit transaction');
-		callback({error, data: undefined});
-		return;
-	}
+	// /**********************************************************************
+	// **	In order to avoid dumb error, let's first check if the TX would
+	// **	be successful with a static call
+	// **********************************************************************/
+	// try {
+	// 	await rarity.callStatic.claim(tokenID);
+	// } catch (error) {
+	// 	console.log(error);
+	// 	toast.dismiss(_toast);
+	// 	toast.error('Impossible to submit transaction');
+	// 	return;
+	// }
 
-	/**********************************************************************
-	**	If the call is successful, try to perform the actual TX
-	**********************************************************************/
+	// /**********************************************************************
+	// **	If the call is successful, try to perform the actual TX
+	// **********************************************************************/
 	try {
 		const	transaction = await rarity.claim(tokenID);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			callback({error: false, data: tokenID});
 			toast.dismiss(_toast);
 			toast.success('Transaction successful');
 		} else {
 			toast.dismiss(_toast);
 			toast.error('Transaction reverted');
-			callback({error: true, data: undefined});
 		}
 	} catch (error) {
 		console.error(error);
 		toast.dismiss(_toast);
 		toast.error('Something went wrong, please try again later.');
-		callback({error, data: undefined});
 	}
 }
 
