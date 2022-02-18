@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Saturday September 11th 2021
-**	@Filename:				SectionRecruit.js
-******************************************************************************/
-
-import	React, {useState}		from	'react';
+import	{useState}		from	'react';
 import	Image					from	'next/image';
 import	{useRouter}				from	'next/router';
 import	{recruitAdventurer}		from	'utils/actions';
@@ -32,7 +25,8 @@ function	Class({provider, rarityClass, fetchRarity}) {
 						set_isLoading(false);
 						return console.error(error);
 					}
-					await fetchRarity();
+					// TODO: fix this
+					// await fetchRarity();
 					set_isLoading(false);
 					router.push('/');
 				});
