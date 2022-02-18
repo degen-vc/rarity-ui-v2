@@ -1414,14 +1414,14 @@ export const approveWGold = async (provider, callback) => {
 };
 
 export const mintRandomCostume = async (provider, amount) => {
-	let _toast = toast.loading(`Minting ${amount} costumes...`);
+	let _toast = toast.loading(`Minting ${amount} tickets...`);
 	const signer = provider.getSigner();
 	const contract = new ethers.Contract(process.env.LAUNCH_TICKET_ADDR, LAUNCH_TICKET_ABI, signer);
 	try {
 		const transaction = await contract.mint(amount, {value: '0'});
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			onSuccessToast(_toast, `${amount} costumes successfully minted`);
+			onSuccessToast(_toast, `${amount} ${+amount === 1 ? 'ticket': 'tickets'} successfully minted`);
 			return;
 		}
 	} catch (e) {

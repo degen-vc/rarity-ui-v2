@@ -16,14 +16,14 @@ function	Footer() {
 				{`Switch to ${theme === 'light' || theme === 'light-initial' ? 'dark' : 'light'} mode`}
 			</div>
 			<div>
-				<a href={'https://github.com/degen-vc/scarcity/tree/v2'} target={'_blank'} rel={'noopener noreferrer'}>{'Github'} </a> { ' | '}
-				<a href={'https://twitter.com/scarcitygverse'} target={'_blank'} rel={'noopener noreferrer'}>{'Twitter'} </a> { ' | '}
+				<a href={'https://github.com/degen-vc/rarity-ui-v2'} target={'_blank'} rel={'noopener noreferrer'}>{'Github'} </a> { ' | '}
+				<a href={'https://twitter.com/rarity2game'} target={'_blank'} rel={'noopener noreferrer'}>{'Twitter'} </a> { ' | '}
 				<a href={'https://discord.gg/S584hZNTUJ'} target={'_blank'} rel={'noopener noreferrer'}>{'Discord'} </a> { ' | '}
 				<a href={'https://github.com/Rarity-Extended/RarityExtended'} target={'_blank'} rel={'noopener noreferrer'}>{'Original Code'} </a> { ' | '}
 				<a href={'https://degen-vc.gitbook.io/scarcity/'} target={'_blank'} rel={'noopener noreferrer'}>{'Docs'} </a> { ' | '}
 				<a href={'https://scarcity.gold/'} target={'_blank'} rel={'noopener noreferrer'}>{'Guide'} </a> { ' | '}
-				<a href={'https://medium.com/scarcity-gameverse'} target={'_blank'} rel={'noopener noreferrer'}>{'Medium'} </a> { ' | '}
-				<a href={'https://opensea.io/collection/scarcity-adventurers'} target={'_blank'} rel={'noopener noreferrer'}>{'OpenSea'} </a> 
+				<a href={'hhttps://medium.com/scarcity-gameverse/rarity2/home'} target={'_blank'} rel={'noopener noreferrer'}>{'Medium'} </a> { ' | '}
+				<a href={'https://paintswap.finance/marketplace/assets/0xcBe3CA2583db2ea2B13737E115A7C94D10D77891/1'} target={'_blank'} rel={'noopener noreferrer'}>{'Paintswap'} </a> 
 			</div>
 		</div>
 	);

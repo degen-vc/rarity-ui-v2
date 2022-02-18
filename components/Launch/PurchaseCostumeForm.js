@@ -41,17 +41,17 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 	}, [address, provider]);
 
 	return (
-		<BoxWithTitle className={'mt-12 items-between m:flex justify-between'} title={'PURCHASE COSTUME'}>
+		<BoxWithTitle className={'mt-12 items-between m:flex justify-between'} title={'PURCHASE TICKET'}>
 			<div className={'md:w-2/3 m-auto'}>
 				<div className={'sm:flex w-full justify-between mb-2'}>
 					<InfoBlock
 						className={'mb-4 md:mb-2 text-center sm:text-left'}
-						name={'COSTUME PRICE:'}
+						name={'TICKET PRICE:'}
 						value={`${currentPrice || '-'} $WG`} />
 					<InfoBlock
 						className={'mb-4 md:mb-2 text-center sm:text-right'}
 						name={'your balance:'}
-						value={`${wrappeGold?.balance || '-'} $WG`} />
+						value={`${Number(wrappeGold?.balance).toFixed(1) || '-'} $WG`} />
 				</div>
 				<div className={'sm:w-full m-auto'}>
 					<input
@@ -59,7 +59,7 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 						onChange={(e) => onChangeAmount(e.target.value)}
 						onBlur={checkAmount}
 						className={'block w-full border-4 border-black dark:border-dark-100 bg-white dark:bg-dark-600 border-solid h-10 text-xs px-2 focus:border-black focus:outline-none text-black dark:text-white'}
-						placeholder={'Costumes amount'} />
+						placeholder={'Tickets amount'} />
 					{costumeAmountError && <p className={'text-megaxs text-tag-withdraw pt-2'}>{costumeAmountError}</p>}
 					{(costumeAmount && !costumeAmountError) && <p className={'text-megaxs text-tag-new pt-2'}>{`Total price: ${costumeAmount ? calculateAmount(costumeAmount, currentPrice) : '0'} $WG`}</p>}
 				</div>

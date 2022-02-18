@@ -8,7 +8,7 @@ const FarmingInfoBox = ({gTokenlBalance, advGTokenBalance, myAdventurersYieldPer
 		<InfoRow name={'TOTAL TOKENS AVAILABLE'} value={gTokenlBalance} />
 		<InfoRow name={'YOUR BALANCE'} value={advGTokenBalance} />
 		<InfoRow name={'ADVENTURERS YIELD PER DAY'} value={myAdventurersYieldPerDay}  />
-		{hasSummoners ? <InfoRow name={'SUMMONERS YIELD PER DAY'} value={mySummonersYieldPerDay}  /> : null}
+		{hasSummoners ? <InfoRow name={'SUMMONERS YIELD 20% PER DAY'} value={mySummonersYieldPerDay}  /> : null}
 		<InfoRow name={'CLAIMABLE'} value={availableForClaimAll} />
 		<Button
 			className={'mt-4 inline-block cursor-pointer hover:bg-white focus:bg-white dark:hover:bg-dark-400 dark:focus:bg-dark-400 bg-gray-principal dark:bg-dark-400 text-center'}
