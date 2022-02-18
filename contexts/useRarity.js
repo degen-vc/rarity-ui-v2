@@ -76,7 +76,7 @@ const	prepareSharedInventory = (result, callback) => {
 	}})));
 };
 
-const createItem = (tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats = [], dungeons, inventoryCallResult, isRar) => {
+const createItem = (tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats = [], dungeons, inventoryCallResult) => {
 	return ({
 		tokenID: tokenID,
 		owner: owner,
@@ -105,6 +105,7 @@ const createItem = (tokenID, owner, adventurer, name, balanceOfGold, claimableGo
 		inventory: inventoryCallResult
 	});
 };
+
 
 // FETCHERS
 const fetchRarity = async (address, callback) => {
@@ -190,7 +191,7 @@ export const RarityContextApp = ({children}) => {
 		set_rarities((prev) => {
 			return ({
 				...prev,
-				[tokenID]: createItem(tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats, dungeons, inventoryCallResult, '++++')
+				[tokenID]: createItem(tokenID, owner, adventurer, name, balanceOfGold, claimableGold, initialAttributes, abilityScores, skills, feats, dungeons, inventoryCallResult)
 			});
 		});
 		set_rNonce(prev => prev + 1);

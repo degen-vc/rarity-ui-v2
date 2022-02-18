@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import useRarity from	'contexts/useRarity';
 import Button	from 'components/Button';
 import BoxWithTitle from 'components/BoxWithTitle';
 import InfoBlock from 'components/InfoBlock';
@@ -8,6 +9,7 @@ import {getWGoldBalance, approveWGold, mintRandomCostume} from 'utils/actions';
 const calculateAmount = (amount, price) => Number(amount) * Number(price);
 
 const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
+	const {governanceToken} = useRarity();
 	const [wrappeGold, setWrappedGold] = useState('-');
 	const [costumeAmount, setCostumeAmount] = useState('');
 	const [costumeAmountError, setCostumeAmountError] = useState('');
@@ -20,8 +22,8 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 
 	const checkAmount = () => {
 		if (!costumeAmount) return;
-		if (calculateAmount(costumeAmount, currentPrice) > Number(wrappeGold?.balance))
-			return setCostumeAmountError(`Amount ${calculateAmount(costumeAmount, currentPrice)} $WSGOLD exceeds your balance`);
+		if (calculateAmount(costumeAmount, currentPrice) > Number(governanceToken?.balance))
+			return setCostumeAmountError(`Amount ${calculateAmount(costumeAmount, currentPrice)} $WG exceeds your balance`);
 	};
 
 	const handleGoldAllowance = () => setWrappedGold(prev => ({...prev, allowance: true}));
@@ -35,7 +37,7 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 
 	useEffect(() => {
 		if (!address || !provider) return;
-		getWGoldBalance(provider, address, process.env.COMMON_SKIN_ADDR, setWrappedGold);
+		getWGoldBalance(provider, address, process.env.LAUNCH_TICKET_ADDR, setWrappedGold);
 	}, [address, provider]);
 
 	return (
@@ -45,11 +47,11 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 					<InfoBlock
 						className={'mb-4 md:mb-2 text-center sm:text-left'}
 						name={'COSTUME PRICE:'}
-						value={`${currentPrice} $WSGOLD`} />
+						value={`${currentPrice || '-'} $WG`} />
 					<InfoBlock
 						className={'mb-4 md:mb-2 text-center sm:text-right'}
 						name={'your balance:'}
-						value={`${wrappeGold?.balance} $WSGOLD`} />
+						value={`${wrappeGold?.balance || '-'} $WG`} />
 				</div>
 				<div className={'sm:w-full m-auto'}>
 					<input
@@ -59,7 +61,7 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 						className={'block w-full border-4 border-black dark:border-dark-100 bg-white dark:bg-dark-600 border-solid h-10 text-xs px-2 focus:border-black focus:outline-none text-black dark:text-white'}
 						placeholder={'Costumes amount'} />
 					{costumeAmountError && <p className={'text-megaxs text-tag-withdraw pt-2'}>{costumeAmountError}</p>}
-					{(costumeAmount && !costumeAmountError) && <p className={'text-megaxs text-tag-new pt-2'}>{`Total price: ${costumeAmount ? calculateAmount(costumeAmount, currentPrice) : '0'} $WSGOLD`}</p>}
+					{(costumeAmount && !costumeAmountError) && <p className={'text-megaxs text-tag-new pt-2'}>{`Total price: ${costumeAmount ? calculateAmount(costumeAmount, currentPrice) : '0'} $WG`}</p>}
 				</div>
 			</div>
 
