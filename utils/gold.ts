@@ -8,7 +8,7 @@ const _contractSpender = 1;
 
 export async function approveWrappedGold(adventurerId: string, provider: providers.Web3Provider,
     callback: (callbackData: { error: any, data: any }) => void) {
-  const	_toast = toast.loading('Allow $SGOLD to be wrapped to $WSGOLD...');
+  const	_toast = toast.loading('Allow $RGV to be wrapped to $WG...');
 
   const signer = provider.getSigner();
 
@@ -23,7 +23,7 @@ export async function approveWrappedGold(adventurerId: string, provider: provide
 
 export async function wrapGold(adventurerId: string, amount: number, provider: providers.Web3Provider,
     callback: (callbackData: { error: any, data: any }) => void) {
-  const _toast = toast.loading('Wrapping given amount of $SGOLD...');
+  const _toast = toast.loading('Wrapping given amount of $RGV...');
   
   const signer = provider.getSigner();
 

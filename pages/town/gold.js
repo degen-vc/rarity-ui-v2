@@ -1,10 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Saturday September 11th 2021
-**	@Filename:				gold.js
-******************************************************************************/
-
 import	{useState}				from	'react';
 import  {ethers} 						from 'ethers';
 import	Image							from	'next/image';
@@ -18,6 +11,8 @@ import  ModalGoldWrapper				from	'components/ModalGoldWrapper';
 import	useSWR							from	'swr';
 import 	WRAPPED_GOLD_ABI 				from 	'utils/abi/wrappedGold.abi';
 import 	{approveWrappedGold} 				from	'utils/gold';
+import {GAME_NAME} from 'utils/constants';
+
 
 function	FacuHeadline() {
 	const	[facuTextIndex, set_facuTextIndex] = useState(0);
@@ -26,7 +21,7 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{'SGOLD IS THE CURRENCY OF THE SCARCITY GAMEVERSE. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.'}
+					{`$RGV IS THE CURRENCY OF THE ${GAME_NAME}. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.`}
 				</Typer>&nbsp;
 			</>
 		);
@@ -40,7 +35,7 @@ function	FacuHeadline() {
 
 function	Index() {
 	const {theme} = useUI();
-	const {currentAdventurer, openCurrentAdventurerModal} = useRarity();
+	const {currentAdventurer} = useRarity();
 	const {address, provider} = useWeb3();
 	const [wGoldModalOpen, set_wGoldModalOpen] = useState(false);
 
@@ -74,7 +69,7 @@ function	Index() {
 				<Box className={'p-4 mb-6'}>
 					<div className={'mb-6'}>{`Adventurer Gold Balance: ${Number(currentAdventurer?.gold?.balance || 0).toFixed(1)}`}</div>
 					<div>
-						<div>{`wGold Balance: ${ethers.utils.formatUnits(wGold || 0)}`}</div>
+						<div>{`$RGV Balance: ${ethers.utils.formatUnits(wGold || 0)}`}</div>
 						<div>{`Address: ${address}`}</div>
 					</div>
 				</Box>
