@@ -4,7 +4,7 @@ import { handleWriteContract } from 'utils/helpers';
 import WRAPPED_GOLD_ABI from 'utils/abi/wrappedGold.abi';
 
 const _maxBN = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn;
-const _contractSpender = 238;
+const _contractSpender = 1;
 
 export async function approveWrappedGold(adventurerId: string, provider: providers.Web3Provider,
     callback: (callbackData: { error: any, data: any }) => void) {
@@ -13,7 +13,7 @@ export async function approveWrappedGold(adventurerId: string, provider: provide
   const signer = provider.getSigner();
 
 	const approveGoldContract = new Contract(
-		process.env.SCARCITY_GOLD, 
+		process.env.RARITY_GOLD_ADDR, 
 		['function approve(uint256 from, uint256 spender, uint256 amount) external returns (bool)'],
 		signer
   );

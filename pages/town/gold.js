@@ -86,7 +86,6 @@ function	Index() {
 							const win = window.open('https://www.scarcity.gold/gold-and-wrapped-gold', '_blank');
 							win.focus();
 						}},
-						{label: 'Select a different Adventurer', onClick: openCurrentAdventurerModal},
 					]} />
 			</div>
 			<ModalGoldWrapper isOpen={wGoldModalOpen} closeModal={() => set_wGoldModalOpen(false)} />
