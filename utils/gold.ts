@@ -23,7 +23,7 @@ export async function approveWrappedGold(adventurerId: string, provider: provide
 
 export async function wrapGold(adventurerId: string, amount: number, provider: providers.Web3Provider,
     callback: (callbackData: { error: any, data: any }) => void) {
-  const _toast = toast.loading('Wrapping given amount of $RGV...');
+  const _toast = toast.loading('Wrapping given amount of $WG...');
   
   const signer = provider.getSigner();
 

@@ -41,16 +41,16 @@ const	Info = ({adventurer, /*updateRarity*/ namePrice}) => {
 		if (!adventurer?.name && Number(adventurer?.gold?.balance) === 0) {
 			return (
 				<div className={'text-center normal-case'}>
-					{`Only named Adventurers can claim gold. Name price ${namePrice} $RGV`}
+					{`Only named Adventurers can claim gold. Name price ${namePrice} $RGVV`}
 					{governanceToken?.nameAllowance <= namePrice && 
-						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RG'}</button>
+						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RGV'}</button>
 					}
 				</div>
 			);
 		} else {
 			return (
 				<div className={governanceToken?.nameAllowance >= namePrice ? 'w-full text-right md:text-left pr-4 md:pr-0' : 'd-none' }>
-					<p className={(goldAllowance >= 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn || Number(adventurer?.gold?.balance) > 0)  ? '' : 'd-none'}>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : adventurer.gold.balance}`}</p> 
+					<p className={(goldAllowance >= 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn || Number(adventurer?.gold?.balance) > 0)  ? '' : 'd-none'}>{`${Number(adventurer?.gold?.balance || 0) === 0 ? '0' : Number(adventurer.gold.balance).toFixed(2)}`}</p> 
 					<button className={goldAllowance >= 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn  ? 'd-none' : ''} onClick={handleApproveGold}>{'Approve'}</button>
 				</div> 
 			);

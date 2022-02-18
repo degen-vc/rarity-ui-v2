@@ -156,7 +156,7 @@ export const checkGoldAllowance = async (provider, id, callback) => {
 };
 
 export const getGOLDapprove = async (provider, id) => {
-	const	_toast = toast.loading('Allow Gold to be wrapped to $WRGGOLD');
+	const	_toast = toast.loading('Allow Gold to be wrapped to $RGV');
 	const signer = provider.getSigner();
 	const approveGold = new ethers.Contract(
 		process.env.RARITY_GOLD_ADDR, 
@@ -1385,6 +1385,15 @@ export async function	learnFeat({provider, tokenID, feat}, callback) {
 /**********************************************************************
 	**	WRAPPED GOLD ACTIONS
 **********************************************************************/
+export const getWGoldAllowance = async (provider, id, setAllowance) => {
+	if (!id) return;
+	const ethcallProvider = await newEthCallProvider(provider);
+	const contract = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
+	const allowanceCall = contract.allowance(id, 1);
+	const allowance = await ethcallProvider.all([allowanceCall]);
+	return setAllowance(`${allowance}`);
+};
+
 export const getWGoldBalance = async (provider, address, allowanceAddress, callback) => {
 	const ethcallProvider = await newEthCallProvider(provider);
 	const contract = new Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI);
@@ -1397,7 +1406,7 @@ export const getWGoldBalance = async (provider, address, allowanceAddress, callb
 };
 
 export const approveWGold = async (provider, callback) => {
-	let _toast = toast.loading('Approving $WRGGOLD');
+	let _toast = toast.loading('Approving $RGV');
 	const signer = provider.getSigner();
 	const contract = new ethers.Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI, signer);
 	try {
@@ -1405,7 +1414,7 @@ export const approveWGold = async (provider, callback) => {
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
 			callback();
-			onSuccessToast(_toast, '$WRGGOLD successfully approved');
+			onSuccessToast(_toast, '$RGV successfully approved');
 		}
 	} catch (e) {
 		onErrorToast(_toast);
