@@ -1444,7 +1444,7 @@ export const getManagerTicketsInfo = async (provider, address, tokenID, callback
 		managerContract.summonerKey([process.env.LAUNCH_ADVENTURERS_ADDR, tokenID]),
 		managerContract.summonerKey([process.env.LAUNCH_SUMMONERS_ADDR, tokenID])
 	];
-	const [myAdventurersYieldPerDay, mySummonersYieldPerDay, availableForClaimAll, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
+	const [myAdventurersYieldPerDay = 0, mySummonersYieldPerDay = 0, availableForClaimAll = 0, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
 	try {
 		if (!summonerKey || !adventurerKey) return;
 		const ticketsCalls = [
@@ -1507,7 +1507,6 @@ export const getTicketInfo = async (provider, address, ticketContractAddr, abi, 
 	const ticketId = await ethcallProvider.all([ticketIdCall]);
 	try {
 		if (!ticketId) return;
-		// TODO: fix this
 		const ticketCalls = [contract.tokenURI(ticketId.toString())];
 		const	ticketBase64 = await ethcallProvider.all(ticketCalls);
 		const {assignation} = await getManagerTiketInfo(provider, ticketId.toString());

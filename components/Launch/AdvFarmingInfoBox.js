@@ -7,7 +7,7 @@ const AdvFarmingInfoBox = ({name, adventurerTokensAvailable, ticketId, hasSummon
 	<BoxWithTitle title={name} className={'mt-12 m:mt-0 m:w-1/3'}>
 		<div className={'flex flex-col h-full items-center justify-between'}>
 			<div className={'w-full'}>
-				{hasAdventurers ? <InfoRow name={'YIELD PER DAY'} value={'62.05 $RGV'} /> : null}
+				{hasAdventurers ? <InfoRow name={'YIELD PER DAY'} value={'62.05 $RGVV'} /> : null}
 				<InfoRow name={'CLAIMABLE'} value={adventurerTokensAvailable} />
 				{hasSummoners ? <p className={'mt-6 text-xs text-center opacity-60'}>{'summoners yield 20% per day'}</p> : null}
 			</div>

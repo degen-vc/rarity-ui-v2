@@ -9,7 +9,7 @@ const LaunchHeader = () => {
 		<HeroHeader imageUrl={'/avatar/ivanna.png'}>
 			<h1 className={'text-xs md:text-xs leading-normal md:leading-8'}>
 				<Typer onDone={() => setTextIndex(i => i + 1)} shouldStart={textIndex === 0}>
-					{'ATTEND THE LAUNCH PARTY TO FARM $RGV TOKENS. YOU NEED A TICKET TO GET INTO THE LAUNCH PARTY. RARITY CLASSIC SUMMONERS ARE ABLE TO RAID THE LAUNCH PARTY AND EARN 20% OF ALL FARMED $RGV.'}
+					{'ATTEND THE LAUNCH PARTY TO FARM $RGVV TOKENS. YOU NEED A TICKET TO GET INTO THE LAUNCH PARTY. RARITY CLASSIC SUMMONERS ARE ABLE TO RAID THE LAUNCH PARTY AND EARN 20% OF ALL FARMED $RGVV.'}
 				</Typer>&nbsp;
 			</h1>
 		</HeroHeader>
