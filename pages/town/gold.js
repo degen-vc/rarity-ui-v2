@@ -1,17 +1,18 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Saturday September 11th 2021
-**	@Filename:				market.js
-******************************************************************************/
-
 import	{useState}				from	'react';
+import  {ethers} 						from 'ethers';
 import	Image							from	'next/image';
+import  useRarity 						from 	'contexts/useRarity';
 import	useUI							from	'contexts/useUI';
+import	useWeb3							from	'contexts/useWeb3';
 import	Typer							from	'components/Typer';
 import	DialogBox						from	'components/DialogBox';
 import	Box								from	'components/Box';
+import  ModalGoldWrapper				from	'components/ModalGoldWrapper';
+import	useSWR							from	'swr';
+import 	WRAPPED_GOLD_ABI 				from 	'utils/abi/wrappedGold.abi';
+import 	{approveWrappedGold} 				from	'utils/gold';
 import {GAME_NAME} from 'utils/constants';
+
 
 function	FacuHeadline() {
 	const	[facuTextIndex, set_facuTextIndex] = useState(0);
@@ -20,7 +21,7 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{`SGOLD IS THE CURRENCY OF THE ${GAME_NAME}. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.`}
+					{`$RGV IS THE CURRENCY OF THE ${GAME_NAME}. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.`}
 				</Typer>&nbsp;
 			</>
 		);
@@ -33,7 +34,20 @@ function	FacuHeadline() {
 }
 
 function	Index() {
-	const	{theme} = useUI();
+	const {theme} = useUI();
+	const {currentAdventurer} = useRarity();
+	const {address, provider} = useWeb3();
+	const [wGoldModalOpen, set_wGoldModalOpen] = useState(false);
+
+	const {data: wGold} = useSWR([provider, address], async (userProvider, userAddress) => {
+		const wrappedGoldContract = new ethers.Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI, userProvider);
+		const wGoldOnAcc = await wrappedGoldContract.balanceOf(userAddress);
+		return wGoldOnAcc.toString();
+	}, []);
+
+	const handleApproveGold = () => {
+		approveWrappedGold(currentAdventurer.tokenID, provider, ({error}) => error && console.error(error));
+	};
 
 	return (
 		<section className={'max-w-full'}>
@@ -51,24 +65,25 @@ function	Index() {
 						<FacuHeadline />
 					</Box>
 				</div>
+				
+				<Box className={'p-4 mb-6'}>
+					<div className={'mb-6'}>{`Adventurer Gold Balance: ${Number(currentAdventurer?.gold?.balance || 0).toFixed(1)}`}</div>
+					<div>
+						<div>{`$RGV Balance: ${ethers.utils.formatUnits(wGold || 0)}`}</div>
+						<div>{`Address: ${address}`}</div>
+					</div>
+				</Box>
 				<DialogBox
 					options={[
-						
-						{label: 'Wrap or unwrap your gold', onClick: () => {
-							const win = window.open('https://polygonscan.com/address/0x07ff88589262F3f2D3090B79f7B7A00165dd4585#writeContract', '_blank');
-							win.focus();
-						}
-						},
-						{label: 'Buy, sell, pool or unpool wrapped gold', onClick: () => {
-							const win = window.open('https://www.scarcity.gold/gold-and-wrapped-gold', '_blank');
-							win.focus();
-						}},
-						{label: 'Instructions', onClick: () => {
+						{label: 'Approve Gold (for the selected adventurer)', onClick: handleApproveGold},
+						{label: 'Wrap a defined amount of gold (field to fill in) for that adventurer', onClick: () => set_wGoldModalOpen(true)},
+						{label: 'See instructions', onClick: () => {
 							const win = window.open('https://www.scarcity.gold/gold-and-wrapped-gold', '_blank');
 							win.focus();
 						}},
 					]} />
 			</div>
+			<ModalGoldWrapper isOpen={wGoldModalOpen} closeModal={() => set_wGoldModalOpen(false)} />
 		</section>
 	);		
 }
