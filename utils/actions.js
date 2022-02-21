@@ -94,7 +94,6 @@ export async function	levelUp({provider, contractAddress, tokenID}) {
 	} catch (error) {
 		toast.dismiss(_toast);
 		toast.error('Impossible to submit transaction');
-		// callback({error, data: undefined});
 		return;
 	}
 
@@ -105,19 +104,16 @@ export async function	levelUp({provider, contractAddress, tokenID}) {
 		const	transaction = await rarity.level_up(tokenID);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
-			// callback({error: false, data: tokenID});
 			toast.dismiss(_toast);
 			toast.success('Transaction successful');
 		} else {
 			toast.dismiss(_toast);
 			toast.error('Transaction reverted');
-			// callback({error: true, data: undefined});
 		}
 	} catch (error) {
 		console.error(error);
 		toast.dismiss(_toast);
 		toast.error('Something went wrong, please try again later.');
-		// callback({error, data: undefined});
 	}
 }
 
@@ -136,7 +132,6 @@ export const claimName = async (name, id, provider) => {
 			toast.dismiss(_toast);
 			toast.success('Transaction successful');
 		} else {
-			console.log(transactionResult.status);
 			toast.dismiss(_toast);
 			toast.error('Transaction reverted');
 		}
@@ -148,6 +143,7 @@ export const claimName = async (name, id, provider) => {
 };
 
 export const checkGoldAllowance = async (provider, id, callback) => {
+	if (!provider || !id) return;
 	const	ethcallProvider = await newEthCallProvider(provider);
 	const goldContract = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
 	const goldAllowanceCall = goldContract.allowance(id, 238);
@@ -156,7 +152,7 @@ export const checkGoldAllowance = async (provider, id, callback) => {
 };
 
 export const getGOLDapprove = async (provider, id) => {
-	const	_toast = toast.loading('Allow Gold to be wrapped to $RGV');
+	const	_toast = toast.loading('Allow Gold to be wrapped to $WG');
 	const signer = provider.getSigner();
 	const approveGold = new ethers.Contract(
 		process.env.RARITY_GOLD_ADDR, 
@@ -170,7 +166,6 @@ export const getGOLDapprove = async (provider, id) => {
 			toast.dismiss(_toast);
 			toast.success('Transaction successful');
 		} else {
-			console.log(transactionResult.status);
 			toast.dismiss(_toast);
 			toast.error('Transaction reverted');
 		}
@@ -193,7 +188,6 @@ export const allowGTokens = async (provider) => {
 			return;
 		}
 	} catch (e) {
-		console.log(e);
 		onErrorToast(_toast);
 		return;
 	}
@@ -1226,6 +1220,7 @@ export const buyPlot = async (provider, contractAddress, abi, x, y) => {
 **	TOKEN Actions
 **********************************************************************/
 export const getGTokenBalance = async (provider, address, callback) => {
+	if (!provider || !address) return;
 	const ethcallProvider = await newEthCallProvider(provider);
 	const tokenContract = new Contract(process.env.GOVERNANCE_TOKEN_ADDR, GOVERNANCE_TOKEN_ABI);
 	const tokenBalanceCall = tokenContract.balanceOf(address); 
@@ -1386,7 +1381,7 @@ export async function	learnFeat({provider, tokenID, feat}, callback) {
 	**	WRAPPED GOLD ACTIONS
 **********************************************************************/
 export const getWGoldAllowance = async (provider, id, setAllowance) => {
-	if (!id) return;
+	if (!provider || !id) return;
 	const ethcallProvider = await newEthCallProvider(provider);
 	const contract = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
 	const allowanceCall = contract.allowance(id, 1);
@@ -1395,6 +1390,7 @@ export const getWGoldAllowance = async (provider, id, setAllowance) => {
 };
 
 export const getWGoldBalance = async (provider, address, allowanceAddress, callback) => {
+	if (!provider || !address || !allowanceAddress) return;
 	const ethcallProvider = await newEthCallProvider(provider);
 	const contract = new Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI);
 	const calls = [
@@ -1406,7 +1402,7 @@ export const getWGoldBalance = async (provider, address, allowanceAddress, callb
 };
 
 export const approveWGold = async (provider, callback) => {
-	let _toast = toast.loading('Approving $RGV');
+	let _toast = toast.loading('Approving $WG');
 	const signer = provider.getSigner();
 	const contract = new ethers.Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI, signer);
 	try {
@@ -1414,7 +1410,7 @@ export const approveWGold = async (provider, callback) => {
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status === 1) {
 			callback();
-			onSuccessToast(_toast, '$RGV successfully approved');
+			onSuccessToast(_toast, '$WG successfully approved');
 		}
 	} catch (e) {
 		onErrorToast(_toast);
@@ -1434,7 +1430,6 @@ export const mintRandomCostume = async (provider, amount) => {
 			return;
 		}
 	} catch (e) {
-		console.log(e);
 		onErrorToast(_toast);
 		return;
 	}
@@ -1444,6 +1439,7 @@ export const mintRandomCostume = async (provider, amount) => {
 	**	LAUNCH PARTY ACTIONS
 **********************************************************************/
 export const getManagerTicketsInfo = async (provider, address, tokenID, callback) => {
+	if (!provider || !address || !tokenID) return;
 	const ethcallProvider = await newEthCallProvider(provider);
 	const managerContract = new Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI);
 	const calls = [
@@ -1453,7 +1449,7 @@ export const getManagerTicketsInfo = async (provider, address, tokenID, callback
 		managerContract.summonerKey([process.env.LAUNCH_ADVENTURERS_ADDR, tokenID]),
 		managerContract.summonerKey([process.env.LAUNCH_SUMMONERS_ADDR, tokenID])
 	];
-	const [myAdventurersYieldPerDay = 0, mySummonersYieldPerDay = 0, availableForClaimAll = 0, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
+	const [myAdventurersYieldPerDay = 0, mySummonersYieldPerDay = 0, availableForClaimAll, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
 	try {
 		if (!summonerKey || !adventurerKey) return;
 		const ticketsCalls = [
@@ -1486,6 +1482,7 @@ export const getManagerTicketsInfo = async (provider, address, tokenID, callback
 };
 
 export const getCommonTicketsInfo = async (provider, address, callback) => {
+	if (!provider || !address) return;
 	const ethcallProvider = await newEthCallProvider(provider);
 	const contract = new Contract(process.env.LAUNCH_TICKET_ADDR, LAUNCH_TICKET_ABI);
 	const calls = [
@@ -1497,6 +1494,7 @@ export const getCommonTicketsInfo = async (provider, address, callback) => {
 };
 
 export const getManagerTiketInfo = async (provider, ticketId) => {
+	if (!provider || !ticketId) return;
 	const ethcallProvider = await newEthCallProvider(provider);
 	const managerContract = new Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI);
 	try {
@@ -1510,6 +1508,7 @@ export const getManagerTiketInfo = async (provider, ticketId) => {
 
 
 export const getTicketInfo = async (provider, address, ticketContractAddr, abi, index, callback) => {
+	if (!provider || !address || !index) return;
 	const ethcallProvider = await newEthCallProvider(provider);
 	const contract = new Contract(ticketContractAddr, abi);
 	const ticketIdCall = contract.tokenOfOwnerByIndex(address, index);
@@ -1535,7 +1534,6 @@ export const assignTicket = async (provider, ticketId, summonerId, address) => {
 	let _toast = toast.loading(`Assign ticket to ${isSummoner} ID ${summonerId} ...`);
 	const signer = provider.getSigner();
 	const managerContract = new ethers.Contract(process.env.LAUNCH_MANAGER_ADDR, LAUNCH_MANAGER_ABI, signer);
-	
 	try {
 		const transaction = await managerContract.assignTicketToSummoner(ticketId, [address, summonerId]);
 		const	transactionResult = await transaction.wait();

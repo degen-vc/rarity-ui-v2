@@ -5,47 +5,39 @@ import Button	from 'components/Button';
 import ListBox from	'components/ListBox';
 import BoxWithTitle from 'components/BoxWithTitle';
 import {getTicketInfo, assignTicket} from 'utils/actions';
+import {transformArrToOptions} from 'utils/scarcity-functions';
 import LAUNCH_TICKET_ABI from 'utils/abi/launchTicket.abi';
-
-let idOptions = [{name: '', value: ''}];
 
 const typeOptions = [
 	{name: 'Adventurer', value: process.env.LAUNCH_ADVENTURERS_ADDR},
 	{name: 'Summoner', value: process.env.LAUNCH_SUMMONERS_ADDR}
 ];
 
-const transformArrToOptions = (array) => array.map(el => ({name: `id ${el}`, value: el}));
-
 const Ticket = ({index, adventurers, summoners, isLoading}) => {
 	const	{address, provider} = useWeb3();
 
 	const [ticketInfo, setTicketInfo] = useState({});
-	const [selectedType, setSelectedType] = useState(typeOptions[0]);
+	const [selectedType, setSelectedType] = useState([]);
 	const [selectedId, setSelectedId] = useState();
 
-	const adventurersAvailable = transformArrToOptions(adventurers);
-	const summonersAvailable = transformArrToOptions(summoners);
+	const adventurersAvailable = [{name: 'Adventurer ID', value: ''}, ...transformArrToOptions(adventurers)];
+	const summonersAvailable = [{name: 'Summoner ID', value: ''}, ...transformArrToOptions(summoners)];
 
 	const onAssignTicket = () => {
-		const address = selectedType?.value !== '' ? selectedType?.value : adventurers?.length
-			? process.env.LAUNCH_ADVENTURERS_ADDR : process.env.LAUNCH_SUMMONERS_ADDR;
+		if (!selectedType?.value) return;
+		const address = selectedType?.value === process.env.LAUNCH_ADVENTURERS_ADDR ? process.env.LAUNCH_ADVENTURERS_ADDR : process.env.LAUNCH_SUMMONERS_ADDR;
 		assignTicket(provider, ticketInfo?.ticketId, selectedId?.value, address);
 	};
 
 	useEffect(() => {
 		if (!provider &&  !address && isLoading) return;
 		getTicketInfo(provider, address, process.env.LAUNCH_TICKET_ADDR, LAUNCH_TICKET_ABI, index.toString(), setTicketInfo);
-	}, [provider, address, index, isLoading]);
+		setSelectedType(adventurers?.length ? typeOptions[0] : typeOptions[1]);
+	}, [provider, address, index, adventurers?.length, isLoading]);
 
 	useEffect(() => {
-		if (adventurers?.length && summoners?.length) {
-			idOptions = selectedType?.name === 'Adventurer' ? adventurersAvailable : summonersAvailable;
-			setSelectedId(selectedType?.name === 'Adventurer' ? adventurersAvailable[0]: summonersAvailable[0]);
-		} else {
-			idOptions = adventurers?.length ? adventurersAvailable : summonersAvailable;
-			setSelectedId(idOptions[0]);
-		}
-	}, [selectedType, adventurers?.length, summoners?.length]);
+		setSelectedId(selectedType?.name === 'Adventurer' ? adventurersAvailable[0] : summonersAvailable[0]);
+	}, [selectedType]);
 
 	if (!ticketInfo?.ticketId) return null;
 	
@@ -73,10 +65,10 @@ const Ticket = ({index, adventurers, summoners, isLoading}) => {
 								<div style={{maxWidth: 180, width: 180}}>
 									<p className={'text-megaxs ml-2 opacity-60'}>{`select ${selectedType?.name}`}</p>
 									<ListBox
-										options={idOptions}
+										options={selectedType?.name === 'Adventurer' ? adventurersAvailable : summonersAvailable}
 										className={'w-full'}
 										set_selected={setSelectedId}
-										selected={selectedId || idOptions[0]} />
+										selected={selectedId} />
 								</div>
 							</div>
 							<Button

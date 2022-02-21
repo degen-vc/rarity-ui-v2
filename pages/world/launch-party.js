@@ -9,7 +9,7 @@ import Ticket from 'components/Launch/Ticket';
 import LaunchHeader from 'components/Launch/LaunchHeader';
 import FarmingSection from 'components/Launch/FarmingSection';
 import LaunchInfoArticle from 'components/Launch/LaunchInfoArticle';
-import PurchaseCostumeForm from 'components/Launch/PurchaseCostumeForm';
+import PurchaseTicketForm from 'components/Launch/PurchaseTicketForm';
 
 const rarity1client = new ApolloClient({
 	uri: 'https://api.thegraph.com/subgraphs/name/wslyvh/rarity',
@@ -31,13 +31,13 @@ const Launch = ({router}) => {
 	const {loading: Rarity1DataLoading, data: Rarity1Data} = useQuery(gqlQuery, {client: rarity1client});
 	const {loading: Rarity2DataLoading, data: Rarity2Data} = useQuery(gqlQuery, {client: rarity2client});
 
+	const formattedAdventurers = formatAdventurersArr(Object.values(Rarity2Data?.summoners || {}));
+	const formattedSummoners = formatAdventurersArr(Object.values(Rarity1Data?.summoners || {}));
+
 	useEffect(() => {
 		if (!provider && !address) return;
 		getCommonTicketsInfo(provider, address, setCommonInfo);
 	}, [provider, address]);
-
-	const formattedAdventurers = formatAdventurersArr(Object.values(Rarity2Data?.summoners || {}));
-	const formattedSummoners = formatAdventurersArr(Object.values(Rarity1Data?.summoners || {}));
 
 	if (Rarity1DataLoading && Rarity2DataLoading) return null;
 
@@ -53,7 +53,7 @@ const Launch = ({router}) => {
 							provider={provider}
 							summoners={formattedSummoners}
 							adventurers={formattedAdventurers} />
-						<PurchaseCostumeForm
+						<PurchaseTicketForm
 							address={address}
 							provider={provider}
 							currentPrice={commonInfo?.price} /> </>

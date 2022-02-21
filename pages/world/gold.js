@@ -90,7 +90,7 @@ function	Index() {
 				<Box className={'p-4 mb-6'}>
 					<div className={'mb-4'}>{`Adventurer Gold Balance: ${Number(currentAdventurer?.gold?.balance || 0).toFixed(2)}`}</div>
 					<div>
-						<div className={'mb-4'}>{`$RWG Balance: ${Number(wGoldBalance).toFixed(2)}`}</div>
+						<div className={'mb-4'}>{`$WG Balance: ${Number(wGoldBalance).toFixed(2)}`}</div>
 						<div>{`Address: ${address}`}</div>
 					</div>
 				</Box>

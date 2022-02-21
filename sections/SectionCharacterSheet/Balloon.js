@@ -1,11 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 19th 2021
-**	@Filename:				Balloon.js
-******************************************************************************/
-
-import	React, {useState}			from	'react';
+import	{useState}			from	'react';
 import	BoxBubble					from	'components/BoxBubble';
 import	dayjs						from	'dayjs';
 import	relativeTime				from	'dayjs/plugin/relativeTime';

@@ -10,7 +10,7 @@ const amountToTokens = (amount, currency = GTOKEN) => {
 	return `${Math.round(parseInt((amount / 1e16).toString()))/100} ${currency}`;
 };
 
-const FarmingSection = ({provider, address, currentAdventurer, summoners, adventurers}) => {
+const FarmingSection = ({provider, address, currentAdventurer, summoners, adventurers, setTokenID}) => {
 	const {governanceToken} = useRarity();
 	const [gTokenlBalance, setGTokenlBalance] = useState();
 	const [managerTicketInfo, setManagerTicketInfo] = useState(null);
@@ -21,9 +21,13 @@ const FarmingSection = ({provider, address, currentAdventurer, summoners, advent
 	}, [provider, address, currentAdventurer]);
 
 	useEffect(() => {
-		if (!provider && !address && !currentAdventurer) return;
-		getManagerTicketsInfo(provider, address, Number(currentAdventurer?.tokenID), setManagerTicketInfo);
-	}, [provider, address, currentAdventurer]);
+		if (!provider && !address) return;
+		const tokenID = adventurers?.length ? Number(currentAdventurer?.tokenID) : Number(summoners?.[0]);
+		getManagerTicketsInfo(provider, address, tokenID, setManagerTicketInfo);
+	}, [provider, address, currentAdventurer, adventurers?.length]);
+
+	const hasAdventurers = Boolean(adventurers?.length);
+	const hasSummoners = Boolean(summoners?.length);
 
 	return (
 		<section className={'m:flex mt-12'}>
@@ -34,14 +38,15 @@ const FarmingSection = ({provider, address, currentAdventurer, summoners, advent
 				myAdventurersYieldPerDay={amountToTokens(managerTicketInfo?.myAdventurersYieldPerDay[0])}
 				mySummonersYieldPerDay={amountToTokens(managerTicketInfo?.mySummonersYieldPerDay[0])}
 				availableForClaimAll={amountToTokens(managerTicketInfo?.availableForClaimAll)}
-				hasSummoners={summoners?.length} />
-			<AdvFarmingInfoBox
-				provider={provider}
-				name={currentAdventurer?.name || `adventurer ${currentAdventurer?.tokenID || ''}`}
-				ticketId={`${managerTicketInfo?.adventurerTicketId}` || `${managerTicketInfo?.summonerTicketId}` || '0'}
-				adventurerTokensAvailable={amountToTokens(managerTicketInfo?.adventurerTokensAvailable)}
-				hasSummoners={summoners?.length}
-				hasAdventurers={adventurers?.length} />
+				hasSummoners={hasSummoners}
+				hasAdventurers={hasAdventurers} />
+			{hasAdventurers && 
+				<AdvFarmingInfoBox
+					provider={provider}
+					name={currentAdventurer?.name || currentAdventurer?.tokenID || ''}
+					ticketId={`${managerTicketInfo?.adventurerTicketId}` || `${managerTicketInfo?.summonerTicketId}` || '0'}
+					adventurerTokensAvailable={amountToTokens(managerTicketInfo?.adventurerTokensAvailable)}
+					hasSummoners={hasSummoners} />}
 		</section>
 	);
 };

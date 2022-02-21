@@ -38,7 +38,7 @@ function	Crafting({options, selected, set_selected, className = ''}) {
 					leaveTo={'opacity-0'}>
 					<Listbox.Options
 						static
-						className={'absolute text-sx bg-white dark:bg-dark-600 max-h-48 focus:outline-none z-20 min-w-full left-0 right-0 top-full shadow-xl'}>
+						className={'absolute text-sx bg-white dark:bg-dark-600 max-h-48 focus:outline-none z-50 min-w-full left-0 right-0 top-full shadow-xl'}>
 						<Box className={'-mt-2 py-2'}>
 							{options.map((person, personIdx) => (
 								<Listbox.Option

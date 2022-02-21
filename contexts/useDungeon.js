@@ -1,12 +1,4 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 5th 2021
-**	@Filename:				useDungeon.js
-******************************************************************************/
-/* eslint-disable react-hooks/exhaustive-deps */
-
-import	React, {useState, useEffect, useContext, createContext}	from	'react';
+import	{useState, useEffect, useContext, createContext}	from	'react';
 import	useWeb3													from	'contexts/useWeb3';
 import	{ethers}												from	'ethers';
 import	{Provider, Contract}									from	'ethcall';
@@ -16,7 +8,6 @@ const	DungeonContext = createContext();
 
 async function newEthCallProvider(provider) {
 	const	ethcallProvider = new Provider();
-	console.log('provider', provider);
 	await	ethcallProvider.init(provider);
 	return	ethcallProvider;
 }

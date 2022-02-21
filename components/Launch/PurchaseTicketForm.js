@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react';
-import useRarity from	'contexts/useRarity';
 import Button	from 'components/Button';
 import BoxWithTitle from 'components/BoxWithTitle';
 import InfoBlock from 'components/InfoBlock';
@@ -8,8 +7,7 @@ import {getWGoldBalance, approveWGold, mintRandomCostume} from 'utils/actions';
 
 const calculateAmount = (amount, price) => Number(amount) * Number(price);
 
-const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
-	const {governanceToken} = useRarity();
+const PurchaseTicketForm = ({address, provider, currentPrice}) => {
 	const [wrappeGold, setWrappedGold] = useState('-');
 	const [costumeAmount, setCostumeAmount] = useState('');
 	const [costumeAmountError, setCostumeAmountError] = useState('');
@@ -22,7 +20,7 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 
 	const checkAmount = () => {
 		if (!costumeAmount) return;
-		if (calculateAmount(costumeAmount, currentPrice) > Number(governanceToken?.balance))
+		if (calculateAmount(costumeAmount, currentPrice) > Number(wrappeGold?.balance))
 			return setCostumeAmountError(`Amount ${calculateAmount(costumeAmount, currentPrice)} $WG exceeds your balance`);
 	};
 
@@ -85,4 +83,4 @@ const PurchaseCostumeForm = ({address, provider, currentPrice}) => {
 	);
 };
 
-export default PurchaseCostumeForm;
+export default PurchaseTicketForm;

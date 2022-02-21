@@ -8,7 +8,7 @@ import	{levelUp, checkGoldAllowance, getGOLDapprove, allowGTokens, claimName}			
 import	{xpRequired}		from	'utils/libs/rarity';
 
 
-const	Info = ({adventurer, /*updateRarity*/ namePrice}) => {
+const	Info = ({adventurer, namePrice}) => {
 	const	{provider} = useWeb3();
 	const {governanceToken} = useRarity();
 
@@ -26,11 +26,6 @@ const	Info = ({adventurer, /*updateRarity*/ namePrice}) => {
 	const handleLevelUp = () => {
 		if (!canLevelUp) return;
 		levelUp({provider, contractAddress: process.env.RARITY_ADDR, tokenID: adventurer.tokenID});
-		// TODO: fix updateRarity
-		// return levelUp({provider, contractAddress: process.env.RARITY_ADDR, tokenID: adventurer.tokenID}, ({error, data}) => {
-		// 	if (error) return console.error(error);
-		// 	return updateRarity(data);
-		// });
 	};
 
 	const handleApproveTokens = () => allowGTokens(provider);
@@ -41,9 +36,9 @@ const	Info = ({adventurer, /*updateRarity*/ namePrice}) => {
 		if (!adventurer?.name && Number(adventurer?.gold?.balance) === 0) {
 			return (
 				<div className={'text-center normal-case'}>
-					{`Only named Adventurers can claim gold. Name price ${namePrice} $RGVV`}
-					{governanceToken?.nameAllowance <= namePrice && 
-						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RGV'}</button>
+					<p>{`Only named Adventurers can claim gold. Name price ${namePrice} $RGVV.`}</p>
+					{governanceToken?.nameAllowance <= namePrice &&
+						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RGVV'}</button>
 					}
 				</div>
 			);

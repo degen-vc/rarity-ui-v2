@@ -23,7 +23,6 @@ function	Navbar({router}) {
 	}
 
 	useEffect(() => {
-		// wGoldGet().then(data => console.log(data));
 		if (initialPopup)
 			return;
 
@@ -52,7 +51,7 @@ function	Navbar({router}) {
 	return (
 		<nav className={'relative w-full flex flex-col md:flex-row justify-start md:h-20 border-b-4 border-black dark:border-dark-100 mb-4 md:mb-4 pb-0 md:pb-4'}>
 			<div className={'items-center justify-start flex flex-row whitespace-normal md:whitespace-nowrap text-lg'}>
-				<div className={'w-full'}>
+				<div className={'w-full cursor-pointer'}>
 					<Link href={'/'}>
 						<p className={'block md:hidden'}>{GAME_NAME_SHORT}</p>
 					</Link>

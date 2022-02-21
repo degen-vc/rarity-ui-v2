@@ -66,7 +66,7 @@ const TransferForm = () => {
 	const checkSenderId = () => {
 		if (!sender) return;
 		if (sender && !Object.keys(rarities).includes(sender))
-			setSenderError('You can only transfer from your summoner');
+			setSenderError('You can only transfer from your adventurer');
 	};
 
 	const checkAmount = () => {

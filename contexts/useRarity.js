@@ -67,7 +67,6 @@ const prepareAdventurerInventory = (tokenID) => {
 	return ITEMS.map(item => item.fetch(tokenID));
 };
 
-// TODO: check if it works
 const	prepareSharedInventory = (result, callback) => {
 	const getValuesByType = (type) => type === 1 ? MANIFEST_GOODS : type === 2 ? MANIFEST_ARMORS : MANIFEST_WEAPONS;
 	result.forEach((item) => callback((prev) => ({...prev, [item.crafted]: {
@@ -130,8 +129,8 @@ const fetchAdventurerInventory = async (provider, calls) => {
 	return (callResult);
 };
 
-const fetchAdventurerExtra = async (calls) => {
-	const	results = await Promise.all(calls.map(p => p?.catch(() => ethers.BigNumber.from(0))));
+const fetchAdventurerExtra = async (calls = []) => {
+	const	results = await Promise.all(calls?.map(p => p?.catch(() => ethers.BigNumber.from(0))));
 	return results.map(result => (result instanceof Error) ? undefined : result);
 };
 
@@ -243,7 +242,7 @@ export const RarityContextApp = ({children}) => {
 	const updateRarity = async (tokenID) => {
 		const	callResults = await fetchAdventurer(provider, prepareAdventurer(tokenID));
 		const	chunkedCallResult = chunk(callResults, 8 + numberOfDungeonsAvailable);
-		const	extraCallResults = await fetchAdventurerExtra(prepareAdventurerExtra(provider, tokenID));
+		const	extraCallResults = await fetchAdventurerExtra([prepareAdventurerExtra(provider, tokenID)]);
 		const	chunkedExtraCallResult = chunk(extraCallResults, 1);
 		const	inventoryCallResult = await fetchAdventurerInventory(provider, prepareAdventurerInventory(tokenID));
 		const	chunkedinventoryCallResult = chunk(inventoryCallResult, ITEMS.length);

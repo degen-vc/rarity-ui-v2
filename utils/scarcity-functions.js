@@ -1,8 +1,3 @@
-/***************************************************************
-* Contains utility functions to help split up the logic
-* between the scarcity and the separately-updated rarity parts
-* of the application.
-****************************************************************/
 import {DIGIT_DOTS_REGEX, DIGITS_REGEX} from 'utils/constants';
 
 export const dungeonTypes = {
@@ -43,3 +38,5 @@ export const validateDigits = (value, withDot = false) => {
 	if (withDot) return DIGIT_DOTS_REGEX.test(value) ;
 	return DIGITS_REGEX.test(value);
 };
+
+export const transformArrToOptions = (array) => array.map(el => ({name: `id ${el}`, value: el}));

@@ -52,7 +52,6 @@ function	handleGoAdventure(rarities, provider) {
 }
 
 function	handleClaimGold(rarities, provider) {
-	console.log('++++++++++++++++');
 	rarities.forEach(rarity => {
 		claimGold({
 			provider,
