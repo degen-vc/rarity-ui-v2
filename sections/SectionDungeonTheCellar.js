@@ -1,11 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Sunday September 12th 2021
-**	@Filename:				SectionDungeonTheCellar.js
-******************************************************************************/
-
-import	React							from	'react';
 import	dayjs							from	'dayjs';
 import	relativeTime					from	'dayjs/plugin/relativeTime';
 import	CLASSES							from	'utils/codex/classes';

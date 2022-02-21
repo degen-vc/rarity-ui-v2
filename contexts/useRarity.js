@@ -166,7 +166,7 @@ export const RarityContextApp = ({children}) => {
 		const	[claimableGold] = await callResult;
 
 		// Sets up dungeons based on available ones (the order that dungeons are checked here is important!)
-		const dungeonResults = multicallResult.slice(9);
+		const dungeonResults = multicallResult.slice(8);
 		const dungeons = {};
 		if (isDungeonAvailable(dungeonTypes.CELLAR)) {
 			const cellarLog = dungeonResults.shift();

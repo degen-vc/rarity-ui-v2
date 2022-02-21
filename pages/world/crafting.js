@@ -1,10 +1,3 @@
-/******************************************************************************
-**	@Author:				Rarity Extended
-**	@Twitter:				@RXtended
-**	@Date:					Saturday September 11th 2021
-**	@Filename:				crafting.js
-******************************************************************************/
-
 import	{useState, useEffect, useCallback}		from	'react';
 import	{ethers}							from	'ethers';
 import	{Provider, Contract}				from	'ethcall';

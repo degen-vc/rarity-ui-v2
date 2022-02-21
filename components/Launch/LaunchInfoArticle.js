@@ -16,7 +16,7 @@ const LaunchInfoArticle = ({skinBalance = '0', currentAdventurer = ''}) => (
 				</a>
 			</div>
 			<div className={'text-center mt-4 opacity-60 hover:opacity-100'}>
-				<a href={'https://scarcity.gold'} target={'_blank'} rel={'noopener noreferrer'}>
+				<a href={'https://twitter.com/rarity2game'} target={'_blank'} rel={'noopener noreferrer'}>
 					{'FOLLOW TWITTER FOR THE ACTION AS IT HAPPENS  >'}
 				</a>
 			</div>
