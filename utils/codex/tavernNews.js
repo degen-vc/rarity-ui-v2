@@ -19,7 +19,7 @@ const TAVERN_NEWS = [
 	},
 	{
 		headline: 'Marketplace for Items under contruction',
-		text: `A gold-only marketplace for Items will create a complimentary economy in ${GAME}'s in game currency $SGOLD where goods, armor and weapons can be traded.`
+		text: `A gold-only marketplace for Items will create a complimentary economy in ${GAME}'s in game currency $RG where goods, armor and weapons can be traded.`
 	},
 	{
 		headline: `${GAME} is live on ${BLOCKCHAIN}`,

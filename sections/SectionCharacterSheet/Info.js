@@ -36,9 +36,9 @@ const	Info = ({adventurer, namePrice}) => {
 		if (!adventurer?.name && Number(adventurer?.gold?.balance) === 0) {
 			return (
 				<div className={'text-center normal-case'}>
-					<p>{`Only named Adventurers can claim gold. Name price ${namePrice} $RGVV.`}</p>
+					<p>{`Only named Adventurers can claim gold. Name price ${namePrice} $RGV.`}</p>
 					{governanceToken?.nameAllowance <= namePrice &&
-						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RGVV'}</button>
+						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RGV'}</button>
 					}
 				</div>
 			);

@@ -13,6 +13,7 @@ import 	WRAPPED_GOLD_ABI 				from 	'utils/abi/wrappedGold.abi';
 import 	{approveWrappedGold} 				from	'utils/gold';
 import {GAME_NAME} from 'utils/constants';
 import {getWGoldAllowance} from 'utils/actions';
+import BoxWithTitle from 'components/BoxWithTitle';
 
 
 function	FacuHeadline() {
@@ -22,7 +23,7 @@ function	FacuHeadline() {
 		return (
 			<>
 				<Typer onDone={() => set_facuTextIndex(i => i + 1)} shouldStart={facuTextIndex === 0}>
-					{`$RGV IS THE CURRENCY OF THE ${GAME_NAME}. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.`}
+					{`$RG IS THE CURRENCY OF THE ${GAME_NAME}. IT CAN ONLY BE HELD BY ADVENTURERS AND IS MAINLY USED FOR CRAFTING. YOU CAN WRAP IT FOR TRADING OR BUYING OTHER THINGS.`}
 				</Typer>&nbsp;
 			</>
 		);
@@ -40,12 +41,18 @@ function	Index() {
 	const {address, provider} = useWeb3();
 	const [wGoldModalOpen, set_wGoldModalOpen] = useState(false);
 	const [allowance, setAllowance] = useState(null);
+	const [goldName, setGoldName] = useState('$WG');
 
 	const {data: wGold} = useSWR([provider, address], async (userProvider, userAddress) => {
 		const wrappedGoldContract = new ethers.Contract(process.env.WRAPPED_GOLD, WRAPPED_GOLD_ABI, userProvider);
 		const wGoldOnAcc = await wrappedGoldContract.balanceOf(userAddress);
 		return wGoldOnAcc.toString();
 	}, []);
+
+	const selectGoldAction = (gold) => {
+		setGoldName(gold);
+		set_wGoldModalOpen(true);
+	};
 
 	useEffect(() => {
 		if (!provider && !currentAdventurer) return;
@@ -59,7 +66,8 @@ function	Index() {
 	};
 
 	let options = [
-		{label: 'Wrap a defined amount of gold (field to fill in) for that adventurer', onClick: () => set_wGoldModalOpen(true)},
+		{label: 'Wrap a defined amount of gold (field to fill in) for that adventurer', onClick: () => selectGoldAction('$RG')},
+		{label: 'Unwrap a defined amount of gold (field to fill in) to current adventurer', onClick: () => selectGoldAction('$WG')},
 		{label: 'See instructions', onClick: () => {
 			const win = window.open('https://www.scarcity.gold/gold-and-wrapped-gold', '_blank');
 			win.focus();
@@ -87,17 +95,25 @@ function	Index() {
 					</Box>
 				</div>
 				
-				<Box className={'p-4 mb-6'}>
-					<div className={'mb-4'}>{`Adventurer Gold Balance: ${Number(currentAdventurer?.gold?.balance || 0).toFixed(2)}`}</div>
+				<BoxWithTitle title={'Gold information'} className={'mb-8'}>
+					<div className={'mb-4'}>{`Adventurer Gold Balance: ${Number(currentAdventurer?.gold?.balance || 0).toFixed(2)} $RG`}</div>
 					<div>
-						<div className={'mb-4'}>{`$WG Balance: ${Number(wGoldBalance).toFixed(2)}`}</div>
+						<div className={'mb-4'}>{`Gold Balance: ${Number(wGoldBalance).toFixed(2)} $WG`}</div>
 						<div>{`Address: ${address}`}</div>
 					</div>
-				</Box>
+				</BoxWithTitle>
 				<DialogBox
 					options={options} />
 			</div>
-			<ModalGoldWrapper isOpen={wGoldModalOpen} closeModal={() => set_wGoldModalOpen(false)} />
+			<ModalGoldWrapper
+				allowance={allowance}
+				tokenId={currentAdventurer?.tokenID}
+				gold={Number(wGoldBalance).toFixed(2)}
+				adventurerGold={Number(currentAdventurer?.gold?.balance).toFixed(2)}
+				goldName={goldName}
+				isOpen={wGoldModalOpen}
+				closeModal={() => set_wGoldModalOpen(false)}
+			/>
 		</section>
 	);		
 }
