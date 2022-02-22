@@ -6,6 +6,7 @@ import useRarity from 'contexts/useRarity';
 import	CLASSES				from	'utils/codex/classes';
 import	{levelUp, checkGoldAllowance, getGOLDapprove, allowGTokens, claimName}			from	'utils/actions';
 import	{xpRequired}		from	'utils/libs/rarity';
+import {paseEther} from 'utils';
 
 
 const	Info = ({adventurer, namePrice}) => {
@@ -36,7 +37,7 @@ const	Info = ({adventurer, namePrice}) => {
 		if (!adventurer?.name && Number(adventurer?.gold?.balance) === 0) {
 			return (
 				<div className={'text-center normal-case'}>
-					<p>{`Only named Adventurers can claim gold. Name price ${namePrice} $RGV.`}</p>
+					<p>{`Only named Adventurers can claim gold. Name price ${paseEther(namePrice)} $RGV.`}</p>
 					{governanceToken?.nameAllowance <= namePrice &&
 						<button style={{textDecoration: 'underline'}} onClick={handleApproveTokens}>{'ALLOW $RGV'}</button>
 					}

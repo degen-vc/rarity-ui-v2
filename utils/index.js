@@ -25,6 +25,7 @@ export const toAddress = (address) => {
 };
 
 export const bigNumber = ethers.BigNumber;
+export const paseEther = (eth) => ethers.utils.formatEther(`${eth}`);
 
 export function truncateAddress(address) {
 	if (address !== undefined) {
