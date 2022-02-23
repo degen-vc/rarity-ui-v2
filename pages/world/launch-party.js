@@ -35,6 +35,10 @@ const Launch = ({router}) => {
 				<DialogBox
 					options={[
 						{label: 'Go back to the tavern', onClick: () => router.push('/world/tavern')},
+						{label: 'More information on the Launch Party', onClick: () => {
+							const win = window.open('https://medium.com/scarcity-gameverse', '_blank');
+							win.focus();
+						}}
 					]} />
 			</div>
 		</section>
