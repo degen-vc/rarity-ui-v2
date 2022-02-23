@@ -16,7 +16,7 @@ function	Footer() {
 				<a href={'https://degen-vc.gitbook.io/rartiy2+scarcity/'} target={'_blank'} rel={'noopener noreferrer'}>{'Docs'} </a> { ' | '}
 				<a href={'http://rarity.gold/'} target={'_blank'} rel={'noopener noreferrer'}>{'Guide'} </a> { ' | '}
 				<a href={'https://medium.com/scarcity-gameverse'} target={'_blank'} rel={'noopener noreferrer'}>{'Medium'} </a> { ' | '}
-				<a href={'https://paintswap.finance/marketplace/assets/0xcBe3CA2583db2ea2B13737E115A7C94D10D77891/1'} target={'_blank'} rel={'noopener noreferrer'}>{'Paintswap'} </a> 
+				{/* <a href={'https://paintswap.finance/marketplace/assets/0xcBe3CA2583db2ea2B13737E115A7C94D10D77891/1'} target={'_blank'} rel={'noopener noreferrer'}>{'Paintswap'} </a>  */}
 			</div>
 		</div>
 	);
