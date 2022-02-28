@@ -54,12 +54,6 @@ function	Index() {
 		set_wGoldModalOpen(true);
 	};
 
-	useEffect(() => {
-		if (!provider && !currentAdventurer) return;
-		if (allowance !== null) return;
-		getWGoldAllowance(provider, currentAdventurer?.tokenID, setAllowance);
-	}, [currentAdventurer, allowance, provider]);
-
 	const wGoldBalance = ethers.utils.formatUnits(wGold || 0);
 	const handleApproveGold = () => {
 		approveWrappedGold(currentAdventurer.tokenID, provider, ({error}) => error && console.error(error));
@@ -74,9 +68,18 @@ function	Index() {
 		}},
 	];
 
-	if (!allowance || allowance === 0) {
-		options.unshift({label: 'Approve Gold (for the selected adventurer)', onClick: handleApproveGold});
-	}
+	const createOptions = () => {
+		if (!Number(allowance) || Number(allowance) === 0) {
+			options.unshift({label: 'Approve Gold (for the selected adventurer)', onClick: handleApproveGold});
+		}
+		return options;
+	};
+
+	useEffect(() => {
+		if (!provider && !currentAdventurer) return;
+		if (allowance !== null) return;
+		getWGoldAllowance(provider, currentAdventurer?.tokenID, setAllowance);
+	}, [currentAdventurer, allowance, provider]);
 
 	return (
 		<section className={'max-w-full'}>
@@ -103,7 +106,7 @@ function	Index() {
 					</div>
 				</BoxWithTitle>
 				<DialogBox
-					options={options} />
+					options={createOptions()} />
 			</div>
 			<ModalGoldWrapper
 				allowance={allowance}

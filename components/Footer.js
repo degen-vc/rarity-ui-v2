@@ -9,14 +9,16 @@ function	Footer() {
 				{`Switch to ${theme === 'light' || theme === 'light-initial' ? 'dark' : 'light'} mode`}
 			</div>
 			<div>
-				<a href={'https://github.com/degen-vc/rarity-ui-v2'} target={'_blank'} rel={'noopener noreferrer'}>{'Github'} </a> { ' | '}
+				<a href={'https://github.com/degen-vc/rarity-v2'} target={'_blank'} rel={'noopener noreferrer'}>{'Github'} </a> { ' | '}
 				<a href={'https://twitter.com/rarity2game'} target={'_blank'} rel={'noopener noreferrer'}>{'Twitter'} </a> { ' | '}
 				<a href={'https://discord.gg/S584hZNTUJ'} target={'_blank'} rel={'noopener noreferrer'}>{'Discord'} </a> { ' | '}
 				<a href={'https://github.com/Rarity-Extended/RarityExtended'} target={'_blank'} rel={'noopener noreferrer'}>{'Original Code'} </a> { ' | '}
 				<a href={'https://degen-vc.gitbook.io/rartiy2+scarcity/'} target={'_blank'} rel={'noopener noreferrer'}>{'Docs'} </a> { ' | '}
 				<a href={'http://rarity.gold/'} target={'_blank'} rel={'noopener noreferrer'}>{'Guide'} </a> { ' | '}
 				<a href={'https://medium.com/scarcity-gameverse'} target={'_blank'} rel={'noopener noreferrer'}>{'Medium'} </a> { ' | '}
-				<a href={'https://paintswap.finance/marketplace/assets/0xcBe3CA2583db2ea2B13737E115A7C94D10D77891/1'} target={'_blank'} rel={'noopener noreferrer'}>{'Paintswap'} </a> 
+				<a href={'https://t.me/rarity2_scarcity'} target={'_blank'} rel={'noopener noreferrer'}>{'Telegram'} </a> 
+				{/* { ' | '} */}
+				{/* <a href={'https://paintswap.finance/marketplace/assets/0xcBe3CA2583db2ea2B13737E115A7C94D10D77891/1'} target={'_blank'} rel={'noopener noreferrer'}>{'Paintswap'} </a>  */}
 			</div>
 		</div>
 	);

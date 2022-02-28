@@ -3,7 +3,7 @@ import	{Contract}			from	'ethcall';
 import	toast				from	'react-hot-toast';
 import	CLASSES				from	'utils/codex/classes';
 import  {newEthCallProvider, bigNumber} from 'utils';
-import  {parsePlots, parseSkinBase64} from 'utils/scarcity-functions';
+import  {parsePlots, parseSkinBase64} from 'utils/rarity-functions';
 import {GTOKEN} from 'utils/constants';
 
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';
@@ -146,13 +146,13 @@ export const checkGoldAllowance = async (provider, id, callback) => {
 	if (!provider || !id) return;
 	const	ethcallProvider = await newEthCallProvider(provider);
 	const goldContract = new Contract(process.env.RARITY_GOLD_ADDR, RARITY_GOLD_ABI);
-	const goldAllowanceCall = goldContract.allowance(id, 238);
+	const goldAllowanceCall = goldContract.allowance(id, 1);
 	const goldAllowance = await ethcallProvider.all([goldAllowanceCall]);
 	return callback(+`${goldAllowance}`);
 };
 
 export const getGOLDapprove = async (provider, id) => {
-	const	_toast = toast.loading('Allow Gold to be wrapped to $WG');
+	const	_toast = toast.loading('Allow Gold');
 	const signer = provider.getSigner();
 	const approveGold = new ethers.Contract(
 		process.env.RARITY_GOLD_ADDR, 
@@ -160,7 +160,7 @@ export const getGOLDapprove = async (provider, id) => {
 		signer
 	);
 	try {
-		const	transaction = await approveGold.approve(id, 238, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
+		const	transaction = await approveGold.approve(id, 1, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn);
 		const	transactionResult = await transaction.wait();
 		if (transactionResult.status == 1) {
 			toast.dismiss(_toast);

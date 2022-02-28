@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import Button	from 'components/Button';
 import BoxWithTitle from 'components/BoxWithTitle';
 import InfoBlock from 'components/InfoBlock';
-import {validateDigits} from 'utils/scarcity-functions';
+import {validateDigits} from 'utils/rarity-functions';
 import {getWGoldBalance, approveWGold, mintRandomCostume} from 'utils/actions';
 
 const calculateAmount = (amount, price) => Number(amount) * Number(price);

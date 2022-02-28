@@ -18,7 +18,7 @@ import  RARITY_FEATS_ABI from 'utils/abi/rarityFeats.abi';
 import	MANIFEST_GOODS											from	'utils/codex/items_manifest_goods.json';
 import	MANIFEST_ARMORS											from	'utils/codex/items_manifest_armors.json';
 import	MANIFEST_WEAPONS										from	'utils/codex/items_manifest_weapons.json';
-import {dungeonTypes, isDungeonAvailable, numberOfDungeonsAvailable} from 'utils/scarcity-functions';
+import {dungeonTypes, isDungeonAvailable, numberOfDungeonsAvailable} from 'utils/rarity-functions';
 
 // HELPERS
 const	getRaritiesRequestURI = (address) => `
