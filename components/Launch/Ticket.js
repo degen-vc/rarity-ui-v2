@@ -5,7 +5,7 @@ import Button	from 'components/Button';
 import ListBox from	'components/ListBox';
 import BoxWithTitle from 'components/BoxWithTitle';
 import {getTicketInfo, assignTicket} from 'utils/actions';
-import {transformArrToOptions} from 'utils/scarcity-functions';
+import {transformArrToOptions} from 'utils/rarity-functions';
 import LAUNCH_TICKET_ABI from 'utils/abi/launchTicket.abi';
 
 const typeOptions = [

@@ -6,7 +6,7 @@
 ******************************************************************************/
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import	React, {useState, useEffect}	from	'react';
+import	{useState, useEffect}	from	'react';
 import	{ethers}											from	'ethers';
 import	Box														from	'components/Box';
 import	ListBox												from	'components/ListBox';

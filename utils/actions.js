@@ -3,7 +3,7 @@ import	{Contract}			from	'ethcall';
 import	toast				from	'react-hot-toast';
 import	CLASSES				from	'utils/codex/classes';
 import  {newEthCallProvider, bigNumber} from 'utils';
-import  {parsePlots, parseSkinBase64} from 'utils/scarcity-functions';
+import  {parsePlots, parseSkinBase64} from 'utils/rarity-functions';
 import {GTOKEN} from 'utils/constants';
 
 import	RARITY_CRAFTING_ABI	from	'utils/abi/rarityCrafting.abi';

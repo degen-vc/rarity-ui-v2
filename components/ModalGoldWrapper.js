@@ -3,7 +3,7 @@ import  toast                           from    'react-hot-toast';
 import	{Dialog, Transition}			from	'@headlessui/react';
 import	useWeb3							from	'contexts/useWeb3';
 import	Button						     from	'components/Button';
-import {validateDigits} from 'utils/scarcity-functions';
+import {validateDigits} from 'utils/rarity-functions';
 import 	{wrapGold, unwrapGold} 				    from	'utils/gold';
 
 function ModalGoldWrapper({isOpen, closeModal, gold, adventurerGold, goldName, tokenId, allowance}) {

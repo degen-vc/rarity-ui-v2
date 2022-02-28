@@ -9,7 +9,7 @@ import	{Contract}				from	'ethcall';
 import	RARITY_GOLD_ABI			from	'utils/abi/rarityGold.abi';
 import	THE_FOREST_ABI			from	'utils/abi/dungeonTheForest.abi';
 
-import { dungeonTypes, isDungeonAvailable }	from 	'utils/scarcity-functions';
+import {dungeonTypes, isDungeonAvailable}	from 	'utils/rarity-functions';
 
 const	items = [
 	isDungeonAvailable(dungeonTypes.CELLAR) && {

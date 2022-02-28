@@ -9,7 +9,7 @@ import	SectionDungeonTheCellar			from	'sections/SectionDungeonTheCellar';
 import	SectionDungeonTheForest			from	'sections/SectionDungeonTheForest';
 import	CLASSES							from	'utils/codex/classes';
 
-import {dungeonTypes, isDungeonAvailable} from 'utils/scarcity-functions';
+import {dungeonTypes, isDungeonAvailable} from 'utils/rarity-functions';
 
 function	DialogChoices({router, adventurersCount}) {
 	const	[selectedOption, set_selectedOption] = useState(0);
@@ -211,7 +211,7 @@ function	NPCHeadline({router, active, address, adventurersCount}) {
 						{'QUEST OFFICE'}
 					</Typer></span>
 					<Typer onDone={() => set_npcTextIndex(i => i + 1)} shouldStart={npcTextIndex === 4}>
-						{`. YOU NEED AN ADVENTURERS TO START HERE. GO TO THE TAVERN TO RECRUIT ONE.`}
+						{'. YOU NEED AN ADVENTURERS TO START HERE. GO TO THE TAVERN TO RECRUIT ONE.'}
 					</Typer>
 				</>
 			);
