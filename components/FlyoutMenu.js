@@ -191,8 +191,7 @@ function FlyoutMenu() {
 													</span>
 													<div className={'text-xxs cursor-pointer uppercase opacity-60 ml-0.5'}>
 														<p>
-															{'Coming soon...'}
-															{/* {'The Inn\'s first party.'} */}
+															{'The Inn\'s first party.'}
 														</p>
 													</div>
 												</div>
