@@ -1225,7 +1225,6 @@ export const getGTokenBalance = async (provider, address, callback) => {
 	const tokenContract = new Contract(process.env.GOVERNANCE_TOKEN_ADDR, GOVERNANCE_TOKEN_ABI);
 	const tokenBalanceCall = tokenContract.balanceOf(address); 
 	const [tokenBalance] = await ethcallProvider.all([tokenBalanceCall]);
-	
 	callback(ethers.utils.formatEther(tokenBalance));
 };
 
