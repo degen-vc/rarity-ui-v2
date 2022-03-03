@@ -17,7 +17,7 @@ const rarity1client = new ApolloClient({
 });
 
 const rarity2client = new ApolloClient({
-	uri: 'https://api.thegraph.com/subgraphs/name/eirlis/rarity-2-test',
+	uri: 'https://api.thegraph.com/subgraphs/name/eirlis/rarity2',
 	cache: new InMemoryCache()
 });
 

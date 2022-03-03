@@ -22,9 +22,9 @@ const FarmingSection = ({provider, address, currentAdventurer, summoners, advent
 
 	useEffect(() => {
 		if (!provider && !address) return;
-		const tokenID = adventurers?.length ? Number(currentAdventurer?.tokenID) : Number(summoners?.[0]);
+		const tokenID = (currentAdventurer?.tokenID && adventurers?.length) ? Number(currentAdventurer?.tokenID) : Number(summoners?.[0]);
 		getManagerTicketsInfo(provider, address, tokenID, setManagerTicketInfo);
-	}, [provider, address, currentAdventurer, adventurers?.length]);
+	}, [provider, address, currentAdventurer, adventurers?.length, summoners]);
 
 	const hasAdventurers = Boolean(adventurers?.length);
 	const hasSummoners = Boolean(summoners?.length);
