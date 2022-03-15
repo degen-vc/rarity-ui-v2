@@ -1446,7 +1446,7 @@ export const getManagerTicketsInfo = async (provider, address, tokenID, callback
 		managerContract.myAdventurersYieldPerDay(address),
 		managerContract.mySummonersYieldPerDay(address),
 		managerContract.availableForClaimAll(address),
-		managerContract.summonerKey([process.env.LAUNCH_ADVENTURERS_ADDR, tokenID]),
+		managerContract.summonerKey([process.env.RARITY_ADDR, tokenID]),
 		managerContract.summonerKey([process.env.LAUNCH_SUMMONERS_ADDR, tokenID])
 	];
 	const [myAdventurersYieldPerDay = 0, mySummonersYieldPerDay = 0, availableForClaimAll, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
@@ -1520,7 +1520,7 @@ export const getTicketInfo = async (provider, address, ticketContractAddr, abi, 
 		const {assignation} = await getManagerTiketInfo(provider, ticketId.toString());
 		const ticketImgUri= parseSkinBase64(ticketBase64);
 		const assignInfo = {
-			type: assignation?.toString().split(',')[0] === process.env.LAUNCH_ADVENTURERS_ADDR ? 'Adventurer' : 'Summoner',
+			type: assignation?.toString().split(',')[0] === process.env.RARITY_ADDR ? 'Adventurer' : 'Summoner',
 			id: assignation?.toString().split(',')[1]
 		};
 		return callback({ticketId: ticketId?.toString(), assignation: assignInfo, ticketImg:ticketImgUri});

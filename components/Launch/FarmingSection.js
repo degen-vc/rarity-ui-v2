@@ -16,14 +16,16 @@ const FarmingSection = ({provider, address, currentAdventurer, summoners, advent
 	const [managerTicketInfo, setManagerTicketInfo] = useState(null);
 
 	useEffect(() => {
-		if (!provider && !address) return;
-		getGTokenBalance(provider, process.env.LAUNCH_MANAGER_ADDR, setGTokenlBalance);
+		if (provider && address) {
+			getGTokenBalance(provider, process.env.LAUNCH_MANAGER_ADDR, setGTokenlBalance);
+		}
 	}, [provider, address, currentAdventurer]);
 
 	useEffect(() => {
-		if (!provider && !address) return;
-		const tokenID = (currentAdventurer?.tokenID && adventurers?.length) ? Number(currentAdventurer?.tokenID) : Number(summoners?.[0]);
-		getManagerTicketsInfo(provider, address, tokenID, setManagerTicketInfo);
+		if (provider && address) {
+			const tokenID = (currentAdventurer?.tokenID && adventurers?.length) ? Number(currentAdventurer?.tokenID) : Number(summoners?.[0]);
+			getManagerTicketsInfo(provider, address, tokenID, setManagerTicketInfo);
+		}
 	}, [provider, address, currentAdventurer, adventurers?.length, summoners]);
 
 	const hasAdventurers = Boolean(adventurers?.length);
