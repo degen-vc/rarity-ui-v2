@@ -1571,12 +1571,16 @@ export const claimGTokens = async (provider, ticketId) => {
 	try {
 		const transaction = await managerContract.claim(ticketId);
 		const	transactionResult = await transaction.wait();
+		console.log(transactionResult);
 		if (transactionResult.status === 1) {
 			onSuccessToast(_toast, `${GTOKEN} successfully claimed`);
 			return;
 		}
 	} catch (e) {
-		onErrorToast(_toast);
+		const message = e?.data?.message?.includes('No tokens left for claiming')
+			? 'No tokens left for claiming!'
+			: 'Something went wrong, please try again later';
+		onErrorToast(_toast, message);
 		return;
 	}
 };
