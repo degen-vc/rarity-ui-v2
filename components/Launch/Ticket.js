@@ -9,7 +9,7 @@ import {transformArrToOptions} from 'utils/rarity-functions';
 import LAUNCH_TICKET_ABI from 'utils/abi/launchTicket.abi';
 
 const typeOptions = [
-	{name: 'Adventurer', value: process.env.LAUNCH_ADVENTURERS_ADDR},
+	{name: 'Adventurer', value: process.env.RARITY_ADDR},
 	{name: 'Summoner', value: process.env.LAUNCH_SUMMONERS_ADDR}
 ];
 
@@ -25,7 +25,7 @@ const Ticket = ({index, adventurers, summoners, isLoading}) => {
 
 	const onAssignTicket = () => {
 		if (!selectedType?.value) return;
-		const address = selectedType?.value === process.env.LAUNCH_ADVENTURERS_ADDR ? process.env.LAUNCH_ADVENTURERS_ADDR : process.env.LAUNCH_SUMMONERS_ADDR;
+		const address = selectedType?.value === process.env.RARITY_ADDR ? process.env.RARITY_ADDR : process.env.LAUNCH_SUMMONERS_ADDR;
 		assignTicket(provider, ticketInfo?.ticketId, selectedId?.value, address);
 	};
 

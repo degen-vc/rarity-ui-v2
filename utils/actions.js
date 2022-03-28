@@ -1445,7 +1445,7 @@ export const getManagerTicketsInfo = async (provider, address, tokenID, callback
 		managerContract.myAdventurersYieldPerDay(address),
 		managerContract.mySummonersYieldPerDay(address),
 		managerContract.availableForClaimAll(address),
-		managerContract.summonerKey([process.env.LAUNCH_ADVENTURERS_ADDR, tokenID]),
+		managerContract.summonerKey([process.env.RARITY_ADDR, tokenID]),
 		managerContract.summonerKey([process.env.LAUNCH_SUMMONERS_ADDR, tokenID])
 	];
 	const [myAdventurersYieldPerDay = 0, mySummonersYieldPerDay = 0, availableForClaimAll, adventurerKey, summonerKey] = await ethcallProvider.all(calls);
@@ -1519,7 +1519,7 @@ export const getTicketInfo = async (provider, address, ticketContractAddr, abi, 
 		const {assignation} = await getManagerTiketInfo(provider, ticketId.toString());
 		const ticketImgUri= parseSkinBase64(ticketBase64);
 		const assignInfo = {
-			type: assignation?.toString().split(',')[0] === process.env.LAUNCH_ADVENTURERS_ADDR ? 'Adventurer' : 'Summoner',
+			type: assignation?.toString().split(',')[0] === process.env.RARITY_ADDR ? 'Adventurer' : 'Summoner',
 			id: assignation?.toString().split(',')[1]
 		};
 		return callback({ticketId: ticketId?.toString(), assignation: assignInfo, ticketImg:ticketImgUri});
@@ -1570,12 +1570,16 @@ export const claimGTokens = async (provider, ticketId) => {
 	try {
 		const transaction = await managerContract.claim(ticketId);
 		const	transactionResult = await transaction.wait();
+		console.log(transactionResult);
 		if (transactionResult.status === 1) {
 			onSuccessToast(_toast, `${GTOKEN} successfully claimed`);
 			return;
 		}
 	} catch (e) {
-		onErrorToast(_toast);
+		const message = e?.data?.message?.includes('No tokens left for claiming')
+			? 'No tokens left for claiming!'
+			: 'Something went wrong, please try again later';
+		onErrorToast(_toast, message);
 		return;
 	}
 };
