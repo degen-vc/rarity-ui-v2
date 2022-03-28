@@ -11,7 +11,7 @@ const LaunchInfoArticle = ({skinBalance = '0', currentAdventurer = ''}) => (
 				<div className={'py-2 text-center w-full text-tag-withdraw'}>{'You have no tickets yet...'}</div>
 			}
 			<div className={'text-center mt-6 opacity-60 hover:opacity-100'}>
-				<a href={'https://scarcity.gold'} target={'_blank'} rel={'noopener noreferrer'}>
+				<a href={'https://medium.com/scarcity-gameverse/the-launch-party-b74f736f3f69'} target={'_blank'} rel={'noopener noreferrer'}>
 					{'LEARN MORE  >'}
 				</a>
 			</div>

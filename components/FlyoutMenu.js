@@ -62,7 +62,7 @@ function FlyoutMenu() {
 							<Popover.Button ref={buttonRef} />
 						</div>
 						<div className={'group items-center justify-end flex-row mr-6 cursor-pointer outline-none focus:outline-none hidden md:flex'}>
-							<div className={'flex items-center justify-center'}>
+							<div className={'flex items-center justify-center'} style={{paddingTop: 3}}>
 								<div className={`transform transition-all duration-700 md:group-hover:rotate-90 mb-0 mr-2 ${open ? 'rotate-90' : 'rotate-0'}`}>
 									<div className={`cursor-pointer group-hover:opacity-100 text-xs md:text-sm ${router.pathname.startsWith('/world') || open ? 'opacity-100' : 'opacity-5'}`}>
 										{'>'}
